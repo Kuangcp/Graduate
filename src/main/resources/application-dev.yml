@@ -1,0 +1,11 @@
+# 开发模式下的配置
+
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: myth
+    password: ad
+  jpa:
+    show-sql: true
+
+

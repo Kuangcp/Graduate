@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <property name="log.base" value="./logs/"/>
+    <!--控制台-->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <!-- encoder 默认配置为PatternLayoutEncoder -->
+        <!--控制台简化 INFO 输出-->
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} | %thread |-%-5level %logger{36}:%L - %msg%n</pattern>
+            <!--<pattern>%d{MM-dd HH:mm:ss.SSS} |-%-5level %logger{36}:%L - %msg%n</pattern>-->
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+
+        <!-- DEBUG输出 -->
+        <!--<encoder>-->
+        <!--<pattern>%d{MM-dd HH:mm:ss.SSS} | %thread |-%-5level %logger{36}:%L - %msg%n</pattern>-->
+        <!--</encoder>-->
+        <!--<filter class="ch.qos.logback.classic.filter.ThresholdFilter">-->
+        <!--<level>DEBUG</level>-->
+        <!--</filter>-->
+    </appender>
+
+
+    <!-- debug -->
+    <appender name="DEBUG" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.base}debug.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}debug.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} | %thread |-%-5level %logger{36}:%L - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+
+    <!--info-->
+    <appender name="INFO" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${log.base}info.log</file>
+        <append>true</append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}info.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} |-%-5level %logger{36}:%L - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>INFO</level>
+        </filter>
+    </appender>
+
+    <!-- error -->
+    <appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${log.base}error.log</File>
+        <Append>true</Append>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <FileNamePattern>${log.base}error.%d{yyyy-MM-dd}.log</FileNamePattern>
+        </rollingPolicy>
+        <encoder>
+            <pattern>%d{MM-dd HH:mm:ss.SSS} | %thread |-%-5level %logger{36}:%L - %msg%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>ERROR</level>
+        </filter>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="DEBUG" />
+        <appender-ref ref="ERROR" />
+        <appender-ref ref="INFO" />
+    </root>
+</configuration>
