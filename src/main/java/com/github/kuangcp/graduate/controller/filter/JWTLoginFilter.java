@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kuangcp.graduate.service.security.AccountCredentials;
 import com.github.kuangcp.graduate.service.security.TokenAuthenticationService;
 import com.github.kuangcp.graduate.util.JSONResult;
-import org.springframework.boot.configurationprocessor.json.JSONObject;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
