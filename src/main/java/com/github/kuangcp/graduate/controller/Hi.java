@@ -19,4 +19,8 @@ public class Hi {
     }
 
 
+    @RequestMapping("/io")
+    public String hi2(){
+        return "90";
+    }
 }

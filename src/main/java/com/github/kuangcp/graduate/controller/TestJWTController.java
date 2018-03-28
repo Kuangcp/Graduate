@@ -23,7 +23,6 @@ class TestJWTController {
             add("tom");
             add("jerry");
         }};
-
         return JSONResult.fillResultString(0, "", users);
     }
 
@@ -42,4 +41,5 @@ class TestJWTController {
         }};
         return JSONResult.fillResultString(0, "", users);
     }
+
 }
