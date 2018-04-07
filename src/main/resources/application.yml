@@ -10,9 +10,9 @@ spring:
 # 服务器配置
 server:
   port: 8889
-  servlet:
-    session:
-      timeout: 3000
+#  servlet:
+#    session:
+#      timeout: 3000
 
 # 应用的主要配置属性
 reply:
