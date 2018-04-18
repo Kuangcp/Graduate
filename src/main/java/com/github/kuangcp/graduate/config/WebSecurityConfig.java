@@ -24,11 +24,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 关闭csrf验证 .csrf().disable() 为啥?
+        // TODO 关于路径规则 ** * 各自标识的意思
         http
             // 对请求进行认证
             .authorizeRequests()
             // 所有Get请求全部放行
-            .antMatchers(HttpMethod.GET, "/*").permitAll()
+            .antMatchers(HttpMethod.GET, "/**").permitAll()
             // 所有 / 的所有请求 都放行
             .antMatchers("/").permitAll()
             // 所有 /login 的POST请求 都放行
