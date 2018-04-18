@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>学生子系统</title>
+    <link rel="stylesheet" href="layer/css/layui.css"/>
+    <link rel="stylesheet" href="css/index.css"/>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/common/mainPage.js"></script>
+</head>
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" style="color: #1E9FFF;font-size: 17px;">毕业设计管理系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <!--<li class="layui-nav-item"><a href="">控制台</a></li>-->
+            <!--<li class="layui-nav-item"><a href="">商品管理</a></li>-->
+            <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
+
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                    <dd><a href="teacher">教师</a></dd>
+                    <dd><a href="admin">管理员</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <!--<span class="layui-badge-dot"></span>-->
+                <span class="layui-badge">9</span>
+                <!--若点击进入所有信息的面板，悬浮则是阅读消息-->
+                <a href="">&nbsp;&nbsp;消息
+                    <dl class="layui-nav-child">
+
+                        <dd><a href="">你提交的开题报告文档已经被导师审阅并回复了快去查看吧 &nbsp;&nbsp;2017-09-19 19:12:06</a></dd>
+                        <dd><a href="">提示1</a></dd>
+                        <dd><a href="">提示2</a></dd>
+                    </dl>
+                    <!--<span class="layui-badge">9</span>-->
+                </a>
+                <!--消息只是提示，最多负责跳转，编辑就是在单个页面上-->
+            </li>
+
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+
+            <li class="layui-nav-item">
+
+                <a href="javascript:;">
+                    <img src="images/inspectocat.jpg" class="layui-nav-img"/>
+                    贤心
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="logout/student">注销登录</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black" style="width:114px;">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree"  lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="type-title" href="javascript:;">主要功能</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="turn('ChooseTopic')">选择课题</a></dd>
+                        <dd><a href="javascript:;" onclick="turn('AlreadyChoose')">已选课题</a></dd>
+                        <dd><a href="javascript:;" onclick="turn('DefenseProgress')">答辩进度</a></dd>
+                        <dd><a href="javascript:;" onclick="turn('QueryScore')">查询成绩</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="type-title" href="javascript:;">开题答辩</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="turn('PublishMajor')">开题报告</a></dd>
+                        <dd><a href="javascript:;" onclick="turn('PublishMajor')">开题答辩</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="type-title" href="javascript:;">毕业答辩</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="turn('ThesisDefense')">第一次答辩</a></dd>
+                        <dd><a href="javascript:;" onclick="turn('ThesisDefense')">第二次答辩</a></dd>
+                        <dd><a href="javascript:;" onclick="turn('ThesisDefense')">第三次答辩</a></dd>
+                    </dl>
+                </li>
+                <!--<li class="layui-nav-item"><a href="">发布商品</a></li>-->
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body main-body main-body-student">
+        <!-- 内容主体区域 -->
+        <!--<div style="padding: 15px;">内容主体区域</div>-->
+        <iframe src="student/init" style="width:100%;height:100%;" id="main_page"></iframe>
+
+    </div>
+    <div class="layui-footer footer-student">
+        <!-- 底部固定区域 -->
+        © kuangcp.top - 毕业设计管理系统
+    </div>
+</div>
+<script src="layer/layui.all.js"></script>
+<script>
+    home('student')
+    //JavaScript代码区域
+    layui.use('element', function(){
+        var element = layui.element;
+
+    });
+    // $(".main-body-student").load("student/init")
+//     function turn(target) {
+// //         console.log(target);
+//         $("#main_page").attr('src','student/'+target);
+//         // if(target==="ChooseTopic/0") target = "ChooseTopic"
+//         // $(".main-body-student").load("student/"+target)
+//
+//     }
+
+</script>
+</body>
+</html>

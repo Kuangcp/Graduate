@@ -1,0 +1,22 @@
+.main {
+    height: 800px;
+}
+.title{
+    text-align: center;
+    width:520px;
+    margin: 10px 0 10px 25%;
+    font-size: 16px;
+}
+.submit{
+    color: #1E9FFF;
+    height: 40px;
+    width: 100px;
+    margin: 10px 0 0 42%;
+    font-size: 18px;
+}
+.main ul li{
+    list-style-type: square;
+}
+.main ol li{
+    list-style: decimal;
+}

@@ -1,0 +1,30 @@
+.type-title{
+    /*color: red;*/
+    background-color: #0056a8;
+    /*color: #01AAED;*/
+
+    font-size:20px;
+    font-family: "Courier New";
+    /*padding-left: -10px;*/
+    margin-left: -6px;
+
+}
+.main-body{
+    margin-top: -2px;
+    margin-bottom: -3px;
+    /* 隐藏最右边的滑动条*/
+    overflow-y: hidden;
+}
+.main-body-student{
+    margin-left: -88px;
+}
+.main-body-teacher{
+    margin-left: -72px;
+}
+.footer-student{
+    margin-left: -86px;
+    /*height:30px;*/
+}
+.footer-teacher{
+    margin-left: -70px;
+}

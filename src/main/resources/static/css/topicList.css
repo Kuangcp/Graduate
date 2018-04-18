@@ -1,0 +1,22 @@
+.list-item{
+    overflow: auto;
+    height: 250px;
+}
+.item-button{
+    margin-left: 42%;
+}
+.none-title{
+    font-size: 30px;
+    color: dodgerblue;
+    margin-left: 35%;
+    margin-top: 40px;
+}
+
+.searchInput{
+    margin: 10px 0 20px 30%;
+    width: 300px;
+    height: 35px;
+}
+/*.pageBar button{*/
+
+/*}*/

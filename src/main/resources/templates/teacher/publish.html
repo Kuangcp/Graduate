@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>发布课题</title>
+    <link rel="stylesheet" href="../layui/css/layui.css"/>
+    <link rel="stylesheet" href="../css/teacher/publish.css"/>
+    <script src="../wangeditor/wangEditor.min.js"></script>
+</head>
+<body>
+<main class="main">
+    <form id="contents" action="../teacher/topic/add" method="post">
+        <input type="text" name="name" placeholder="课题名称" class="title" id="title"/>
+        <div id="content" class="box"><h1 align="center">
+            课题内容和要求</h1><ol><li> </li><li> </li><li><br/></li></ol><p><br/></p>
+        </div>
+        <button class="submit" type="button">保存</button>
+    </form>
+</main>
+
+</body>
+<script src="../js/jquery.min.js"></script>
+<script src="../layui/layui.js"></script>
+
+<script>
+    var E = window.wangEditor;
+    var editor = new E('#content');
+    editor.create();
+
+    $(".submit").on('click', function (){
+        var main = $("#contents");
+        var param = main.serialize();
+        console.log("56:"+param);
+        $.post(main.attr('action'),param, function (data) {
+            console.log("000"+data)
+            // TODO 弹出确认框 然后选择是否刷新页面 继续编辑
+            layui.use(['layer'], function(){
+                var layer = layui.layer;
+                // 拿到form将参数进行编码 然后异步发送请求
+                layer.confirm('是否保存', function(index){
+                    //点击确定才会执行
+                    layer.msg('保存成功')
+                    layer.close(index);
+                });
+
+            });
+        })
+    });
+
+</script>
+</html>
+<!--<div class="main">-->
+<!--<div>-->
+<!--<form th:action="@{/teacher/addTopic}" method="post">-->
+<!--&lt;!&ndash;<label for="exampleInputEmail1">课题名称</label>&ndash;&gt;-->
+<!--<input type="text" class="form-control" name="name" id="exampleInputEmail1" placeholder="课题名称" th:value="${name}" style=" text-align: center; width:440px;margin: 10px 0 10px 30%"/>-->
+<!--<div style=" margin: 0 40px 0 80px;">-->
+<!--<label for="content"></label>-->
+<!--<textarea name="attention" id="content" style="width: 100%; height: 380px;" th:text="${content}" placeholder="课题要求"></textarea>-->
+<!--</div>-->
+<!--<th:block th:unless="${topicId eq null or topicId eq ''}">-->
+<!--<input type="hidden" name="topicId" th:value="${topicId}"/>-->
+<!--</th:block>-->
+<!--<button type="submit" class="btn btn-primary" style="margin-left:46%; margin-top: 10px;" >保存</button>-->
+<!--</form>-->
+<!--</div>-->
+<!--</div>-->
