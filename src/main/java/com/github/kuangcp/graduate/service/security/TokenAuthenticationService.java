@@ -30,7 +30,7 @@ public class TokenAuthenticationService {
 
     public static void addAuthentication(HttpServletResponse response, String username) {
         // 生成JWT
-        String JWT = Jwts.builder()
+        String jwt = Jwts.builder()
                 // 保存权限（角色）
                 .claim("authorities", "ROLE_ADMIN,AUTH_WRITE")
                 // 用户名写入标题
@@ -44,7 +44,7 @@ public class TokenAuthenticationService {
         try {
             response.setContentType("application/json");
             response.setStatus(HttpServletResponse.SC_OK);
-            response.getOutputStream().println(JSONResult.fillResultString(0, "", JWT));
+            response.getOutputStream().println(JSONResult.fillResultString(0, "", jwt));
         } catch (IOException e) {
             e.printStackTrace();
         }

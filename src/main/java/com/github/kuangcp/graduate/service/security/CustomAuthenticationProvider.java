@@ -35,7 +35,9 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         }
     }
 
-    // 是否可以提供输入类型的认证服务
+    /**
+     * 是否可以提供输入类型的认证服务
+     */
     @Override
     public boolean supports(Class<?> authentication) {
         return authentication.equals(UsernamePasswordAuthenticationToken.class);

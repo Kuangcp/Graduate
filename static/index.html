@@ -1,0 +1,53 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="UTF-8"/>
+    <title>Myth-毕业设计管理系统</title>
+    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="/css/signin.css" rel="stylesheet"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/layui/lay/modules/layer.js"></script>
+    <script src="/js/config/server.js"></script>
+    <script>
+
+      function login() {
+        layer.prompt({
+          formType: 0,
+          value: '1',
+          title: '请输入用户名'
+        }, function (value1, index, elem) {
+          layer.close(index);
+          layer.prompt({
+            formType: 1,
+            value: '1',
+            title: '请输入密码'
+          }, function (value2, index, elem) {
+            layer.close(index);
+            $.post(host + '/login', {
+              username:value1,
+              password:value2
+            },function (data) {
+              console.log(data);
+              if (data.code === 1) {
+                login()
+              }
+            });
+          });
+        });
+      }
+
+      var random = sessionStorage.getItem('randomValue')
+      if (random == null || random === '') {
+        login()
+      }
+      $.get(host+'/hi', function (data) {
+        console.log(data)
+      })
+
+    </script>
+</head>
+
+<body>
+</body>
+</html>

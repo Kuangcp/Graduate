@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        springBootVersion = '2.0.0.RELEASE'
+        springBootVersion = '2.0.1.RELEASE'
     }
     repositories {
         mavenCentral()
@@ -57,7 +57,8 @@ dependencies {
 //	runtime('org.postgresql:postgresql')
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 
-    compileOnly('org.projectlombok:lombok')
+//    compileOnly('org.projectlombok:lombok')
+    compile("org.projectlombok:lombok:1.16.16")
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

@@ -2,6 +2,7 @@ package com.github.kuangcp.graduate.domain.transfer;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 
 /**
  * Created by https://github.com/kuangcp
@@ -11,8 +12,11 @@ import lombok.AllArgsConstructor;
  */
 @JsonAutoDetect(fieldVisibility = JsonAutoDetect.Visibility.ANY)
 @AllArgsConstructor
+@Data
 public class ResultObject{
     Integer status;
     String message;
     Object result;
+
+
 }

@@ -22,9 +22,9 @@ import java.io.IOException;
  * @author kuangcp
  * @date 18-3-28  下午3:40
  */
-public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
+public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
-    public JWTLoginFilter(String url, AuthenticationManager authManager) {
+    public JwtLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url));
         setAuthenticationManager(authManager);
     }
@@ -32,7 +32,8 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
             throws AuthenticationException, IOException {
-
+        logger.info("shoudao 登录");
+        res.setHeader("Access-Control-Allow-Origin","*");
         // JSON反序列化成 AccountCredentials
         AccountCredentials creds = new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
 
@@ -53,6 +54,7 @@ public class JWTLoginFilter extends AbstractAuthenticationProcessingFilter {
                                               AuthenticationException failed) throws IOException {
         response.setContentType("application/json");
         response.setStatus(HttpServletResponse.SC_OK);
-        response.getOutputStream().println(JSONResult.fillResultString(500, "Internal Server Error!!!", "null"));
+        response.getOutputStream().println(JSONResult.fillResultString(500,
+                "Internal Server Error!!!", "null"));
     }
 }
