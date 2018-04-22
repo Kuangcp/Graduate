@@ -58,7 +58,7 @@ dependencies {
 	compileOnly('org.springframework.boot:spring-boot-configuration-processor')
 
 //    compileOnly('org.projectlombok:lombok')
-    compile("org.projectlombok:lombok:1.16.16")
+//    compile("org.projectlombok:lombok:1.16.20")
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 }

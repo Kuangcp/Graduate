@@ -1,0 +1,59 @@
+package top.kuangcp.graduate.controller.filter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import top.kuangcp.graduate.service.security.AccountCredentials;
+import top.kuangcp.graduate.service.security.TokenAuthenticationService;
+import top.kuangcp.graduate.util.JsonBuilder;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+
+import javax.servlet.FilterChain;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+
+/**
+ * Created by https://github.com/kuangcp
+ *
+ * @author kuangcp
+ * @date 18-3-28  下午3:40
+ */
+public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
+
+    public JwtLoginFilter(String url, AuthenticationManager authManager) {
+        super(new AntPathRequestMatcher(url, "POST"));
+        setAuthenticationManager(authManager);
+    }
+
+    @Override
+    public Authentication attemptAuthentication(HttpServletRequest req, HttpServletResponse res)
+            throws AuthenticationException, IOException {
+        logger.info("shoudao 登录");
+        res.setHeader("Access-Control-Allow-Origin","*");
+        // JSON反序列化成 AccountCredentials
+        AccountCredentials creds = new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
+
+        // 返回一个验证令牌
+        return getAuthenticationManager().
+                authenticate(new UsernamePasswordAuthenticationToken(creds.getUsername(),creds.getPassword()));
+    }
+
+    @Override
+    protected void successfulAuthentication(HttpServletRequest req, HttpServletResponse res,
+                                            FilterChain chain, Authentication auth) {
+        TokenAuthenticationService.addAuthentication(res, auth.getName());
+    }
+
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                              AuthenticationException failed) throws IOException {
+        response.setContentType("application/json");
+        response.setStatus(HttpServletResponse.SC_OK);
+        response.getOutputStream().println(JsonBuilder.buildResult(500,"Internal Server Error!!!", "null"));
+    }
+}
