@@ -21,7 +21,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
 
-        // 认证逻辑
+        // TODO 认证逻辑
         if (name.equals("admin") && password.equals("123456")) {
 
             // 这里设置权限和角色
