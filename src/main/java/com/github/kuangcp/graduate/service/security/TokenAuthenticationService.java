@@ -40,7 +40,6 @@ public class TokenAuthenticationService {
                 // 签名设置
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
-
         // 将 JWT 写入 body
         try {
             response.setContentType("application/json");

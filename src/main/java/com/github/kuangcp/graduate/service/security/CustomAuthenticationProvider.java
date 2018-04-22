@@ -10,6 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.ArrayList;
 
 /**
+ * @author kcp
  * 自定义身份认证验证组件
  */
 public class CustomAuthenticationProvider implements AuthenticationProvider {
