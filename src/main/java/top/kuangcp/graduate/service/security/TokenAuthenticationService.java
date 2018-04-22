@@ -1,6 +1,5 @@
 package top.kuangcp.graduate.service.security;
 
-import top.kuangcp.graduate.util.JsonBuilder;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,7 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.stereotype.Service;
+import top.kuangcp.graduate.util.JsonBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,20 +21,30 @@ import java.util.List;
  * @author kuangcp
  * @date 18-3-28  下午3:31
  */
-@Service
 public class TokenAuthenticationService {
     private static final long EXPIRATION_TIME = 432_000_000;     // 5天
-    private static final String SECRET = "P@ssw02d";            // JWT密码
-    private static final String TOKEN_PREFIX = "Bearer";        // Token前缀
+    private static final String SECRET = "jiushi?123@";            // JWT密码
+    private static final String TOKEN_PREFIX = "Mythos";        // Token前缀
     private static final String HEADER_STRING = "Authorization";// 存放Token的Header Key
 
-    public static void addAuthentication(HttpServletResponse response, String username) {
+    /**
+     * 认证成功后 生成Token
+     * @param response
+     * @param auth
+     */
+    public static void addAuthentication(HttpServletResponse response, Authentication auth) {
+        StringBuilder builder = new StringBuilder();
+        for(GrantedAuthority authority : auth.getAuthorities()){
+            builder.append(authority.getAuthority()).append(",");
+        }
+        String role = builder.toString().substring(0, builder.length()-1);
+
         // 生成JWT
         String jwt = Jwts.builder()
                 // 保存权限（角色）
-                .claim("authorities", "ROLE_ADMIN,AUTH_WRITE")
+                .claim("authorities", role)
                 // 用户名写入标题
-                .setSubject(username)
+                .setSubject(auth.getName())
                 // 有效期设置
                 .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
                 // 签名设置

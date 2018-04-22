@@ -11,6 +11,9 @@ import org.slf4j.LoggerFactory;
 /**
  * Created by https://github.com/kuangcp
  * 比起Spring的Bean 静态工具更简单
+ * 自定义规则：
+ *  整型 为空就置0
+ *  字符串为空就置为 "null" 字符串
  * @author kuangcp
  * @date 18-4-22  下午3:38
  */
@@ -22,11 +25,8 @@ public class JsonBuilder {
     }
     public static String buildResult(Integer code, String msg, Object data){
         code = checkInteger(code);
-        msg = checkObject(msg).toString();
-        data = checkObject(data);
-
         try {
-            return mapper.writeValueAsString(new ResultVO(code, msg, data));
+            return cleanNull(mapper.writeValueAsString(new ResultVO(code, msg, data)));
         } catch (JsonProcessingException e) {
             log.error(" Create JSON Failed  ", e);
             return "{\"code\":\"1\", \"msg\":\"error\", \"data\":\" \"}";
@@ -35,11 +35,8 @@ public class JsonBuilder {
     public static String buildTableResult(Integer code, String msg, Integer count, Object data){
         code = checkInteger(code);
         count = checkInteger(count);
-        msg = checkObject(msg).toString();
-        data = checkObject(data);
-
         try {
-            return mapper.writeValueAsString(new TableResultVO(code, msg, count, data));
+            return cleanNull(mapper.writeValueAsString(new TableResultVO(code, msg, count, data)));
         } catch (JsonProcessingException e) {
             log.error(" Create JSON Failed  ", e);
             return "{\"code\":\"1\", \"msg\":\"error\", \"data\":\" \"}";
@@ -52,11 +49,7 @@ public class JsonBuilder {
             return target;
         }
     }
-    private static Object checkObject(Object target){
-        if(target == null){
-            return " ";
-        }else{
-            return target;
-        }
+    private static String cleanNull(String target){
+        return target.replace("[^\"]null", "\"null\"");
     }
 }

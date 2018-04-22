@@ -1,8 +1,11 @@
 # 正式运行的配置文件
 spring:
   datasource:
+    driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.0.1:3306/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: myth
     password: ad
   jpa:
     show-sql: true
+    hibernate:
+      ddl-auto: update
