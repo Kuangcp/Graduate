@@ -24,6 +24,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     RoleService roleService;
+
     private Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {

@@ -12,15 +12,15 @@ function login(role) {
     }, function (value2, index, elem) {
       layer.close(index);
       var data = {
-        username:'"'+value1+'"',
-        password:'"'+value2+'"',
-        role:'"'+role+'"'
+        username:''+value1+'',
+        password:''+value2+'',
+        role:''+role+''
       };
       data = JSON.stringify(data);
       $.post(host + '/login', data, function (data) {
         console.log(data);
         if (data.code !== 0) {
-          login()
+          login(role)
         }else{
           sessionStorage.setItem("", "");
         }

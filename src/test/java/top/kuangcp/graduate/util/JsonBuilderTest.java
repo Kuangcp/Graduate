@@ -2,6 +2,7 @@ package top.kuangcp.graduate.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 import top.kuangcp.graduate.domain.role.Role;
 import top.kuangcp.graduate.domain.role.Student;
@@ -16,6 +17,7 @@ import java.util.List;
  * @author kuangcp
  * @date 18-4-22  下午4:23
  */
+@Ignore
 public class JsonBuilderTest {
 
     @Test
