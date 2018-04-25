@@ -1,9 +1,11 @@
 package top.kuangcp.graduate.controller.filter;
 
-import top.kuangcp.graduate.service.security.TokenAuthenticationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
+import top.kuangcp.graduate.service.security.TokenAuthenticationService;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -20,10 +22,18 @@ import java.io.IOException;
  */
 public class JwtAuthenticationFilter extends GenericFilterBean {
 
+    private Logger log = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain filterChain)
             throws IOException, ServletException {
-        Authentication authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest) request);
+        Authentication authentication = null;
+        try {
+            authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest) request);
+        } catch (Exception e) {
+//            e.printStackTrace();
+            log.info("登录失败");
+            filterChain.doFilter(request, response);
+        }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);
     }

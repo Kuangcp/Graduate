@@ -29,15 +29,15 @@ public class TokenAuthenticationService {
 
     /**
      * 认证成功后 生成Token
-     * @param response
-     * @param auth
+     * @param response HttpServletResponse
+     * @param auth Authentication 认证对象
      */
     public static void addAuthentication(HttpServletResponse response, Authentication auth) {
         StringBuilder builder = new StringBuilder();
-        for(GrantedAuthority authority : auth.getAuthorities()){
+        for (GrantedAuthority authority : auth.getAuthorities()) {
             builder.append(authority.getAuthority()).append(",");
         }
-        String role = builder.toString().substring(0, builder.length()-1);
+        String role = builder.toString().substring(0, builder.length() - 1);
 
         // 生成JWT
         String jwt = Jwts.builder()
@@ -63,7 +63,7 @@ public class TokenAuthenticationService {
     public static Authentication getAuthentication(HttpServletRequest request) {
         // 从Header中拿到token
         String token = request.getHeader(HEADER_STRING);
-        System.out.println("收到 头 "+token);
+        System.out.println("收到 头 " + token);
 
         if (token != null) {
             // 解析 Token
@@ -78,7 +78,7 @@ public class TokenAuthenticationService {
             String user = claims.getSubject();
 
             // 得到 权限（角色）
-            List<GrantedAuthority> authorities =  AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
+            List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
 
             // 返回验证令牌
             return user != null ?

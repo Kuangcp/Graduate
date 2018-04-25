@@ -1,9 +1,8 @@
 package top.kuangcp.graduate.controller;
 
-import org.springframework.web.bind.annotation.CrossOrigin;
-import top.kuangcp.graduate.util.JsonBuilder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import top.kuangcp.graduate.util.JsonBuilder;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
@@ -22,10 +21,10 @@ class TestJwtController {
      * @return
      */
     @RequestMapping(value = "/users", produces = "application/json;charset=UTF-8")
-    @CrossOrigin("http://view.kcp")
+//    @CrossOrigin("http://view.kcp")
     public String usersList(HttpServletResponse response) {
         System.out.println("uses            ");
-        response.addHeader("Access-Control-Allow-Origin", "http://view.kcp");
+//        response.addHeader("Access-Control-Allow-Origin", "http://view.kcp");
         ArrayList<String> users = new ArrayList<String>() {{
             add("freewolf");
             add("tom");

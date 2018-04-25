@@ -20,30 +20,44 @@
       // })
 
         function testUse() {
-          $.get({
-            // method: 'POST',
+          var random = sessionStorage.getItem('randomValue');
+          var request = $.ajax({
+            method: 'GET',
             url : host+'/users',
             contentType: "application/json",
             headers:{
               'Authorization' : 'Mythos '+random
             }
           });
-          var xhr = new XMLHttpRequest();
 
-          xhr.onreadystatechange = function() {
-            if ( xhr.readyState === 4 ) {
-              if ( ( xhr.status >= 200 && xhr.status < 300 ) || xhr.status == 304 ) {
-                // 成功：处理 xhr.responseText
-              } else {
-                // 失败
-              }
-            }
-          };
+          request.done(function( msg ) {
+            console.log(JSON.stringify(msg))
+          });
+          request.fail(function (data) {
+            console.log(data);
+            login('student');
+            // sessionStorage.removeItem('randomValue')
+          })
 
-          xhr.open( 'POST', host+'/users', true );
-          xhr.setRequestHeader( 'Content-Type', 'application/json' );
-          xhr.setRequestHeader('Authorization', 'Mythos '+random);
-          xhr.send();
+          // request.error(function( jqXHR, textStatus ) {
+          //   alert( "Request failed: " + textStatus );
+          // });
+          // var xhr = new XMLHttpRequest();
+          // xhr.onreadystatechange = function() {
+          //   if ( xhr.readyState === 4 ) {
+          //     if ( ( xhr.status >= 200 && xhr.status < 300 ) || xhr.status == 304 ) {
+          //       // 成功：处理 xhr.responseText
+          //     } else {
+          //       // 失败
+          //     }
+          //   }
+          // };
+          //
+          // xhr.open( 'POST', host+'/users', true );
+          // xhr.setRequestHeader( 'Content-Type', 'application/json' );
+          // xhr.setRequestHeader('Authorization', 'Mythos '+random);
+          // xhr.send();
+
 
           //
           // var xhr = new XMLHttpRequest();
@@ -58,10 +72,14 @@
           // xhr.setRequestHeader('Authorization', 'Mythos '+random);
           // xhr.send();
         }
+        function to() {
+          window.location.href = host+'/405.html'
+        }
     </script>
 </head>
 
 <body>
 <button  onclick="testUse()">测试</button>
+<button  onclick="to()">测试333</button>
 </body>
 </html>
