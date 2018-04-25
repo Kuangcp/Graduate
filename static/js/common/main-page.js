@@ -1,7 +1,7 @@
-$(function(){
-    $("[data-url]").on('click', function () {
-        turn($(this).data('url'))
-    });
+$(function () {
+  $("[data-url]").on('click', function () {
+    turn($(this).data('url'))
+  });
 
 });
 
@@ -9,10 +9,10 @@ $(function(){
  * 绑定首页logo的点击事件
  * @param type
  */
-function home(type){
-    $(".layui-logo").click(function () {
-        $("#main_page").attr('src',type+'/init')
-    })
+function home(type) {
+  $(".layui-logo").click(function () {
+    $("#main_page").attr('src', '/' + type + '/init.html')
+  })
 }
 
 /**
@@ -20,8 +20,11 @@ function home(type){
  * @param target
  */
 function turn(target) {
-    var url = location.href.split('/')
-    url = url[url.length-1]
-    $("#main_page").attr('src',url+'/'+target)
+  var url = location.href.split('/');
+  url = url[url.length - 1];
+  checkRoleThen(url, function () {
+    $("#main_page").attr('src', location.href + '/' + target + '.html')
+  })
+
 }
 

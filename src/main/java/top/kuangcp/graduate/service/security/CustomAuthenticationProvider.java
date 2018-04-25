@@ -24,7 +24,6 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private RoleService roleService;
-//    private RoleService roleService = new RoleService();
 
     private Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
     @Override
@@ -47,7 +46,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
             default:
                 break;
         }
-        // TODO 授权
+        // TODO 授权， 权限需要 ROLE_ 开头
         if(result){
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
             switch (role){
@@ -57,7 +56,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     break;
                 case "teacher" :
                     authorities.add( new GrantedAuthorityImpl("ROLE_TEACHER") );
-                    authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
+//                    authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
+                    break;
+                case "admin" :
+                    authorities.add( new GrantedAuthorityImpl("ROLE_ADMIN") );
+//                    authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
                     break;
                 default:
                     break;

@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8"/>
     <title>Myth-毕业设计管理系统</title>
-    <link href="/css/bootstrap.min.css" rel="stylesheet"/>
-    <link href="/css/signin.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
     <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+<!--<style>-->
+    <!--body{-->
+        <!--background-image: url("/image/5710000199.jpg");;-->
+    <!--}-->
+<!--</style>-->
     <script src="/js/jquery.min.js"></script>
+    <script src="/layui/layui.js"></script>
+    <script src="/js/common/main-page.js"></script>
     <script src="/layui/lay/modules/layer.js"></script>
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
     <script>
-      var random = sessionStorage.getItem(mythos);
-      if (random == null || random === '') {
-        login('student')
-      }
+      // checkRole('student');
 
       function testUse() {
         handlerGet('/users', 'student',
@@ -35,14 +39,18 @@
             layer.msg('获取成功');
             console.log(JSON.stringify(data))
           }, function (data) {
+            // console.log('失败返回 ' + data.statusText);
             console.log(JSON.stringify(data.responseText));
             login('student');
-            layer.msg('身份认证已过期， 请重新登录');
+            if (data.code === '5') {
+              layer.msg('身份认证已过期， 请重新登录');
+            } else {
+              layer.msg('校验失败，请检查数据是否遭篡改');
+            }
           })
       }
     </script>
 </head>
-
 <body>
 <button onclick="testUse()">测试</button>
 <button onclick="testRole()">测试333</button>

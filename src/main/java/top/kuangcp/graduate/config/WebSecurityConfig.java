@@ -14,6 +14,7 @@ import top.kuangcp.graduate.service.security.CustomAuthenticationProvider;
 
 /**
  * Created by https://github.com/kuangcp
+ * hasRole 方法 中设置的角色自动添加 ROLE_ 前缀
  * Security的配置类
  * @author kuangcp
  * @date 18-3-28  上午9:29
@@ -27,11 +28,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    // 设置 HTTP 验证规则 TODO 权限的设计
+    /**
+     * 设置 HTTP 验证规则
+     */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         // 关闭csrf验证  跨站请求伪造, 关掉的话就不能post数据过来了
-        // TODO 关于路径规则 ** * 各自标识的意思
         http.csrf().disable()
             // 对请求进行认证
             .authorizeRequests()
@@ -44,8 +46,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             // 权限检查
             .antMatchers("/hello").hasAuthority("AUTH_WRITE")
             // 角色检查
-            .antMatchers("/world").hasRole("ADMIN")
-            .antMatchers("/hi/*").hasRole("admin")
+            .antMatchers("/world").hasRole("STUDENT")
+            .antMatchers("/student/**").hasRole("STUDENT")
+            .antMatchers("/teacher/**").hasRole("TEACHER")
+            .antMatchers("/admin/**").hasRole("ADMIN")
+
             // 对Rest请求需要身份认证, 放行OPTIONS
             .antMatchers(HttpMethod.POST).authenticated()
             .antMatchers(HttpMethod.PUT).authenticated()
@@ -63,7 +68,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         // 使用自定义身份验证组件
-//        auth.authenticationProvider(new CustomAuthenticationProvider());
         auth.authenticationProvider(customAuthenticationProvider);
     }
 

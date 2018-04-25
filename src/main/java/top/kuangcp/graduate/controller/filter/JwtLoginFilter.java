@@ -29,7 +29,6 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
 
     private Logger log = LoggerFactory.getLogger(JwtLoginFilter.class);
 
-
     public JwtLoginFilter(String url, AuthenticationManager authManager) {
         super(new AntPathRequestMatcher(url, "POST"));
         setAuthenticationManager(authManager);

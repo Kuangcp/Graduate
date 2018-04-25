@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class TokenAuthenticationService {
     private static Logger log = LoggerFactory.getLogger(TokenAuthenticationService.class);
-    private static final long EXPIRATION_TIME = 432_000_000;     // 5天
+    private static final long EXPIRATION_TIME = 432_000_000;     // 5天 432_000_000
     private static final String SECRET = "?jiushi?123@";            // JWT密码
     private static final String TOKEN_PREFIX = "Mythos";        // Token前缀，自定义，解析时要去除
     private static final String HEADER_STRING = "Authorization";// 存放Token的Header Key
@@ -74,6 +74,12 @@ public class TokenAuthenticationService {
                     .setSigningKey(SECRET)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
+//            // 判断时间过期
+//            Date targetDate = claims.getExpiration();
+//            if(targetDate.getTime() < System.currentTimeMillis()){
+//                log.info("过期 ");
+//                return null;
+//            }
             String user = claims.getSubject();
             List<GrantedAuthority> authorities = AuthorityUtils.commaSeparatedStringToAuthorityList((String) claims.get("authorities"));
             // 返回验证令牌
