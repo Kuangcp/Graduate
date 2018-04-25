@@ -6,6 +6,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.GenericFilterBean;
 import top.kuangcp.graduate.service.security.TokenAuthenticationService;
+import top.kuangcp.graduate.util.JsonBuilder;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -30,9 +31,10 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
         try {
             authentication = TokenAuthenticationService.getAuthentication((HttpServletRequest) request);
         } catch (Exception e) {
-//            e.printStackTrace();
-            log.info("登录失败");
-            filterChain.doFilter(request, response);
+            log.info("鉴权失败", e.getMessage());
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().write(JsonBuilder.buildResult(1, "登录错误", "  "));
+            return;
         }
         SecurityContextHolder.getContext().setAuthentication(authentication);
         filterChain.doFilter(request, response);

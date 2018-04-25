@@ -21,4 +21,17 @@ public class CorsConfig extends WebMvcConfigurationSupport {
                 .allowedOrigins("*")
                 .allowedHeaders("*");
     }
+
+//    @Bean
+//    public HttpMessageConverter<String> responseBodyConverter() {
+//        StringHttpMessageConverter converter = new StringHttpMessageConverter(
+//                Charset.forName("UTF-8"));
+//        return converter;
+//    }
+//    @Override
+//    protected void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
+//        super.configureMessageConverters(converters);
+//        converters.add(responseBodyConverter());
+//    }
+
 }

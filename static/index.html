@@ -31,11 +31,14 @@
           });
 
           request.done(function( msg ) {
+            layer.msg('获取成功');
             console.log(JSON.stringify(msg))
           });
           request.fail(function (data) {
-            console.log(data);
+
+            console.log(JSON.stringify(data.responseText));
             login('student');
+            layer.msg('身份认证已过期， 请重新登录');
             // sessionStorage.removeItem('randomValue')
           })
 
