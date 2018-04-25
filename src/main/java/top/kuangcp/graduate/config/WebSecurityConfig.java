@@ -1,5 +1,6 @@
 package top.kuangcp.graduate.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -21,6 +22,10 @@ import top.kuangcp.graduate.service.security.CustomAuthenticationProvider;
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    @Autowired
+    CustomAuthenticationProvider customAuthenticationProvider;
+    @Autowired
+    JwtAuthenticationFilter jwtAuthenticationFilter;
 
     // 设置 HTTP 验证规则 TODO 权限的设计
     @Override
@@ -48,16 +53,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers(HttpMethod.GET).authenticated()
             .and()
             // 添加一个过滤器 所有访问 /login 的请求交给 JwtLoginFilter 来处理 这个类处理所有的JWT相关内容
-            .addFilterBefore(new JwtLoginFilter("/login",authenticationManager()),
-                    UsernamePasswordAuthenticationFilter.class)
+//            .addFilterBefore(new JwtLoginFilter("/login",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
             // 添加一个过滤器验证其他请求的Token是否合法
-            .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+//            .addFilterBefore(new JwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+            .addFilterBefore(new JwtLoginFilter("/login",authenticationManager()), UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) {
         // 使用自定义身份验证组件
-        auth.authenticationProvider(new CustomAuthenticationProvider());
+//        auth.authenticationProvider(new CustomAuthenticationProvider());
+        auth.authenticationProvider(customAuthenticationProvider);
     }
 
 }

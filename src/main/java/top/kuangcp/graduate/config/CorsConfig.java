@@ -15,13 +15,13 @@ public class CorsConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addCorsMappings(CorsRegistry registry) {
-//        super.addCorsMappings(registry);
         registry.addMapping("/**")
                 .allowedMethods("*")
                 .allowedOrigins("*")
                 .allowedHeaders("*");
     }
 
+    // TODO 编码为空， ????
 //    @Bean
 //    public HttpMessageConverter<String> responseBodyConverter() {
 //        StringHttpMessageConverter converter = new StringHttpMessageConverter(

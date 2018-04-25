@@ -38,7 +38,7 @@ class TestJwtController {
         ArrayList<String> users = new ArrayList<String>() {{
             add("hello");
         }};
-        return JsonBuilder.buildResult(0, "", users);
+        return JsonBuilder.buildResult(0, " ", users);
     }
 
     @RequestMapping(value = "/world", produces = "application/json;charset=UTF-8")
@@ -46,7 +46,7 @@ class TestJwtController {
         ArrayList<String> users = new ArrayList<String>() {{
             add("world");
         }};
-        return JsonBuilder.buildResult(0, "", users);
+        return JsonBuilder.buildResult(0, " ", users);
     }
 
 }

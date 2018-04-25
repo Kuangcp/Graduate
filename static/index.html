@@ -11,78 +11,40 @@
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
     <script>
-      var random = sessionStorage.getItem('randomValue');
+      var random = sessionStorage.getItem(mythos);
       if (random == null || random === '') {
         login('student')
       }
-      // $.get(host+'/hi', function (data) {
-      //   console.log(data)
-      // })
 
-        function testUse() {
-          var random = sessionStorage.getItem('randomValue');
-          var request = $.ajax({
-            method: 'GET',
-            url : host+'/users',
-            contentType: "application/json",
-            headers:{
-              'Authorization' : 'Mythos '+random
-            }
-          });
-
-          request.done(function( msg ) {
+      function testUse() {
+        handlerGet('/users', 'student',
+          function (data) {
             layer.msg('获取成功');
-            console.log(JSON.stringify(msg))
-          });
-          request.fail(function (data) {
-
+            console.log(JSON.stringify(data))
+          }, function (data) {
             console.log(JSON.stringify(data.responseText));
             login('student');
             layer.msg('身份认证已过期， 请重新登录');
-            // sessionStorage.removeItem('randomValue')
+            sessionStorage.removeItem(mythos)
           })
+      }
 
-          // request.error(function( jqXHR, textStatus ) {
-          //   alert( "Request failed: " + textStatus );
-          // });
-          // var xhr = new XMLHttpRequest();
-          // xhr.onreadystatechange = function() {
-          //   if ( xhr.readyState === 4 ) {
-          //     if ( ( xhr.status >= 200 && xhr.status < 300 ) || xhr.status == 304 ) {
-          //       // 成功：处理 xhr.responseText
-          //     } else {
-          //       // 失败
-          //     }
-          //   }
-          // };
-          //
-          // xhr.open( 'POST', host+'/users', true );
-          // xhr.setRequestHeader( 'Content-Type', 'application/json' );
-          // xhr.setRequestHeader('Authorization', 'Mythos '+random);
-          // xhr.send();
-
-
-          //
-          // var xhr = new XMLHttpRequest();
-          // xhr.onreadystatechange = function(){
-          //   if(xhr.readyState === XMLHttpRequest.DONE){
-          //     console.log('Result：', xhr.responseText);
-          //   }
-          // };
-          // //优先满足预请求，然后满足凭证请求，允许跨域。
-          // xhr.open('POST', host+'/users', true);
-          // xhr.withCredentials = true;
-          // xhr.setRequestHeader('Authorization', 'Mythos '+random);
-          // xhr.send();
-        }
-        function to() {
-          window.location.href = host+'/405.html'
-        }
+      function testRole() {
+        handlerGet('/world', 'student',
+          function (data) {
+            layer.msg('获取成功');
+            console.log(JSON.stringify(data))
+          }, function (data) {
+            console.log(JSON.stringify(data.responseText));
+            login('student');
+            layer.msg('身份认证已过期， 请重新登录');
+          })
+      }
     </script>
 </head>
 
 <body>
-<button  onclick="testUse()">测试</button>
-<button  onclick="to()">测试333</button>
+<button onclick="testUse()">测试</button>
+<button onclick="testRole()">测试333</button>
 </body>
 </html>
