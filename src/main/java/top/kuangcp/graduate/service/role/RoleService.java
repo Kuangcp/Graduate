@@ -1,14 +1,13 @@
 package top.kuangcp.graduate.service.role;
 
-import lombok.Data;
-import lombok.extern.log4j.Log4j;
-import lombok.extern.log4j.Log4j2;
-import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import top.kuangcp.graduate.dao.StudentDao;
+import top.kuangcp.graduate.domain.role.Student;
+import top.kuangcp.graduate.util.orm.DBConfig;
+import top.kuangcp.graduate.util.orm.MythORM;
+import top.kuangcp.graduate.util.orm.base.DBType;
+
+import java.util.List;
 
 /**
  * Created by https://github.com/kuangcp
@@ -16,19 +15,22 @@ import top.kuangcp.graduate.dao.StudentDao;
  * @author kuangcp
  * @date 18-4-22  下午9:44
  */
-@Service
 public class RoleService {
 
+    private MythORM orm = MythORM.build(DBType.POSTGRESQL);
+    private DBConfig config = new DBConfig();
+    {
+        config.setDatabase("graduate").setHost("127.0.0.1").setPort(5432)
+                .setUsername("postgres").setPassword("jiushi");
+    }
     private Logger log = LoggerFactory.getLogger(RoleService.class);
 
-    @Autowired
-    StudentDao studentDao;
-
-    public boolean loginByStudent(String username, String password){
-        log.info("收到"+username+" "+password);
-
-
-        return password.equals(studentDao.findByUsername(username).getPassword());
+    public boolean loginByStudent(String username, String password) {
+        List<Student> studentList = orm.query("select * from student where username = '"+username+"'", Student.class, config);
+        if(studentList.size() != 0){
+            return password.equals(studentList.get(0).getPassword());
+        }
+        return false;
     }
 
 }

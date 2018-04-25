@@ -2,14 +2,12 @@ package top.kuangcp.graduate.service.security;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.CoreConfig;
 import top.kuangcp.graduate.service.role.RoleService;
 
@@ -19,11 +17,10 @@ import java.util.ArrayList;
  * @author kcp
  * 自定义身份认证验证组件
  */
-@Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
-    @Autowired
-    RoleService roleService;
+    // TODO 注入失败
+    private RoleService roleService = new RoleService();
 
     private Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
     @Override
@@ -34,6 +31,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String role = name.split(CoreConfig.DELIMITER)[1];
         String password = authentication.getCredentials().toString();
         boolean result = false;
+        log.info("roleService "+roleService);
         // 查询登录
         switch (role){
             case "student" :

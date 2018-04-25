@@ -63,6 +63,7 @@ public class TokenAuthenticationService {
     public static Authentication getAuthentication(HttpServletRequest request) {
         // 从Header中拿到token
         String token = request.getHeader(HEADER_STRING);
+        System.out.println("收到 头 "+token);
 
         if (token != null) {
             // 解析 Token

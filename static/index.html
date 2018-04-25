@@ -11,7 +11,7 @@
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
     <script>
-      var random = sessionStorage.getItem('randomValue')
+      var random = sessionStorage.getItem('randomValue');
       if (random == null || random === '') {
         login('student')
       }
@@ -19,9 +19,49 @@
       //   console.log(data)
       // })
 
+        function testUse() {
+          $.get({
+            // method: 'POST',
+            url : host+'/users',
+            contentType: "application/json",
+            headers:{
+              'Authorization' : 'Mythos '+random
+            }
+          });
+          var xhr = new XMLHttpRequest();
+
+          xhr.onreadystatechange = function() {
+            if ( xhr.readyState === 4 ) {
+              if ( ( xhr.status >= 200 && xhr.status < 300 ) || xhr.status == 304 ) {
+                // 成功：处理 xhr.responseText
+              } else {
+                // 失败
+              }
+            }
+          };
+
+          xhr.open( 'POST', host+'/users', true );
+          xhr.setRequestHeader( 'Content-Type', 'application/json' );
+          xhr.setRequestHeader('Authorization', 'Mythos '+random);
+          xhr.send();
+
+          //
+          // var xhr = new XMLHttpRequest();
+          // xhr.onreadystatechange = function(){
+          //   if(xhr.readyState === XMLHttpRequest.DONE){
+          //     console.log('Result：', xhr.responseText);
+          //   }
+          // };
+          // //优先满足预请求，然后满足凭证请求，允许跨域。
+          // xhr.open('POST', host+'/users', true);
+          // xhr.withCredentials = true;
+          // xhr.setRequestHeader('Authorization', 'Mythos '+random);
+          // xhr.send();
+        }
     </script>
 </head>
 
 <body>
+<button  onclick="testUse()">测试</button>
 </body>
 </html>

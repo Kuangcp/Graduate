@@ -15,7 +15,7 @@ public class CorsConfig extends WebMvcConfigurationSupport {
 
     @Override
     protected void addCorsMappings(CorsRegistry registry) {
-        super.addCorsMappings(registry);
+//        super.addCorsMappings(registry);
         registry.addMapping("/**")
                 .allowedMethods("*")
                 .allowedOrigins("*")

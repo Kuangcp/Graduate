@@ -40,7 +40,7 @@ public class JwtLoginFilter extends AbstractAuthenticationProcessingFilter {
         // 设置跨域
         res.setHeader("Access-Control-Allow-Origin","*");
         AccountCredentials credentials = new ObjectMapper().readValue(req.getInputStream(), AccountCredentials.class);
-        log.info("收到登录请求参数 "+credentials.toString());
+        log.info("收到登录请求 "+credentials.toString());
 
         // 返回一个验证令牌
         return getAuthenticationManager().authenticate(new UsernamePasswordAuthenticationToken(
