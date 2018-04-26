@@ -36,6 +36,7 @@ public class Teacher implements Serializable, ExcelTransform,Role {
     private short secretary;
 
 
+    public Teacher(){}
     public Teacher(long teacherId){
         this.teacherId = teacherId;
     }

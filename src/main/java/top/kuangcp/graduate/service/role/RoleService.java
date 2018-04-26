@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.dao.role.AdminDao;
 import top.kuangcp.graduate.dao.role.StudentDao;
 import top.kuangcp.graduate.dao.role.TeacherDao;
+import top.kuangcp.graduate.domain.role.Admin;
+import top.kuangcp.graduate.domain.role.Student;
+import top.kuangcp.graduate.domain.role.Teacher;
 
 /**
  * Created by https://github.com/kuangcp
@@ -23,12 +26,18 @@ public class RoleService {
     AdminDao adminDao;
 
     public boolean loginWithStudent(String username, String password) {
-        return password.equals(studentDao.findByUsername(username).getPassword());
+        Student student = studentDao.findByUsername(username);
+        if(student == null) return false;
+        return password.equals(student.getPassword());
     }
     public boolean loginWithTeacher(String username, String password){
-        return password.equals(teacherDao.findByUsername(username).getPassword());
+        Teacher teacher = teacherDao.findByUsername(username);
+        if(teacher == null) return false;
+        return password.equals(teacher.getPassword());
     }
     public boolean loginWithAdmin(String username, String password){
-        return password.equals(adminDao.findByUsername(username).getPassword());
+        Admin admin = adminDao.findByUsername(username);
+        if(admin == null) return false;
+        return password.equals(admin.getPassword());
     }
 }

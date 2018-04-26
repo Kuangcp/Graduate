@@ -12,24 +12,19 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-cyan">
         <div class="layui-logo" style="color: #1E9FFF;font-size: 17px;">毕业设计管理系统-教师</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
-            <!--<li class="layui-nav-item"><a href="">课题管理</a></li>-->
+            <!--<li class="layui-nav-item"><a href="">控制台</a></li>-->
+            <!--<li class="layui-nav-item"><a href="">商品管理</a></li>-->
             <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
-            <li class="layui-nav-item">
-                <a href="javascript:;">课题管理</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-url="publish">编辑课题</a></dd>
-                    <dd><a href="javascript:;">提交审核</a></dd>
-                    <dd><a href="javascript:;">查看状态</a></dd>
-                    <dd><a href="javascript:;">授权管理</a></dd>
-                </dl>
-            </li>
+
             <li class="layui-nav-item">
                 <a href="javascript:;">其它系统</a>
                 <dl class="layui-nav-child">
                     <dd><a href="">邮件管理</a></dd>
                     <dd><a href="">消息管理</a></dd>
                     <dd><a href="">授权管理</a></dd>
+                    <dd><a href="student">学生</a></dd>
                     <dd><a href="/admin">管理员</a></dd>
                 </dl>
             </li>
@@ -54,18 +49,52 @@
                     <img src="/image/inspectocat.jpg" class="layui-nav-img"/>贤心
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-url="publish">基本资料</a></dd>
-                    <!--<dd><a href="">安全设置</a></dd>-->
-                    <dd><a href="javascript:;" onclick="logout()">注销登录</a></dd>
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                    <dd><a href="logout/teacher">注销登录</a></dd>
                 </dl>
             </li>
         </ul>
     </div>
+
+    <div class="layui-side layui-bg-cyan" style="width:130px;">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree layui-bg-cyan" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="type-title" href="javascript:;">课题管理</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-url="publish">发布课题</a></dd>
+                        <dd><a href="javascript:;" data-url="deal">课题管理</a></dd>
+                        <!--<dd><a href="javascript:;">查询成绩</a></dd>-->
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="type-title" href="javascript:;">开题答辩</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-url="deal">审批开题报告</a></dd>
+                        <dd><a href="javascript:;" data-url="deal">开题答辩评分</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a class="type-title" href="javascript:;">毕业答辩</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" data-url="deal">审批一辩论文</a></dd>
+                        <dd><a href="javascript:;" data-url="deal">审批二辩论文</a></dd>
+                        <dd><a href="javascript:;" data-url="deal">审批三辩论文</a></dd>
+                        <dd><a href="javascript:;" data-url="deal">最终答辩评分</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
     <div class="layui-body main-body main-body-teacher">
         <!-- 内容主体区域 -->
         <iframe src="/teacher/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
     </div>
     <div class="layui-footer footer-teacher">
+        <!-- 底部固定区域 -->
         © kuangcp.mythos
     </div>
 </div>
@@ -77,9 +106,9 @@
 <script src="/js/common/login.js"></script>
 <script src="/layui/layui.all.js"></script>
 <script>
-  // if(location.href.split(".htm").length>1){
-  //   window.location.href='/teacher'
-  // }
+    if(location.href.split(".htm").length>1){
+      window.location.href='/teacher'
+    }
   checkRole('teacher');
   home('teacher');
   // 实例化后台界面的组件

@@ -4,12 +4,12 @@
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
     <title>管理员子系统</title>
-    <link rel="stylesheet" href="layui/css/layui.css"/>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header">
-        <div class="layui-logo" style="color: #1E9FFF;font-size: 17px;">Myth毕业设计管理系统</div>
+        <div class="layui-logo" style="color: #1E9FFF;font-size: 17px;">管理员子系统</div>
         <!-- 头部区域（可配合layui已有的水平导航） -->
         <ul class="layui-nav layui-layout-left">
             <!--<li class="layui-nav-item"><a href="">控制台</a></li>-->
@@ -22,8 +22,8 @@
                     <dd><a href="">邮件管理</a></dd>
                     <dd><a href="">消息管理</a></dd>
                     <dd><a href="">授权管理</a></dd>
-                    <dd><a href="teacher">教师</a></dd>
-                    <dd><a href="student">学生</a></dd>
+                    <dd><a href="/teacher">教师</a></dd>
+                    <!--<dd><a href="student">学生</a></dd>-->
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -57,29 +57,20 @@
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">主要功能</a>
+                    <a class="" href="javascript:;">系统初始化</a>
                     <dl class="layui-nav-child">
                         <dd><a href="javascript:;">选择课题</a></dd>
                         <dd><a href="javascript:;">答辩进度</a></dd>
                         <dd><a href="javascript:;">查询成绩</a></dd>
+                        <dd><a href="javascript:;">专业负责人</a></dd>
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">开题答辩</a>
+                    <a href="javascript:;">报表统计</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">开题报告</a></dd>
-                        <dd><a href="javascript:;">开题答辩</a></dd>
+                        <dd><a href="javascript:;">答辩情况</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item layui-nav-itemed">
-                    <a href="javascript:;">毕业答辩</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">第一次答辩</a></dd>
-                        <dd><a href="javascript:;">第二次答辩</a></dd>
-                        <dd><a href="javascript:;">第三次答辩</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item"><a href="">发布商品</a></li>
             </ul>
         </div>
     </div>
@@ -94,7 +85,13 @@
         © layui.com - 底部固定区域
     </div>
 </div>
-<script src="layui/layui.all.js"></script>
+<script src="/js/jquery.min.js"></script>
+<!--<script src="/layui/layui.js"></script>-->
+<script src="/js/common/main-page.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
 <script>
     //JavaScript代码区域
     layui.use('element', function(){

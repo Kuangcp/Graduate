@@ -4,7 +4,6 @@
     /*color: #01AAED;*/
 
     font-size:20px;
-    font-family: "Courier New";
     /*padding-left: -10px;*/
     margin-left: -6px;
 
@@ -19,12 +18,12 @@
     margin-left: -88px;
 }
 .main-body-teacher{
-    margin-left: -72px;
+    margin-left: -200px;
 }
 .footer-student{
     margin-left: -86px;
     /*height:30px;*/
 }
 .footer-teacher{
-    margin-left: -70px;
+    margin-left: -200px;
 }

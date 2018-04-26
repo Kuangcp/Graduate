@@ -61,7 +61,11 @@ function login(role) {
     });
   });
 }
-
+function logout() {
+  sessionStorage.removeItem(mythos);
+  layer.msg('注销成功');
+  // window.location.reload()
+}
 /**
  * 处理Get请求
  * @param url /开头，自动填充域名
