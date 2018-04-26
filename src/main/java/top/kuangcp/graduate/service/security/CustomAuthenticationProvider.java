@@ -38,10 +38,13 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         // 查询登录
         switch (role){
             case "student" :
-                result = roleService.loginByStudent(username, password);
+                result = roleService.loginWithStudent(username, password);
                 break;
             case "teacher" :
-                result = roleService.loginByStudent(username, password);
+                result = roleService.loginWithTeacher(username, password);
+                break;
+            case "admin":
+                result = roleService.loginWithAdmin(username, password);
                 break;
             default:
                 break;

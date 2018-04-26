@@ -2,7 +2,7 @@ package top.kuangcp.graduate.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import top.kuangcp.graduate.dao.StudentDao;
+import top.kuangcp.graduate.dao.role.StudentDao;
 
 /**
  * Created by https://github.com/kuangcp

@@ -2,6 +2,7 @@ package top.kuangcp.graduate.domain.role;
 
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;
+import com.kuangcp.mythpoi.utils.base.ExcelSheet;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import java.io.Serializable;
  * @date 18-3-28  下午3:32
  */
 @Entity
+@ExcelSheet(importTitle = "学生表", exportTitle = "学生表")
 public class Student implements Serializable, ExcelTransform, Role {
     @Id
     @GeneratedValue
