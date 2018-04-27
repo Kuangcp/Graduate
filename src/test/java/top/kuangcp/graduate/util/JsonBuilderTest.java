@@ -40,7 +40,7 @@ public class JsonBuilderTest {
         Student student = new Student();
         student.setUsername("sdf");
         student.setPassword("sdf");
-        student.setStudentId(12);
+        student.setStudentId(12L);
         studentList.add(student);
         result = JsonBuilder.buildResult(null, null, studentList);
         System.out.println(result);
@@ -64,7 +64,7 @@ public class JsonBuilderTest {
         Student student = new Student();
         student.setUsername("sdf");
         student.setPassword("sdf");
-        student.setStudentId(12);
+        student.setStudentId(12L);
         Role result = mapper.readValue(mapper.writeValueAsString(student), Role.class);
         System.out.println(result.toString());
     }

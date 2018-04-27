@@ -3,6 +3,7 @@ package top.kuangcp.graduate.domain.role;
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;
 import com.kuangcp.mythpoi.utils.base.ExcelSheet;
+import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,7 @@ import java.io.Serializable;
  * @author kuangcp
  * @date 18-3-28  下午3:32
  */
+@Data
 @Entity
 @ExcelSheet(importTitle = "学生表", exportTitle = "学生表")
 public class Student implements Serializable, ExcelTransform {
@@ -32,74 +34,4 @@ public class Student implements Serializable, ExcelTransform {
     @ExcelConfig("届数")
     private Integer year;
     private String openId;
-
-
-    public long getStudentId() {
-        return studentId;
-    }
-
-    public void setStudentId(long studentId) {
-        this.studentId = studentId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getStudentNo() {
-        return studentNo;
-    }
-
-    public void setStudentNo(String studentNo) {
-        this.studentNo = studentNo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public int getYear() {
-        return year;
-    }
-
-    public void setYear(int year) {
-        this.year = year;
-    }
-
-    public String getOpenId() {
-        return openId;
-    }
-
-    public void setOpenId(String openId) {
-        this.openId = openId;
-    }
-
-    @Override
-    public String toString() {
-        return "Student{" +
-                "studentId=" + studentId +
-                ", username='" + username + '\'' +
-                ", studentNo='" + studentNo + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", year=" + year +
-                ", openId='" + openId + '\'' +
-                '}';
-    }
 }

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: release # 配置文件切换
+    active: dev # 配置文件切换
   jpa:
     show-sql: true
     hibernate:

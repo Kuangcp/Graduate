@@ -3,6 +3,7 @@ package top.kuangcp.graduate.domain.role;
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;
 import com.kuangcp.mythpoi.utils.base.ExcelSheet;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -13,9 +14,10 @@ import java.io.Serializable;
  * @author kuangcp
  * @date 18-4-22  下午5:18
  */
+@Data
 @Entity
 @ExcelSheet(importTitle = "教师表", exportTitle = "教师表")
-public class Teacher implements Serializable, ExcelTransform,Role {
+public class Teacher implements Serializable, ExcelTransform {
     @Id
     @GeneratedValue
 
@@ -41,70 +43,6 @@ public class Teacher implements Serializable, ExcelTransform,Role {
     public Teacher(){}
     public Teacher(long teacherId){
         this.teacherId = teacherId;
-    }
-
-    public long getTeacherId() {
-        return teacherId;
-    }
-
-    public void setTeacherId(long teacherId) {
-        this.teacherId = teacherId;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getWeixinId() {
-        return weixinId;
-    }
-
-    public void setWeixinId(String weixinId) {
-        this.weixinId = weixinId;
-    }
-
-    public short getAmount() {
-        return amount;
-    }
-
-    public void setAmount(short amount) {
-        this.amount = amount;
-    }
-
-    public short getSecretary() {
-        return secretary;
-    }
-
-    public void setSecretary(short secretary) {
-        this.secretary = secretary;
-    }
-
-    public String getTeacherNo() {
-        return teacherNo;
-    }
-
-    public void setTeacherNo(String teacherNo) {
-        this.teacherNo = teacherNo;
     }
 }
 

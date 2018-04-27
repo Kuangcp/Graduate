@@ -1,7 +1,6 @@
 package top.kuangcp.graduate.service.security;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -19,13 +18,12 @@ import java.util.ArrayList;
  * @author kcp
  * 自定义身份认证验证组件
  */
+@Log4j2
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
     @Autowired
     private RoleService roleService;
-
-    private Logger log = LoggerFactory.getLogger(CustomAuthenticationProvider.class);
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取认证的用户名 & 密码
