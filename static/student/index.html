@@ -11,42 +11,43 @@
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
     <style>
-        body{
+        body {
             width: 100%;
         }
-        .one-tab{
+
+        .one-tab {
             width: 23%;
-            /*padding-top: 25px;*/
         }
-        .one-tab-i{
-            /*height: 100px;*/
-            font-size: 50px;
+
+        .one-tab-i {
+            font-size: 120px;
             color: #1E9FFF;
-
         }
-        .footer-title{
-            width: 100%;
-            height: 50px;
-            /*padding-top: 25px;*/
-            position: fixed;
-            bottom:2px;
-            left: 0px;
 
+        .footer-title {
+            border: none;
+            width: 100%;
+            height: 120px;
+            position: fixed;
+            bottom: 2px;
+            left: 0;
         }
     </style>
-<style>
-</style>
+    <style>
+    </style>
 </head>
 <body>
-<div class="layui-tab layui-tab-card" lay-filter="docDemoTabBrief" >
+<div class="layui-tab layui-tab-card">
     <ul class="layui-tab-title footer-title">
-        <li class="one-tab"><i class="layui-icon one-tab-i">&#xe705;</i></li>
-        <li class="one-tab"><i class="layui-icon one-tab-i">&#xe756;</i></li>
-        <li class="one-tab"><i class="layui-icon one-tab-i">&#xe60b;</i></li>
-        <li class="one-tab"><i class="layui-icon one-tab-i">&#xe612;</i></li>
+        <li class="layui-this one-tab" style="line-height: inherit;"><i class="layui-icon one-tab-i">&#xe705;</i></li>
+        <li class="one-tab" style="line-height: inherit"><i class="layui-icon one-tab-i">&#xe756;</i></li>
+        <li class="one-tab" style="line-height: inherit"><i class="layui-icon one-tab-i">&#xe60b;</i></li>
+        <li class="one-tab" style="line-height: inherit"><i class="layui-icon one-tab-i">&#xe612;</i></li>
     </ul>
     <div class="layui-tab-content">
-        <div class="layui-tab-item layui-show">内容1</div>
+        <div class="layui-tab-item layui-show">
+            内容1
+        </div>
         <div class="layui-tab-item">内容2</div>
         <div class="layui-tab-item">内容3</div>
         <div class="layui-tab-item">内容4</div>
@@ -55,7 +56,7 @@
 </div>
 <script>
   //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
-  layui.use('element', function(){
+  layui.use('element', function () {
     var element = layui.element;
 
     //…
