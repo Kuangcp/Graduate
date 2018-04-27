@@ -12,19 +12,31 @@
     <script src="/layui/layui.all.js"></script>
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
+    <style>
+        body{
+            width: 100%;
+        }
+        .one-tab{
+            width: 23%;
+        }
+        .footer-title{
+            width: 100%;
+            position: fixed;
+            bottom:0px;
+            left: 0px;
+        }
+    </style>
 <style>
-
-
 </style>
 </head>
 <body>
 <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-    <ul class="layui-tab-title">
-        <li class="layui-this">网站设置</li>
-        <li><i class="layui-icon" style="font-size: 30px; color: #1E9FFF;">&#xe60c;</i> </li>
-        <li>权限分配</li>
-        <li>商品管理</li>
-        <li>订单管理</li>
+    <ul class="layui-tab-title footer-title">
+        <!--<li class="layui-this one-tab">网站设置</li>-->
+        <li class="layui-this  one-tab"><i class="layui-icon" style="font-size: 30px; color: #1E9FFF;">&#xe705;</i></li>
+        <li class="one-tab"><i class="layui-icon " style="font-size: 30px; color: #1E9FFF;">&#xe756;</i></li>
+        <li class="one-tab"><i class="layui-icon " style="font-size: 30px; color: #1E9FFF;">&#xe60b;</i></li>
+        <li class="one-tab"><i class="layui-icon " style="font-size: 30px; color: #1E9FFF;">&#xe612;</i></li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">内容1</div>
@@ -34,24 +46,6 @@
         <div class="layui-tab-item">内容5</div>
     </div>
 </div>
-
-<!--<div class="layui-tab">-->
-    <!--<ul class="layui-tab-title">-->
-        <!--<li class="layui-this">网站设置</li>-->
-        <!--<li>用户管理</li>-->
-        <!--<li>权限分配</li>-->
-        <!--<li>商品管理</li>-->
-        <!--<li>订单管理</li>-->
-    <!--</ul>-->
-    <!--<div class="layui-tab-content">-->
-        <!--<div class="layui-tab-item layui-show">内容1</div>-->
-        <!--<div class="layui-tab-item">内容2</div>-->
-        <!--<div class="layui-tab-item">内容3</div>-->
-        <!--<div class="layui-tab-item">内容4</div>-->
-        <!--<div class="layui-tab-item">内容5</div>-->
-    <!--</div>-->
-<!--</div>-->
-
 <script>
   //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
   layui.use('element', function(){
