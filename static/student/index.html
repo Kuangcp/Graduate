@@ -6,55 +6,60 @@
     <link rel="stylesheet" href="/layui/css/layui.css"/>
     <!--<link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>-->
     <script src="/js/jquery.min.js"></script>
-    <!--<script src="/layui/layui.js"></script>-->
+
     <script src="/js/common/main-page.js"></script>
     <script src="/layui/lay/modules/layer.js"></script>
+    <script src="/layui/layui.all.js"></script>
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
 <style>
-    main{
-        width: 100%;
-        height: 2000px;
-    }
-    .foot{
-        width:100%;
-        position: fixed;
-        bottom:0px;
-        left: 0px;
-        background-color: #FAFAFA;
-        padding-bottom: 10px;
-        padding-top: 10px;
-    }
-    .foot-button{
-        height: 50px;
-        width: 16%;
-        text-align: center;
-        float: left;
-        border-radius: 16px;
-    }
-    .foot-button-align{
-        margin-right: 11%;
-    }
+
 
 </style>
 </head>
 <body>
-<main class="main">
-
-</main>
-<div class="layui-row layui-col-space10 foot">
-    <span class="foot-button foot-button-align">
-        <img src="/image/student/profile.png" width="70%"/>
-    </span>
-    <span class=" foot-button foot-button-align">
-        <img />
-    </span>
-    <span class="foot-button foot-button-align">
-        <img />
-    </span>
-    <span class="foot-button">
-        <img />
-    </span>
+<div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+    <ul class="layui-tab-title">
+        <li class="layui-this">网站设置</li>
+        <li><i class="layui-icon" style="font-size: 30px; color: #1E9FFF;">&#xe60c;</i> </li>
+        <li>权限分配</li>
+        <li>商品管理</li>
+        <li>订单管理</li>
+    </ul>
+    <div class="layui-tab-content">
+        <div class="layui-tab-item layui-show">内容1</div>
+        <div class="layui-tab-item">内容2</div>
+        <div class="layui-tab-item">内容3</div>
+        <div class="layui-tab-item">内容4</div>
+        <div class="layui-tab-item">内容5</div>
+    </div>
 </div>
+
+<!--<div class="layui-tab">-->
+    <!--<ul class="layui-tab-title">-->
+        <!--<li class="layui-this">网站设置</li>-->
+        <!--<li>用户管理</li>-->
+        <!--<li>权限分配</li>-->
+        <!--<li>商品管理</li>-->
+        <!--<li>订单管理</li>-->
+    <!--</ul>-->
+    <!--<div class="layui-tab-content">-->
+        <!--<div class="layui-tab-item layui-show">内容1</div>-->
+        <!--<div class="layui-tab-item">内容2</div>-->
+        <!--<div class="layui-tab-item">内容3</div>-->
+        <!--<div class="layui-tab-item">内容4</div>-->
+        <!--<div class="layui-tab-item">内容5</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<script>
+  //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
+  layui.use('element', function(){
+    var element = layui.element;
+
+    //…
+  });
+</script>
+
 </body>
 </html>
