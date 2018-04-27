@@ -1,2 +1,2 @@
-var host = 'http://reply.kcp';
+var host = '/api';
 var mythos = 'randomValue';

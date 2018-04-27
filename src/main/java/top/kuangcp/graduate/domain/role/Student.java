@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 @Entity
 @ExcelSheet(importTitle = "学生表", exportTitle = "学生表")
-public class Student implements Serializable, ExcelTransform, Role {
+public class Student implements Serializable, ExcelTransform {
     @Id
     @GeneratedValue
     private Long studentId;
@@ -42,7 +42,6 @@ public class Student implements Serializable, ExcelTransform, Role {
         this.studentId = studentId;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -59,7 +58,6 @@ public class Student implements Serializable, ExcelTransform, Role {
         this.studentNo = studentNo;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }

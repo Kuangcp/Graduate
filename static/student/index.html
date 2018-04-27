@@ -7,23 +7,28 @@
     <script src="/js/jquery.min.js"></script>
     <script src="/js/common/main-page.js"></script>
     <script src="/layui/lay/modules/layer.js"></script>
-    <script src="/layui/layui.all.js"></script>
+    <script src="/layui/layui.js"></script>
     <script src="/js/config/server.js"></script>
     <script src="/js/common/login.js"></script>
     <style>
-        body {
-            width: 100%;
-        }
+        /*body, html, div, p, a, li, ul, h2{*/
+            /*font-size: 30px;*/
+        /*}*/
+        /*body {*/
+            /*width: 100%;*/
 
+        /*}*/
         .one-tab {
-            width: 23%;
+            width: 16%;
         }
 
         .one-tab-i {
-            font-size: 120px;
+            font-size: 70px;
             color: #1E9FFF;
         }
-
+        .search-bar{
+            height: 30px;
+        }
         .footer-title {
             border: none;
             width: 100%;
@@ -37,16 +42,35 @@
     </style>
 </head>
 <body>
-<div class="layui-tab layui-tab-card">
-    <ul class="layui-tab-title footer-title">
+<!--选题， 答辩，反馈， 个人信息-->
+<div class="layui-tab">
+    <ul class=" footer-title">
         <li class="layui-this one-tab" style="line-height: inherit;"><i class="layui-icon one-tab-i">&#xe705;</i></li>
         <li class="one-tab" style="line-height: inherit"><i class="layui-icon one-tab-i">&#xe756;</i></li>
         <li class="one-tab" style="line-height: inherit"><i class="layui-icon one-tab-i">&#xe60b;</i></li>
         <li class="one-tab" style="line-height: inherit"><i class="layui-icon one-tab-i">&#xe612;</i></li>
+        <li class="one-tab" style="line-height: inherit"><a href=""><i class="layui-icon one-tab-i">&#xe612;</i></a></li>
     </ul>
     <div class="layui-tab-content">
         <div class="layui-tab-item layui-show">
-            内容1
+            <h1>选题</h1>
+            <input name="searchTopic" type="text" placeholder="搜索课题" class="layui-input search-bar"/>
+            <div>
+                <div class="layui-collapse">
+                    <div class="layui-colla-item">
+                        <h1 class="layui-colla-title">杜甫</h1>
+                        <div class="layui-colla-content"></div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">李清照</h2>
+                        <div class="layui-colla-content">内容区域</div>
+                    </div>
+                    <div class="layui-colla-item">
+                        <h2 class="layui-colla-title">鲁迅</h2>
+                        <div class="layui-colla-content layui-show">内容区域</div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="layui-tab-item">内容2</div>
         <div class="layui-tab-item">内容3</div>
@@ -54,14 +78,12 @@
         <div class="layui-tab-item">内容5</div>
     </div>
 </div>
+
 <script>
   //注意：选项卡 依赖 element 模块，否则无法进行功能性操作
   layui.use('element', function () {
     var element = layui.element;
-
-    //…
   });
 </script>
-
 </body>
 </html>

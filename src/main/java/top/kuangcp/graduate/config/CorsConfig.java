@@ -16,7 +16,7 @@ public class CorsConfig extends WebMvcConfigurationSupport {
     @Override
     protected void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedMethods("*")
+                .allowedMethods("http://view.kcp")
                 .allowedOrigins("*")
                 .allowedHeaders("*");
     }

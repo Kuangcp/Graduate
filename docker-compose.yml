@@ -1,0 +1,10 @@
+nginx: 
+	image: nginx:alpine
+
+boot: 
+	image: com.github.kuangcp/graduate
+	
+db: 
+	image: postgres:9.6-alpine
+	ports:
+		- "5432:5432"

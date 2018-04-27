@@ -65,7 +65,7 @@
         <!-- 内容主体区域 -->
         <iframe src="/teacher/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
     </div>
-    <div class="layui-footer footer-teacher">
+    <div class="layui-footer footer-teacher" onclick="getall()">
         © kuangcp.mythos
     </div>
 </div>
@@ -86,5 +86,14 @@
   layui.use('element', function () {
     var element = layui.element;
   });
+  function getall() {
+    handlerGet('/rest/teacher/', 'teacher', function (data) {
+      console.log(JSON.stringify(data))
+
+    }, function (data) {
+      // console.log(data)
+      console.log(data.statusText)
+    })
+  }
 </script>
 </html>

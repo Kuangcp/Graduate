@@ -26,12 +26,12 @@ public class RoleService {
     AdminDao adminDao;
 
     public boolean loginWithStudent(String username, String password) {
-        Student student = studentDao.findByUsername(username);
+        Student student = studentDao.findByStudentNo(username);
         if(student == null) return false;
         return password.equals(student.getPassword());
     }
     public boolean loginWithTeacher(String username, String password){
-        Teacher teacher = teacherDao.findByUsername(username);
+        Teacher teacher = teacherDao.findByTeacherNo(username);
         if(teacher == null) return false;
         return password.equals(teacher.getPassword());
     }

@@ -7,6 +7,7 @@ buildscript {
     }
     dependencies {
         classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+        classpath('se.transmode.gradle:gradle-docker:1.2')
     }
 }
 
@@ -15,9 +16,10 @@ apply plugin: 'idea'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 apply plugin: 'war'
+apply plugin: 'docker'
 
 group = 'com.github.kuangcp'
-version = '0.0.1-SNAPSHOT'
+version = '0.1.0'
 sourceCompatibility = 1.8
 
 repositories {
@@ -51,6 +53,7 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
 	compile('org.springframework.boot:spring-boot-starter-websocket')
+    compile('org.springframework.boot:spring-boot-starter-data-rest')
 //	compile('org.mybatis.spring.boot:mybatis-spring-boot-starter:1.3.2')
 	runtime('org.springframework.boot:spring-boot-devtools')
 //	runtime('mysql:mysql-connector-java')
@@ -64,4 +67,19 @@ dependencies {
 //    compile("org.projectlombok:lombok:1.16.20")
 //	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+task buildDocker(type: Docker, dependsOn: build) {
+    // 跳过测试
+    test.enabled=false
+    //设置自动上传的话，命名就不能乱取了，仓库名/镜像名：tag
+//    push = true
+    applicationName = jar.baseName
+    dockerfile = file('src/main/docker/Dockerfile')
+    doFirst {
+        copy {
+            from war
+            into stageDir
+        }
+    }
 }

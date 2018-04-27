@@ -17,7 +17,7 @@ import java.io.Serializable;
  */
 @Entity
 @ExcelSheet(importTitle = "管理员表", exportTitle = "管理员表")
-public class Admin implements Serializable, ExcelTransform,Role {
+public class Admin implements Serializable, ExcelTransform {
     @Id
     @GeneratedValue
     private long adminId;
@@ -35,7 +35,6 @@ public class Admin implements Serializable, ExcelTransform,Role {
         this.adminId = adminId;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -44,7 +43,6 @@ public class Admin implements Serializable, ExcelTransform,Role {
         this.username = username;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }

@@ -19,3 +19,11 @@
 
 ### 技术选型
 - 数据的操作框架 还是用JPA么，还是使用Mybatis结合插件进行开发（性能问题，还是说又是因为关联问题导致的JSON化产生的冗余）
+
+
+springboot+postgresql+docker实例
+https://segmentfault.com/a/1190000005172960
+
+
+SpringBoot集成mybatis
+https://segmentfault.com/a/1190000004275305?_ea=556953

@@ -47,9 +47,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/hello").hasAuthority("AUTH_WRITE")
             // 角色检查
             .antMatchers("/world").hasRole("STUDENT")
-            .antMatchers("/student/**").hasRole("STUDENT")
-            .antMatchers("/teacher/**").hasRole("TEACHER")
-            .antMatchers("/admin/**").hasRole("ADMIN")
+            .antMatchers("**/student/**").hasRole("STUDENT")
+            .antMatchers("**/teacher/**").hasRole("TEACHER")
+            .antMatchers("**/admin/**").hasRole("ADMIN")
 
             // 对Rest请求需要身份认证, 放行OPTIONS
             .antMatchers(HttpMethod.POST).authenticated()

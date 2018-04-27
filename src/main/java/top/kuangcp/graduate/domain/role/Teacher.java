@@ -18,10 +18,12 @@ import java.io.Serializable;
 public class Teacher implements Serializable, ExcelTransform,Role {
     @Id
     @GeneratedValue
-    @ExcelConfig("教师工号")
+
     private long teacherId;
     @ExcelConfig("姓名")
     private String username;
+    @ExcelConfig("教师工号")
+    private String teacherNo;
     @ExcelConfig("密码")
     private String password;
     @ExcelConfig("邮箱")
@@ -49,7 +51,6 @@ public class Teacher implements Serializable, ExcelTransform,Role {
         this.teacherId = teacherId;
     }
 
-    @Override
     public String getUsername() {
         return username;
     }
@@ -58,7 +59,6 @@ public class Teacher implements Serializable, ExcelTransform,Role {
         this.username = username;
     }
 
-    @Override
     public String getPassword() {
         return password;
     }
@@ -97,6 +97,14 @@ public class Teacher implements Serializable, ExcelTransform,Role {
 
     public void setSecretary(short secretary) {
         this.secretary = secretary;
+    }
+
+    public String getTeacherNo() {
+        return teacherNo;
+    }
+
+    public void setTeacherNo(String teacherNo) {
+        this.teacherNo = teacherNo;
     }
 }
 
