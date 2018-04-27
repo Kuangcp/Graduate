@@ -1,11 +1,19 @@
-# 正式运行的配置文件
+## 正式运行的配置文件
+#spring:
+#  datasource:
+#    driver-class-name: com.mysql.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
+#    username: myth
+#    password: ad
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+
+# docker run --name web --link postgre:db -p 5678:8889 -it com.github.kuangcp/graduate:0.1.0
 spring:
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
-    username: myth
-    password: ad
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://db:5432/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
+    username: postgres
+    password: jiushi

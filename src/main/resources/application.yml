@@ -1,6 +1,16 @@
 spring:
   profiles:
-    active: dev # 配置文件切换
+    active: release # 配置文件切换
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  data:
+    rest:
+      base-path: /rest
+server:
+  servlet:
+    context-path: /api
 
 # 服务器配置
 server:
