@@ -75,8 +75,8 @@ function logout() {
  */
 function handlerGet(url, role, success, fail) {
   checkRoleThen(role, function (random) {
-    var request = $.ajax({
-      method: 'GET',
+    var request = $.get({
+      // method: 'GET',
       url : host+''+url,
       contentType: "application/json",
       headers:{
@@ -86,4 +86,43 @@ function handlerGet(url, role, success, fail) {
     request.done(success);
     request.fail(fail);
   });
+}
+function handlerPost(url, role, sendData, success, fail) {
+  checkRoleThen(role, function (random) {
+    var request = $.post({
+      // method: 'POST',
+      url : host+''+url,
+      contentType: "application/json",
+      headers:{
+        'Authorization' : 'Mythos '+random
+      },
+      data: sendData
+    });
+    request.done(success);
+    request.fail(fail);
+  });
+}
+
+/**
+ * @param url 自动添加 host/api/rest 前缀
+ * @param role 身份 student teacher admin
+ */
+function restGet(url, role, success, fail) {
+  handlerGet('/rest'+url, role, success,fail)
+}
+
+/**
+ * @param url 自动添加 host/api/rest/student 前缀
+ */
+function getStudent(url, success, fail) {
+  restGet('/student'+url, 'student', success,fail)
+}
+
+/**
+ * @param url 自动添加 host/api/rest/teacher 前缀
+ * @param success 成功回调函数 optional
+ * @param fail 失败回调函数 optional
+ */
+function getTeacher(url, success, fail) {
+  restGet('/teacher'+url, 'teacher', success,fail)
 }

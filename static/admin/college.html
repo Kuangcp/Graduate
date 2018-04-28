@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+</head>
+<body>
+
+<table id="demo" lay-filter="test"></table>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  layui.use('table', function(){
+    var table = layui.table;
+
+    //第一个实例
+    table.render({
+      elem: '#demo'
+      ,height: 315
+      ,url: host+'/rest/college' //数据接口
+      ,page: true //开启分页
+      ,cols: [[ //表头
+        {field: 'id', title: 'ID', width:80, sort: true, fixed: 'left'}
+        ,{field: 'username', title: '用户名', width:80}
+        ,{field: 'sex', title: '性别', width:80, sort: true}
+        ,{field: 'city', title: '城市', width:80}
+        ,{field: 'sign', title: '签名', width: 177}
+        ,{field: 'experience', title: '积分', width: 80, sort: true}
+        ,{field: 'score', title: '评分', width: 80, sort: true}
+        ,{field: 'classify', title: '职业', width: 80}
+        ,{field: 'wealth', title: '财富', width: 135, sort: true}
+      ]]
+    });
+  });
+</script>
+</body>
+</html>

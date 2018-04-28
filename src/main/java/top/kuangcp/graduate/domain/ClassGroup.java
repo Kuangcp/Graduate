@@ -3,7 +3,9 @@ package top.kuangcp.graduate.domain;
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;
 import com.kuangcp.mythpoi.utils.base.ExcelSheet;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -15,11 +17,13 @@ import java.io.Serializable;
  */
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @ExcelSheet(importTitle = "班级表", exportTitle = "班级表")
 public class ClassGroup implements Serializable, ExcelTransform{
     @Id
     @GeneratedValue
-    private long groupId;
+    private Long groupId;
     @ExcelConfig("名称")
     private String name;
 }

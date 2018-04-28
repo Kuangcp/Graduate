@@ -3,7 +3,9 @@ package top.kuangcp.graduate.domain;
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;
 import com.kuangcp.mythpoi.utils.base.ExcelSheet;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -17,6 +19,8 @@ import java.io.Serializable;
  */
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @ExcelSheet(importTitle = "专业表", exportTitle = "专业表")
 public class Major implements Serializable, ExcelTransform{
     @Id

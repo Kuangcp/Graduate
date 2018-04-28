@@ -17,3 +17,6 @@ spring:
     url: jdbc:postgresql://db:5432/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: postgres
     password: jiushi
+  jpa:
+    hibernate:
+      ddl-auto: update

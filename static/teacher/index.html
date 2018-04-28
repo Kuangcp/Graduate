@@ -87,13 +87,18 @@
     var element = layui.element;
   });
   function getall() {
-    handlerGet('/rest/teacher/', 'teacher', function (data) {
+    // handlerGet('/rest/teacher/', 'teacher', function (data) {
+    //   console.log(JSON.stringify(data))
+    //
+    // }, function (data) {
+    //   // console.log(data)
+    //   console.log(data.statusText)
+    // })
+    getTeacher('/', function (data) {
       console.log(JSON.stringify(data))
-
-    }, function (data) {
-      // console.log(data)
-      console.log(data.statusText)
     })
   }
+
+
 </script>
 </html>

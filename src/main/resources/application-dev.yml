@@ -10,3 +10,9 @@ spring:
     url: jdbc:postgresql://127.0.0.1:5432/graduate?useUnicode=true&characterEncoding=utf-8&useSSL=false
     username: postgres
     password: jiushi
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+#    database-platform: org.hibernate.dialect.PostgreSQLDialect
+

@@ -1,10 +1,15 @@
-nginx: 
-	image: nginx:alpine
-
-boot: 
-	image: com.github.kuangcp/graduate
-	
-db: 
-	image: postgres:9.6-alpine
-	ports:
-		- "5432:5432"
+# TODO 数据库不能create，启动失败
+version: '2'
+services:
+  postgres:
+    image: postgres:9.6-alpine
+    environment:
+      POSTGRES_PASSWORD: jiushi
+#    ports:
+#      - "5433:5432"
+  boot:
+    image: com.github.kuangcp/graduate:0.1.1
+    links:
+      - postgres:db
+#  nginx:
+#    image: nginx:alpine

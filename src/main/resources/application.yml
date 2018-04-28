@@ -3,13 +3,9 @@ spring:
   # 配置文件切换
     active: dev
 #    active: docker
-  jpa:
-    show-sql: true
-    hibernate:
-      ddl-auto: update
   data:
     rest:
-      base-path: /rest
+      base-path: /api/rest
 server:
   servlet:
     context-path: /api
