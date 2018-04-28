@@ -34,6 +34,7 @@ repositories {
 
 configurations {
     providedRuntime
+//    compile.exclude module: "spring-boot-starter-tomcat"
 }
 buildDir = 'out'
 bootRun {
@@ -47,15 +48,15 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-data-rest')
 	runtime('org.springframework.boot:spring-boot-devtools')
     testCompile('org.springframework.boot:spring-boot-starter-test')
+//    compile('org.springframework.boot:spring-boot-starter-jetty')
 
     compile('com.github.kuangcp:myth-poi:0.2.3-SNAPSHOT')
-
     compile('io.jsonwebtoken:jjwt:0.9.0')
-    runtime('org.postgresql:postgresql:42.2.2')
     //	runtime('mysql:mysql-connector-java')
-//	runtime('org.postgresql:postgresql')
+	runtime('org.postgresql:postgresql')
     compileOnly('org.projectlombok:lombok')
 }
+
 task buildDocker(type: Docker, dependsOn: build) {
     group='ci'
     // 跳过测试
@@ -70,5 +71,4 @@ task buildDocker(type: Docker, dependsOn: build) {
             into stageDir
         }
     }
-
 }

@@ -1,5 +1,6 @@
 package top.kuangcp.graduate.config;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -19,6 +20,7 @@ import top.kuangcp.graduate.service.security.CustomAuthenticationProvider;
  * @author kuangcp
  * @date 18-3-28  上午9:29
  */
+@Log4j2
 @Configuration
 @EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {

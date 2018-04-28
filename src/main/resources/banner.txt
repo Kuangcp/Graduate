@@ -5,4 +5,4 @@
    ▉ ▉        ▉          ▉
    ▉  ▉       ▉▉▉▉       ▉
 
-Kuangcp | SpringBoot-2.0.0.RELEASE
+Kuangcp | SpringBoot-2.0.1.RELEASE
