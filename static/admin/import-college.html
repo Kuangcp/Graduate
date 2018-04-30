@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+<body class="main-body-admin">
+<nav style="margin-top: 10px;">
+    <button class="layui-btn">导入</button>
+    <button class="layui-btn" onclick="add()">新增</button>
+    <button class="layui-btn" onclick="edit()">编辑</button>
+    <button class="layui-btn layui-btn-danger" onclick="deleteRow()">删除</button>
+    <input class="layui-input-inline"/>
+    <button class="layui-btn layui-btn-normal">搜索</button>
+</nav>
+<table id="college" lay-filter="test"></table>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  var table;
+  layui.use('table', function () {
+    table = layui.table;
+    //第一个实例
+    table.render({
+      elem: '#college'
+      , height: 315
+      , url: host + '/rest/college/listAll' //数据接口
+      , page: true //开启分页
+      // , limits: [1, 3, 5]
+      , cols: [[ //表头
+        {checkbox: true}
+        , {field: 'collegeId', title: 'ID', width: 160, sort: true}
+        , {field: 'name', title: '学院名', width: 280}
+      ]]
+    });
+  });
+
+  function deleteRow() {
+    var checkStatus = table.checkStatus('college');
+    // console.log(checkStatus);
+    layer.confirm('确认删除这些数据', {icon: 3, title:'提示'}, function(index){
+      // layer.msg(121);
+      var idList='';
+      checkStatus.data.forEach(function (item) {
+        // console.log(item.name);
+        // console.log(item.collegeId);
+        idList+=item.collegeId+delimiter_num;
+      });
+      handlerDelete('/rest/college/delete', 'admin', idList, function (data) {
+        console.log('success  '+data);
+        console.log('code   '+ data.code);
+        if(data.code === "0" ){
+          layer.msg("删除成功");
+          reloadAll()
+        }
+      },function (data) {
+        console.log(data)
+      });
+      layer.close(index);
+    });
+
+  }
+
+  function reloadAll() {
+    layui.use('table', function () {
+      var table = layui.table;
+      table.reload('college', {
+        url: host + '/rest/college/listAll'
+      });
+    })
+  }
+
+
+  function edit() {
+    $('#name').attr('value', '899');
+    var content = $('#editData').html();
+    tips(content);
+  }
+  function add() {
+    var content = $('#editData').html();
+    tips(content);
+  }
+  function tips(content) {
+    layer.open({
+      title: '新增数据'
+      , content: content
+      , btnAlign: 'c'
+      , resize: true
+      , area: ['300px', '200px']
+      , btn: ['确认新增', '取消']
+      , yes: function (index, layero) {
+        layer.msg('配置保存成功')
+      },
+      cancel: function () {
+      }
+    });
+  }
+</script>
+<script id="editData" type="text/html">
+    <div class="inputArea" data-uuid="#####" id="Tips">
+        <label for="name">学院名</label>
+        <input name="name" type="text" id="name" value="" required/>
+    </div>
+</script>
+</body>
+</html>

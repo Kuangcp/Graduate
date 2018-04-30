@@ -82,6 +82,11 @@
   // }
   checkRole('teacher');
   home('teacher');
+  $(function () {
+    $("[data-url]").on('click', function () {
+      turn('teacher', $(this).data('url'))
+    });
+  });
   // 实例化后台界面的组件
   layui.use('element', function () {
     var element = layui.element;

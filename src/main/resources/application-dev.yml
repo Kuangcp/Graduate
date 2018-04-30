@@ -14,5 +14,8 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: update
+server:
+  servlet:
+    context-path: /api
+  port: 8889
 #    database-platform: org.hibernate.dialect.PostgreSQLDialect
-

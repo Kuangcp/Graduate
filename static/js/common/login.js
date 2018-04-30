@@ -75,7 +75,7 @@ function logout() {
  */
 function handlerGet(url, role, success, fail) {
   checkRoleThen(role, function (random) {
-    var request = $.get({
+    var request = $.ajax({
       // method: 'GET',
       url : host+''+url,
       contentType: "application/json",
@@ -90,7 +90,6 @@ function handlerGet(url, role, success, fail) {
 function handlerPost(url, role, sendData, success, fail) {
   checkRoleThen(role, function (random) {
     var request = $.post({
-      // method: 'POST',
       url : host+''+url,
       contentType: "application/json",
       headers:{
@@ -102,7 +101,21 @@ function handlerPost(url, role, sendData, success, fail) {
     request.fail(fail);
   });
 }
-
+function handlerDelete(url, role, sendData, success, fail) {
+  checkRoleThen(role, function (random) {
+    var request = $.ajax({
+      method: 'DELETE',
+      url : host+''+url,
+      contentType: "application/json",
+      headers:{
+        'Authorization' : 'Mythos '+random
+      },
+      data: sendData
+    });
+    request.done(success);
+    request.fail(fail);
+  });
+}
 /**
  * @param url 自动添加 host/api/rest 前缀
  * @param role 身份 student teacher admin

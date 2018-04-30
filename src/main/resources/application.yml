@@ -3,14 +3,6 @@ spring:
   # 配置文件切换
     active: dev
 #    active: docker
-  data:
-    rest:
-      base-path: /api/rest
-server:
-  servlet:
-    context-path: /api
 
-# 服务器配置
-server:
-  port: 8889
+
 

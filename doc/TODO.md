@@ -87,7 +87,7 @@ https://segmentfault.com/a/1190000004275305?_ea=556953
       , limits: [16, 32, 48]
       , skin: 'nob'
       , url: '/mysql/target/all' //数据接口
-      , page: true //开启分页
+      , page: true //开启分页   
       , cols: [[ //表头
         {field: 'host', title: '主机', width: 160, sort: true}
         , {field: 'port', title: '端口', width: 120, sort: true}

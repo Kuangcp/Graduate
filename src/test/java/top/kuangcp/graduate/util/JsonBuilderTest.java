@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
+import top.kuangcp.graduate.config.custom.CoreConfig;
 import top.kuangcp.graduate.domain.role.Role;
 import top.kuangcp.graduate.domain.role.Student;
 
@@ -67,5 +68,13 @@ public class JsonBuilderTest {
         student.setStudentId(12L);
         Role result = mapper.readValue(mapper.writeValueAsString(student), Role.class);
         System.out.println(result.toString());
+    }
+
+    @Test
+    public void testSplit(){
+        String [] list = "3N4N5N".split(CoreConfig.DELIMITER_NUM);
+        for(String a : list){
+            System.out.println("<<"+a);
+        }
     }
 }

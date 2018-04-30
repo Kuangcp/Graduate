@@ -21,7 +21,6 @@ apply plugin: 'docker'
 group = 'com.github.kuangcp'
 version = '0.1.2'
 sourceCompatibility = 1.8
-
 repositories {
     maven {
         url="http://maven.aliyun.com/nexus/content/groups/public/"
@@ -34,7 +33,6 @@ repositories {
 
 configurations {
     providedRuntime
-//    compile.exclude module: "spring-boot-starter-tomcat"
 }
 buildDir = 'out'
 bootRun {
@@ -45,24 +43,21 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
     compile('org.springframework.boot:spring-boot-starter-security')
     compile('org.springframework.boot:spring-boot-starter-web')
-//    compile('org.springframework.boot:spring-boot-starter-data-rest')
 	runtime('org.springframework.boot:spring-boot-devtools')
     testCompile('org.springframework.boot:spring-boot-starter-test')
-//    compile('org.springframework.boot:spring-boot-starter-jetty')
 
+// Mine
     compile('com.github.kuangcp:myth-poi:0.2.3-SNAPSHOT')
+
     compile('io.jsonwebtoken:jjwt:0.9.0')
-    //	runtime('mysql:mysql-connector-java')
 	runtime('org.postgresql:postgresql')
     compileOnly('org.projectlombok:lombok')
 }
 
 task bootImage(type: Docker, dependsOn: build) {
     group='ci'
-    // 跳过测试
     test.enabled=false
-    //设置自动上传的话，命名就不能乱取了，仓库名/镜像名：tag
-//    push = true
+//    push = true  //设置自动上传的话，命名就不能乱取了，仓库名/镜像名：tag
     applicationName = jar.baseName
     dockerfile = file('src/main/docker/Dockerfile')
     doFirst {
@@ -73,6 +68,8 @@ task bootImage(type: Docker, dependsOn: build) {
     }
     // 最后将当前版本镜像tag为release
     doLast {
+        println("update Docker Image")
         ['sh', '-c', 'docker tag '+ project.group+'/'+jar.baseName+':'+version+' graduate:release '].execute()
     }
 }
+

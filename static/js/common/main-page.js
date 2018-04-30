@@ -1,10 +1,3 @@
-$(function () {
-  $("[data-url]").on('click', function () {
-    turn($(this).data('url'))
-  });
-
-});
-
 /**
  * 绑定首页logo的点击事件
  * @param type
@@ -19,10 +12,8 @@ function home(type) {
  * 页面切换
  * @param target
  */
-function turn(target) {
-  var url = location.href.split('/');
-  url = url[url.length - 1];
-  checkRoleThen(url, function () {
+function turn(role, target) {
+  checkRoleThen(role, function () {
     $("#main_page").attr('src', location.href + '/' + target + '.html')
   })
 

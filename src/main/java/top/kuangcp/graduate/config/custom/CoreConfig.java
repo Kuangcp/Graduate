@@ -11,4 +11,8 @@ public interface CoreConfig {
      * 用户登录时,分割用户名和角色
      */
     String DELIMITER = "▏";
+    /**
+     * 分隔数字 #
+     */
+    String DELIMITER_NUM="N";
 }
