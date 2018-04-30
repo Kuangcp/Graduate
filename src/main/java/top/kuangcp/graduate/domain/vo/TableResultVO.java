@@ -19,7 +19,9 @@ public class TableResultVO extends ResultVO{
     }
 
 
-    public TableResultVO(){}
+    public TableResultVO(){
+        System.out.println("实例化TableResultVO");
+    }
     public TableResultVO(Integer code, String msg, Integer count, Object data) {
         super(code, msg, data);
         this.count = count;

@@ -2,7 +2,14 @@ spring:
   profiles:
   # 配置文件切换
     active: dev
+  servlet:
+    multipart:
+      max-file-size: 50Mb
+      max-request-size: 50Mb
+server:
+  servlet:
+    context-path: /api
+  port: 8889
 #    active: docker
-
 
 

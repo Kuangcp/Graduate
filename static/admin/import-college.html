@@ -9,7 +9,7 @@
 </head>
 <body class="main-body-admin">
 <nav style="margin-top: 10px;">
-    <button class="layui-btn">导入</button>
+    <button class="layui-btn" onclick="load()">导入</button>
     <button class="layui-btn" onclick="add()">新增</button>
     <button class="layui-btn" onclick="edit()">编辑</button>
     <button class="layui-btn layui-btn-danger" onclick="deleteRow()">删除</button>
@@ -138,16 +138,37 @@
       layer.msg('请输入查询参数');
       return;
     }
-    // value = value.replaceAll("%", '');
-    console.log("???"+value);
     layui.use('table', function () {
       var table = layui.table;
       table.reload('college', {
         url: host+'/rest/college/search?name=' + value+''
-        , where: {} //设定异步数据接口的额外参数
-        //,height: 300
+        , where: {}
       });
     })
+  }
+  function load() {
+      layer.open({
+        title: '从Excel导入'
+        , content: $("#loadFromExcel").html()
+        , btnAlign: 'c'
+        , resize: true
+        , area: ['300px', '200px']
+        , btn: ['确认', '取消']
+        , yes: function (index, layero) {
+        }
+      });
+  }
+  function upload() {
+    var files = $("#selectFile")[0].files[0];
+    console.log(files);
+    handlerPost('/rest/college/upload', 'admin', {
+      file : files
+    }, function (data) {
+      
+    }, function (data) {
+      
+    })
+
   }
 </script>
 <script id="editData" type="text/html">
@@ -155,6 +176,13 @@
         <label for="name">学院名</label>
         <input name="name" type="text" id="name" value="name##VA" required/>
     </div>
+</script>
+
+<script id="loadFromExcel" type="text/html">
+<div>
+    <input type="file" id="selectFile" />
+    <button onclick="upload()">上传</button>
+</div>
 </script>
 </body>
 </html>

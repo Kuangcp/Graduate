@@ -6,7 +6,7 @@ package top.kuangcp.graduate.domain.vo;
  * @author kuangcp
  * @date 18-4-22  上午10:14
  */
-public class ResultVO {
+public class ResultVO implements Result{
     private Integer code;
     private String msg;
     private Object data;
@@ -42,7 +42,9 @@ public class ResultVO {
         this.data = data;
     }
 
-    public ResultVO(){}
+    public ResultVO(){
+        System.out.println("实例化ResultVO");
+    }
 
     @Override
     public String toString() {
