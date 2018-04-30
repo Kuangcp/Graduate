@@ -3,10 +3,10 @@ package top.kuangcp.graduate.util;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import top.kuangcp.graduate.domain.vo.ResultVO;
-import top.kuangcp.graduate.domain.vo.TableResultVO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import top.kuangcp.graduate.domain.vo.ResultVO;
+import top.kuangcp.graduate.domain.vo.TableResultVO;
 
 /**
  * Created by https://github.com/kuangcp
@@ -20,23 +20,32 @@ import org.slf4j.LoggerFactory;
 public class JsonBuilder {
     private static Logger log = LoggerFactory.getLogger(JsonBuilder.class);
     private static ObjectMapper mapper = new ObjectMapper();
+    private static ResultVO resultVO = new ResultVO();
+    private static TableResultVO tableResultVO = new TableResultVO();
+
     static {
         mapper.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);
+    }
+    public static String buildSuccessResult(String msg, Object data){
+        return buildResult(0, msg, data);
     }
     public static String buildResult(Integer code, String msg, Object data){
         code = checkInteger(code);
         try {
-            return cleanNull(mapper.writeValueAsString(new ResultVO(code, msg, data)));
+            return cleanNull(mapper.writeValueAsString(resultVO.setCode(code).setMsg(msg).setData(data)));
         } catch (JsonProcessingException e) {
             log.error(" Create JSON Failed  ", e);
             return "{\"code\":\"1\", \"msg\":\"error\", \"data\":\" \"}";
         }
     }
+    public static String buildSuccessTableResult(String msg, Integer count, Object data){
+        return buildTableResult(0, msg, count, data);
+    }
     public static String buildTableResult(Integer code, String msg, Integer count, Object data){
         code = checkInteger(code);
         count = checkInteger(count);
         try {
-            return cleanNull(mapper.writeValueAsString(new TableResultVO(code, msg, count, data)));
+            return cleanNull(mapper.writeValueAsString(tableResultVO.setCount(count).setCode(code).setMsg(msg).setData(data)));
         } catch (JsonProcessingException e) {
             log.error(" Create JSON Failed  ", e);
             return "{\"code\":\"1\", \"msg\":\"error\", \"data\":\" \"}";

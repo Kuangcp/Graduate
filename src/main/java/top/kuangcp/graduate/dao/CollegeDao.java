@@ -1,5 +1,7 @@
 package top.kuangcp.graduate.dao;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
 import top.kuangcp.graduate.domain.College;
@@ -13,6 +15,7 @@ import top.kuangcp.graduate.domain.College;
 @Repository
 public interface CollegeDao extends PagingAndSortingRepository<College, Long> {
 
+    Page<College> findByNameContaining(String name, Pageable pageable);
 
-//    Page<College> pageListAll(Pageable pageable);
+
 }

@@ -66,15 +66,14 @@ public class TokenAuthenticationService {
     public static Authentication getAuthentication(HttpServletRequest request) {
         // 从Header中拿到token
         String token = request.getHeader(HEADER_STRING);
-        log.info("获取认证信息，Token ：" + token);
-
+//        log.info("获取认证信息，Token ：" + token);
         if (token != null) {
             // 解析 Token
             Claims claims = Jwts.parser()
                     .setSigningKey(SECRET)
                     .parseClaimsJws(token.replace(TOKEN_PREFIX, ""))
                     .getBody();
-//            // 判断时间过期
+//            // TODO 判断时间过期
 //            Date targetDate = claims.getExpiration();
 //            if(targetDate.getTime() < System.currentTimeMillis()){
 //                log.info("过期 ");

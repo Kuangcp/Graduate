@@ -106,6 +106,7 @@ function handlerDelete(url, role, sendData, success, fail) {
     var request = $.ajax({
       method: 'DELETE',
       url : host+''+url,
+      dataType: "json",
       contentType: "application/json",
       headers:{
         'Authorization' : 'Mythos '+random

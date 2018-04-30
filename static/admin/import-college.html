@@ -13,8 +13,8 @@
     <button class="layui-btn" onclick="add()">新增</button>
     <button class="layui-btn" onclick="edit()">编辑</button>
     <button class="layui-btn layui-btn-danger" onclick="deleteRow()">删除</button>
-    <input class="layui-input-inline"/>
-    <button class="layui-btn layui-btn-normal">搜索</button>
+    <input class="layui-input-inline" id="searchValue"/>
+    <button class="layui-btn layui-btn-normal" onclick="search()">搜索</button>
 </nav>
 <table id="college" lay-filter="test"></table>
 <script src="/js/jquery.min.js"></script>
@@ -25,13 +25,13 @@
   var table;
   layui.use('table', function () {
     table = layui.table;
-    //第一个实例
     table.render({
       elem: '#college'
-      , height: 315
+      , height: 515
       , url: host + '/rest/college/listAll' //数据接口
       , page: true //开启分页
-      // , limits: [1, 3, 5]
+      , limit: 16
+      , limits : [16, 32, 48]
       , cols: [[ //表头
         {checkbox: true}
         , {field: 'collegeId', title: 'ID', width: 160, sort: true}
@@ -42,28 +42,21 @@
 
   function deleteRow() {
     var checkStatus = table.checkStatus('college');
-    // console.log(checkStatus);
-    layer.confirm('确认删除这些数据', {icon: 3, title:'提示'}, function(index){
-      // layer.msg(121);
-      var idList='';
+    layer.confirm('确认删除这些数据', {icon: 3, title: '提示'}, function (index) {
+      var idList = '';
       checkStatus.data.forEach(function (item) {
-        // console.log(item.name);
-        // console.log(item.collegeId);
-        idList+=item.collegeId+delimiter_num;
+        idList += item.collegeId + delimiter_num;
       });
-      handlerDelete('/rest/college/delete', 'admin', idList, function (data) {
-        console.log('success  '+data);
-        console.log('code   '+ data.code);
-        if(data.code === "0" ){
+      handlerDelete('/rest/college', 'admin', idList, function (data) {
+        if (data.code === "0") {
           layer.msg("删除成功");
           reloadAll()
         }
-      },function (data) {
+      }, function (data) {
         console.log(data)
       });
       layer.close(index);
     });
-
   }
 
   function reloadAll() {
@@ -75,36 +68,92 @@
     })
   }
 
+  function updateValue(content, name, value) {
+    return content.replace(name + '##VA', value)
+  }
 
   function edit() {
-    $('#name').attr('value', '899');
-    var content = $('#editData').html();
-    tips(content);
+    var checkStatus = table.checkStatus('college');
+    if(checkStatus.data.length !== 1){
+      layer.msg('请选择一条记录')
+    }else{
+      var content = $('#editData').html();
+      handlerGet('/rest/college/'+checkStatus.data[0].collegeId, 'admin', function (data) {
+        content = updateValue(content, 'name', data.data.name);
+        tips(content, '编辑数据', function () {
+          var mainData = {
+            collegeId: checkStatus.data[0].collegeId,
+            name: $("#name").val()
+          };
+          console.log(JSON.stringify(mainData));
+          handlerPost('/rest/college', 'admin', JSON.stringify(mainData), function (data) {
+            reloadAll();
+            layer.msg('配置保存成功')
+          }, function (data) {
+            layer.msg('保存失败')
+          });
+        });
+      }, function (data) {
+        layer.msg('发生错误'+data.msg);
+      });
+
+    }
   }
+
   function add() {
     var content = $('#editData').html();
-    tips(content);
+    content = updateValue(content, 'name', '');
+    tips(content, '新增数据', function () {
+      var mainData = {
+        name: $("#name").val()
+      };
+      console.log(JSON.stringify(mainData));
+      handlerPost('/rest/college', 'admin', JSON.stringify(mainData), function (data) {
+        reloadAll();
+        layer.msg('配置保存成功')
+      }, function (data) {
+        layer.msg('保存失败')
+      });
+    });
   }
-  function tips(content) {
+
+  function tips(content, title, confirm) {
     layer.open({
-      title: '新增数据'
+      title: title
       , content: content
       , btnAlign: 'c'
       , resize: true
       , area: ['300px', '200px']
-      , btn: ['确认新增', '取消']
+      , btn: ['确认', '取消']
       , yes: function (index, layero) {
-        layer.msg('配置保存成功')
+        confirm();
       },
       cancel: function () {
       }
     });
   }
+  function search() {
+    var value = $("#searchValue").val();
+    if (value === '' || value === ' ') {
+      layer.msg('请输入查询参数');
+      return;
+    }
+    // value = value.replaceAll("%", '');
+    console.log("???"+value);
+    layui.use('table', function () {
+      var table = layui.table;
+      table.reload('college', {
+        url: host+'/rest/college/search?name=' + value+''
+        , where: {} //设定异步数据接口的额外参数
+        //,height: 300
+      });
+    })
+  }
 </script>
 <script id="editData" type="text/html">
-    <div class="inputArea" data-uuid="#####" id="Tips">
+    <div id="Tips">
         <label for="name">学院名</label>
-        <input name="name" type="text" id="name" value="" required/>
+        <input name="name" type="text" id="name" value="name##VA" required/>
     </div>
 </script>
 </body>
