@@ -17,5 +17,4 @@ public interface CollegeDao extends PagingAndSortingRepository<College, Long> {
 
     Page<College> findByNameContaining(String name, Pageable pageable);
 
-
 }

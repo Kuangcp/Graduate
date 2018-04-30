@@ -1,7 +1,6 @@
 package top.kuangcp.graduate.domain.vo;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
 
 /**
  * Created by https://github.com/kuangcp
@@ -9,12 +8,20 @@ import lombok.Data;
  * @author kuangcp
  * @date 18-4-30  下午8:53
  */
-@Data
 @AllArgsConstructor
-public class CodeResultVO {
+public class CodeResultVO implements Result{
     Integer code;
 
     public CodeResultVO(){
         System.out.println("实例化CodeResultVO");
+    }
+
+    public Integer getCode() {
+        return code;
+    }
+
+    public CodeResultVO setCode(Integer code) {
+        this.code = code;
+        return this;
     }
 }

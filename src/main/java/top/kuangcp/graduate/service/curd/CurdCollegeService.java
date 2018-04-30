@@ -6,12 +6,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.CoreConfig;
+import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.CollegeDao;
 import top.kuangcp.graduate.domain.College;
+import top.kuangcp.graduate.service.FileUploadService;
 import top.kuangcp.graduate.service.verify.CheckPage;
 import top.kuangcp.graduate.util.JsonBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -27,6 +31,9 @@ public class CurdCollegeService {
 
     @Autowired
     CollegeDao collegeDao;
+
+    @Autowired
+    FileUploadService uploadService;
 
     public String listAll(int page, int limit) {
         String checkPageNum = CheckPage.checkPageNum(page, limit);
@@ -46,9 +53,9 @@ public class CurdCollegeService {
             }
         } catch (Exception e) {
             log.error("删除失败 ", e);
-            return JsonBuilder.buildResult(1, "delete error", " ");
+            return JsonBuilder.buildCodeResult(ResponseCode.DELETE_ERROR);
         }
-        return JsonBuilder.buildSuccessResult(" ", " ");
+        return JsonBuilder.buildSuccessCodeResult();
     }
 
     public String getOne(Long id) {
@@ -61,9 +68,9 @@ public class CurdCollegeService {
         try {
             collegeDao.save(target);
         }catch (Exception e){
-            return JsonBuilder.buildResult(1, " ", " ");
+            return JsonBuilder.buildCodeResult(ResponseCode.ADD_ERROR);
         }
-        return JsonBuilder.buildSuccessResult(" ", " ");
+        return JsonBuilder.buildSuccessCodeResult();
 
     }
 
@@ -77,5 +84,9 @@ public class CurdCollegeService {
             return JsonBuilder.buildSuccessTableResult("", 0, "");
         }
         return JsonBuilder.buildSuccessTableResult(" ",(int) list.getTotalElements(), list.getContent());
+    }
+
+    public String uploadFile(MultipartFile file, HttpServletRequest request){
+        return uploadService.uploadFile(file, request, College.class, collegeDao);
     }
 }

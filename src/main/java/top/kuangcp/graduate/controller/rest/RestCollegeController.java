@@ -57,6 +57,6 @@ public class RestCollegeController {
 
     @PostMapping("/upload")
     public String upload(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        return fileUploadService.uploadFile(file, request);
+        return collegeService.uploadFile(file, request);
     }
 }
