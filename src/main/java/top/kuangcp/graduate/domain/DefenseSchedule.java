@@ -27,4 +27,5 @@ public class DefenseSchedule implements Serializable {
     private String attention;//注意事项
     private int status;//是否结束 0 1
     private Long teamId; // 团队
+    private Integer year;
 }

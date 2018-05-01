@@ -12,7 +12,7 @@ public interface ResponseCode {
     int DELETE_ERROR = 101; // 删除失败
     int ADD_ERROR = 102; // 新增失败
     int UPDATE_ERROR = 103;// 更新失败
-    int NOT_FOUND = 104; // 记录找不到
+    int NOT_FOUND = 104; // 记录找不到，基础表
 
     // 200 - 300 系统异常
     int CREATE_FOLDER_ERROR = 201; // 创建文件夹失败
@@ -25,7 +25,7 @@ public interface ResponseCode {
     // 300 - 400 权限异常
 
     // 400 - 500 业务异常
-    int POJO_NOT_FOUND = 401; // 找不到记录
+    int POJO_NOT_FOUND = 401; // 查询不到记录
     int ALREADY_SELECT = 402; // 已经选择
 
 }

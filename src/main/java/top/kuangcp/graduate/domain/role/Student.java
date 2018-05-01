@@ -33,5 +33,7 @@ public class Student implements Serializable, ExcelTransform {
     private String email;
     @ExcelConfig("届数")
     private Integer year;
+
     private String openId;
+    private Long teacherId;
 }

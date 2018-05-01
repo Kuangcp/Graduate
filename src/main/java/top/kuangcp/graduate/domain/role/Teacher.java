@@ -30,14 +30,9 @@ public class Teacher implements Serializable, ExcelTransform {
     private String password;
     @ExcelConfig("邮箱")
     private String email;
-    @ExcelConfig("微信id")
-    private String weixinId;
-
-    //出题任务数
-    private short amount;
-
-    //是否为秘书 1/0 默认 0
-    private short secretary;
+//    @ExcelConfig("微信id")
+//    private String weixinId;
+    private Long teamId;
 
 
     public Teacher(){}
