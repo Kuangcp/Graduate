@@ -3,6 +3,7 @@ package top.kuangcp.graduate.service;
 import com.kuangcp.mythpoi.excel.ExcelImport;
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import lombok.extern.log4j.Log4j2;
+import org.apache.poi.poifs.filesystem.NotOLE2FileException;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -13,7 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -33,6 +33,7 @@ public class FileUploadService {
      * @param request 请求对象
      * @param target  目标实体类 类对象
      * @param <T>     类对象的泛型约束
+     * @param dao Dao对象, 用于保存实体
      * @return JSON 结果
      */
     public <T extends ExcelTransform> String uploadFile(MultipartFile file, HttpServletRequest request, Class<T> target, CrudRepository dao) {
@@ -62,7 +63,10 @@ public class FileUploadService {
                 list.forEach(dao::save);
                 log.info(saveFile.getName() + "上传文件并保存成功");
                 return JsonBuilder.buildSuccessCodeResult();
-            } catch (IOException e) {
+            }catch (NotOLE2FileException e){
+                log.info("文件类型不正确", e);
+                return JsonBuilder.buildCodeResult(ResponseCode.FILE_DAMAGE);
+            }catch (Exception e) {
                 log.info("文件上传失败", e);
                 return JsonBuilder.buildCodeResult(ResponseCode.FILE_DAMAGE);
             }

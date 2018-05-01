@@ -20,6 +20,7 @@
 <script src="/js/jquery.min.js"></script>
 <script src="/js/config/server.js"></script>
 <script src="/js/common/login.js"></script>
+<script src="/js/common/upload.js"></script>
 <script src="/layui/layui.all.js"></script>
 <script>
   var table;
@@ -30,8 +31,8 @@
       , height: 515
       , url: host + '/rest/college/listAll' //数据接口
       , page: true //开启分页
-      , limit: 16
-      , limits : [16, 32, 48]
+      , limit: 15
+      , limits : [15, 30, 45]
       , cols: [[ //表头
         {checkbox: true}
         , {field: 'collegeId', title: 'ID', width: 160, sort: true}
@@ -152,23 +153,19 @@
         , content: $("#loadFromExcel").html()
         , btnAlign: 'c'
         , resize: true
-        , area: ['300px', '200px']
+        , area: ['500px', '160px']
         , btn: ['确认', '取消']
         , yes: function (index, layero) {
+          uploadFile('admin', host+'/rest/college/upload', function (file) {
+            if(file.name.split(".xl").length > 1){
+              return 0;
+            }else{
+              layer.msg("文件格式不正确, 请重新选择文件");
+              return 1;
+            }
+          });
         }
       });
-  }
-  function upload() {
-    var files = $("#selectFile")[0].files[0];
-    console.log(files);
-    handlerPost('/rest/college/upload', 'admin', {
-      file : files
-    }, function (data) {
-      
-    }, function (data) {
-      
-    })
-
   }
 </script>
 <script id="editData" type="text/html">
@@ -181,7 +178,8 @@
 <script id="loadFromExcel" type="text/html">
 <div>
     <input type="file" id="selectFile" />
-    <button onclick="upload()">上传</button>
+    <progress id="progressBar" value="0" max="100"></progress>
+    <span id="percentage"></span>
 </div>
 </script>
 </body>
