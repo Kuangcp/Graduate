@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import top.kuangcp.graduate.domain.Topic;
 
+import java.util.List;
+
 /**
  * Created by https://github.com/kuangcp
  *
@@ -12,6 +14,7 @@ import top.kuangcp.graduate.domain.Topic;
  */
 
 @Repository
-//@RepositoryRestResource(path = "topic")
 public interface TopicDao extends JpaRepository<Topic, Long> {
+
+    List<Topic> findAllByStudentId(Long studentId);
 }

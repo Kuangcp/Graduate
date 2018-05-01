@@ -45,7 +45,6 @@ public class CurdCollegeService {
         return JsonBuilder.buildTableResult(0, " ", (int) collegeDao.count(), list);
     }
 
-
     public String delete(String idList) {
         try {
             for (String id : idList.split(CoreConfig.DELIMITER_NUM)) {
@@ -71,7 +70,6 @@ public class CurdCollegeService {
             return JsonBuilder.buildCodeResult(ResponseCode.ADD_ERROR);
         }
         return JsonBuilder.buildSuccessCodeResult();
-
     }
 
     public String findByName(String name, int page, int limit) {

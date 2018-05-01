@@ -2,8 +2,23 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Default</title>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/config/server.js"></script>
+    <script src="/js/common/login.js"></script>
 </head>
 <body>
+<button onclick="listAll()"> click88888888888888888 </button>
+<script>
+function listAll() {
+  handlerGet('/rest/topic/listAll', 'admin', function (data) {
+    console.log(data)
+  }, function (data) {
+
+  })
+}
+</script>
+
+
 </body>
 </html>

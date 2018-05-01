@@ -29,7 +29,5 @@ public class Major implements Serializable, ExcelTransform{
     @ExcelConfig("专业名")
     private String name;
 
-    // 不使用外键, 只是一个id
-    private long collegeId;
-    //  一个专业一个总秘书 负责分组 指定评委, 答辩进度安排
+    private Long collegeId;
 }

@@ -4,13 +4,11 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import top.kuangcp.graduate.controller.util.HttpServletUtil;
 import top.kuangcp.graduate.domain.College;
 import top.kuangcp.graduate.service.FileUploadService;
 import top.kuangcp.graduate.service.curd.CurdCollegeService;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by https://github.com/kuangcp
@@ -29,8 +27,7 @@ public class RestCollegeController {
     FileUploadService fileUploadService;
 
     @GetMapping(value = "/listAll", produces = "application/json;charset=UTF-8")
-    public String listAll(int page, int limit, HttpServletResponse response) {
-        HttpServletUtil.configResponse(response);
+    public String listAll(int page, int limit) {
         return collegeService.listAll(page - 1, limit);
     }
 

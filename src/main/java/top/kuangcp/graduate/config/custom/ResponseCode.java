@@ -25,5 +25,7 @@ public interface ResponseCode {
     // 300 - 400 权限异常
 
     // 400 - 500 业务异常
+    int POJO_NOT_FOUND = 401; // 找不到记录
+    int ALREADY_SELECT = 402; // 已经选择
 
 }
