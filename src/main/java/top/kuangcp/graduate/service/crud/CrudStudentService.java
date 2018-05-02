@@ -1,13 +1,25 @@
 package top.kuangcp.graduate.service.crud;
 
+import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.role.StudentDao;
 import top.kuangcp.graduate.domain.role.Student;
+import top.kuangcp.graduate.service.FileUploadService;
+import top.kuangcp.graduate.service.crud.base.BaseCrud;
+import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
+import top.kuangcp.graduate.service.verify.CheckPage;
 import top.kuangcp.graduate.util.JsonBuilder;
 
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,22 +30,78 @@ import java.util.Optional;
  */
 @Log4j2
 @Service
-public class CrudStudentService {
+public class CrudStudentService implements BaseCrud {
 
     private final StudentDao studentDao;
+    private final FileUploadService uploadService;
 
     @Autowired
-    public CrudStudentService(StudentDao studentDao) {
+    public CrudStudentService(StudentDao studentDao, FileUploadService uploadService) {
         this.studentDao = studentDao;
+        this.uploadService = uploadService;
+    }
+
+    public String listTotal(){
+        return CrudServiceCommon.listTotal(studentDao);
     }
 
     public String getOne(Long studentId){
-        Optional<Student> student = studentDao.findById(studentId);
-        if(student.isPresent()){
-            return JsonBuilder.buildSuccessResult(" ", student);
-        }else {
-            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
-        }
+        return CrudServiceCommon.getOne(studentId, studentDao);
     }
 
+    @Override
+    public String listAll(int page, int limit) {
+        return CrudServiceCommon.listAll(page, limit, studentDao);
+    }
+
+    @Override
+    public String delete(String idList) {
+        return CrudServiceCommon.delete(idList, studentDao);
+    }
+
+    @Override
+    public String uploadFile(MultipartFile file, HttpServletRequest request) {
+        return CrudServiceCommon.uploadFile(uploadService, file, request, studentDao, Student.class);
+    }
+
+    public String saveOne(Student target) {
+        Optional<Student> origin = studentDao.findById(target.getStudentId());
+        target.setTeacherId(origin.get().getTeacherId());
+        try {
+            studentDao.save(target);
+        } catch (Exception e) {
+            return JsonBuilder.buildCodeResult(ResponseCode.ADD_ERROR);
+        }
+        return JsonBuilder.buildSuccessCodeResult();
+    }
+
+    @Override
+    public String saveOne(ExcelTransform target) {
+        return " ";
+    }
+
+    public String listByClassGroup(int page, int limit, Long classGroupId) {
+        String checkPageNum = CheckPage.checkPageNum(page, limit);
+        if (checkPageNum != null) {
+            return checkPageNum;
+        }
+        Pageable pages = PageRequest.of(page, limit);
+        List list = studentDao.findAllByClassGroupId(classGroupId, pages).getContent();
+        return JsonBuilder.buildTableResult(0, " ", studentDao.findAllByClassGroupId(classGroupId).size(), list);
+    }
+
+    public String findByName(String name, int page, int limit, Long classGroupId) {
+        String checkPageNum = CheckPage.checkPageNum(page, limit);
+        if (checkPageNum != null) {
+            return checkPageNum;
+        }
+        Page<Student> list = studentDao.findByUsernameContaining(name, PageRequest.of(page, limit));
+        final List<Student> result = new ArrayList<>();
+        // 过滤出相等的并添加到集合
+        list.filter(item -> item.getClassGroupId().equals(classGroupId)).iterator().forEachRemaining(result::add);
+        if (list.getTotalElements() == 0) {
+            return JsonBuilder.buildSuccessTableResult("", 0, "");
+        }
+        return JsonBuilder.buildSuccessTableResult(" ", (int) list.getTotalElements(), result);
+    }
 }

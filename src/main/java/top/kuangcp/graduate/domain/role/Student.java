@@ -36,4 +36,5 @@ public class Student implements Serializable, ExcelTransform {
 
     private String openId;
     private Long teacherId;
+    private Long classGroupId;
 }

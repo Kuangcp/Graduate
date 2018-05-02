@@ -35,6 +35,10 @@ public class RestMajorController {
         return majorService.findByName(name, page - 1, limit, collegeId);
     }
 
+    @GetMapping(value = "/listTotal", produces = "application/json;charset=UTF-8")
+    public String listTotal() {
+        return majorService.listTotal();
+    }
     @GetMapping(value = "/listAll", produces = "application/json;charset=UTF-8")
     public String listAll(int page, int limit) {
         return majorService.listAll(page - 1, limit);
@@ -44,6 +48,10 @@ public class RestMajorController {
     @GetMapping(value = "/listByCollege/{college}", produces = "application/json;charset=UTF-8")
     public String listAllByCollege(int page, int limit, @PathVariable("college") Long collegeId) {
         return majorService.listByCollege(page - 1, limit, collegeId);
+    }
+    @GetMapping(value = "/listTotalByCollege/{college}", produces = "application/json;charset=UTF-8")
+    public String listTotalByCollege(@PathVariable("college") Long collegeId) {
+        return majorService.listTotalByCollege(collegeId);
     }
 
 

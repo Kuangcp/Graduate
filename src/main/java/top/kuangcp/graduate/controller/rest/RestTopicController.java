@@ -28,4 +28,9 @@ public class RestTopicController {
     public String listAll() {
         return topicService.listAll();
     }
+
+    @GetMapping(value = "/search", produces = "application/json;charset=UTF-8")
+    public String findByName(String name) {
+        return topicService.findByName(name);
+    }
 }

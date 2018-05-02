@@ -2,7 +2,6 @@ spring:
   profiles:
   # 配置文件切换
     active: dev
-#    active: docker
   servlet:
     multipart:
       max-file-size: 50Mb

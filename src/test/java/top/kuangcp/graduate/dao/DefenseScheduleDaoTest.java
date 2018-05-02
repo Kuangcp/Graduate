@@ -22,7 +22,7 @@ public class DefenseScheduleDaoTest {
 
     @Test
     public void TestQuery(){
-        DefenseSchedule defenseSchedule = defenseScheduleDao.queryByStudentId(1001L);
+        DefenseSchedule defenseSchedule = defenseScheduleDao.selectByStudentId(1001L);
         System.out.println(defenseSchedule.toString());
     }
 }

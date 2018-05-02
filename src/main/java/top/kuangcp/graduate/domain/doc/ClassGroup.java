@@ -26,4 +26,5 @@ public class ClassGroup implements Serializable, ExcelTransform{
     private Long groupId;
     @ExcelConfig("名称")
     private String name;
+    private Long majorId;
 }

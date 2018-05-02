@@ -56,8 +56,8 @@
     data.data.forEach(function (item) {
       $("#collegeId").append('<option value="' + item.collegeId + '">' + item.name + '</option>');
     });
-  }, function (data) {
-
+  },function (data) {
+    layer.msg('加载学院失败，请检查网络'+data.responseText)
   });
 
 
@@ -95,7 +95,7 @@
 
   function edit() {
     if ($("#collegeId").val() === 'DEFAULT') {
-      layer.msg('请选择具体的学院')
+      layer.msg('请选择具体的专业')
     } else {
       var checkStatus = table.checkStatus('major');
       if (checkStatus.data.length !== 1) {
@@ -127,7 +127,7 @@
 
   function add() {
     if ($("#collegeId").val() === 'DEFAULT') {
-      layer.msg('请选择具体的学院')
+      layer.msg('请选择具体的专业')
     } else {
       var content = $('#editData').html();
       content = updateValue(content, 'name', '');
@@ -165,7 +165,7 @@
 
   function search() {
     if ($("#collegeId").val() === 'DEFAULT') {
-      layer.msg('请选择具体的学院')
+      layer.msg('请选择具体的专业')
     }else{
       var value = $("#searchValue").val();
       if (value === '' || value === ' ') {
@@ -205,7 +205,7 @@
 </script>
 <script id="editData" type="text/html">
     <div id="Tips">
-        <label for="name">学院名</label>
+        <label for="name">专业名</label>
         <input name="name" type="text" id="name" value="name##VA" required/>
     </div>
 </script>

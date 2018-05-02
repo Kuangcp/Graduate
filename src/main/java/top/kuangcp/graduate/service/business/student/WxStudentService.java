@@ -84,7 +84,7 @@ public class WxStudentService {
      */
     public String QueryPlace(Long studentId) {
         // 根据学生找到课题找到教师，找到团队找到场地
-        DefenseSchedule result = defenseScheduleDao.queryByStudentId(studentId);
+        DefenseSchedule result = defenseScheduleDao.selectByStudentId(studentId);
         if(result!=null && result.getPlace()!=null ){
             return JsonBuilder.buildSuccessResult("", result.getPlace());
         }
