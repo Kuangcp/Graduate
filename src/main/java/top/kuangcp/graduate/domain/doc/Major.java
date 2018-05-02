@@ -1,4 +1,4 @@
-package top.kuangcp.graduate.domain;
+package top.kuangcp.graduate.domain.doc;
 
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;
@@ -28,6 +28,5 @@ public class Major implements Serializable, ExcelTransform{
     private long majorId;
     @ExcelConfig("专业名")
     private String name;
-
     private Long collegeId;
 }

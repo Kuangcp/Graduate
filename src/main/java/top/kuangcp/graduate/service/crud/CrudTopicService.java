@@ -1,4 +1,4 @@
-package top.kuangcp.graduate.service.curd;
+package top.kuangcp.graduate.service.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import top.kuangcp.graduate.util.JsonBuilder;
  * @date 18-5-1  下午8:36
  */
 @Service
-public class CurdTopicService {
+public class CrudTopicService {
     @Autowired
     TopicDao topicDao;
 

@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.kuangcp.graduate.service.curd.CurdTeacherService;
+import top.kuangcp.graduate.service.crud.CrudTeacherService;
 
 /**
  * Created by https://github.com/kuangcp
@@ -17,10 +17,10 @@ import top.kuangcp.graduate.service.curd.CurdTeacherService;
 @RequestMapping("/rest/teacher")
 public class RestTeacherController {
 
-    private final CurdTeacherService teacherService;
+    private final CrudTeacherService teacherService;
 
     @Autowired
-    public RestTeacherController(CurdTeacherService teacherService) {
+    public RestTeacherController(CrudTeacherService teacherService) {
         this.teacherService = teacherService;
     }
 

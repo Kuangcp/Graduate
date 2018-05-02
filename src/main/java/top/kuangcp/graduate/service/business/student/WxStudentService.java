@@ -79,28 +79,15 @@ public class WxStudentService {
 
     /**
      * 查询答辩场地
-     * TODO 使用SQL连接查询
-     *
      * @param studentId 学生id
      * @return JSON
      */
     public String QueryPlace(Long studentId) {
         // 根据学生找到课题找到教师，找到团队找到场地
-
         DefenseSchedule result = defenseScheduleDao.queryByStudentId(studentId);
         if(result!=null && result.getPlace()!=null ){
             return JsonBuilder.buildSuccessResult("", result.getPlace());
         }
-//        Optional<Student> student = studentDao.findById(studentId);
-//        if (student.isPresent()) {
-//            Optional<Teacher> teacher = teacherDao.findById(student.get().getTeacherId());
-//            if (teacher.isPresent()) {
-//                List<DefenseSchedule> defenseSchedules = defenseScheduleDao.findAllByTeamId(teacher.get().getTeamId());
-//                if (defenseSchedules.size() != 0) {
-//                    return JsonBuilder.buildSuccessResult(" ", defenseSchedules.get(0).getPlace());
-//                }
-//            }
-//        }
         return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
     }
 }

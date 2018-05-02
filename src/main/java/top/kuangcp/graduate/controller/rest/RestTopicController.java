@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.kuangcp.graduate.service.curd.CurdTopicService;
+import top.kuangcp.graduate.service.crud.CrudTopicService;
 
 /**
  * Created by https://github.com/kuangcp
@@ -17,10 +17,10 @@ import top.kuangcp.graduate.service.curd.CurdTopicService;
 public class RestTopicController {
 
     // TODO 为什么IDEA建议使用构造器注入
-    private final CurdTopicService topicService;
+    private final CrudTopicService topicService;
 
     @Autowired
-    public RestTopicController(CurdTopicService topicService) {
+    public RestTopicController(CrudTopicService topicService) {
         this.topicService = topicService;
     }
 

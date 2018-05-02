@@ -18,6 +18,7 @@ public interface DefenseScheduleDao extends JpaRepository<DefenseSchedule, Long>
 
     List<DefenseSchedule> findAllByTeamId(Long teamId);
 
+    // TODO 左外连接？
     @Query("from DefenseSchedule as ds, Teacher t, Student s where ds.teamId = t.teamId and s.year = ds.year  and s.teacherId = t.teacherId and s.studentId = ?1")
     DefenseSchedule queryByStudentId(Long studentId);
 

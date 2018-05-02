@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import top.kuangcp.graduate.dao.CollegeDao;
 import top.kuangcp.graduate.dao.role.StudentDao;
-import top.kuangcp.graduate.domain.College;
+import top.kuangcp.graduate.domain.doc.College;
 
 import java.util.ArrayList;
 import java.util.List;

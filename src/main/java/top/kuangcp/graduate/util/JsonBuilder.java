@@ -5,10 +5,10 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import top.kuangcp.graduate.config.custom.ResponseCode;
-import top.kuangcp.graduate.domain.vo.CodeResultVO;
-import top.kuangcp.graduate.domain.vo.Result;
-import top.kuangcp.graduate.domain.vo.ResultVO;
-import top.kuangcp.graduate.domain.vo.TableResultVO;
+import top.kuangcp.graduate.domain.vo.result.CodeResultVO;
+import top.kuangcp.graduate.domain.vo.result.Result;
+import top.kuangcp.graduate.domain.vo.result.ResultVO;
+import top.kuangcp.graduate.domain.vo.result.TableResultVO;
 
 /**
  * Created by https://github.com/kuangcp

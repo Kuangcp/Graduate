@@ -1,6 +1,7 @@
 package top.kuangcp.graduate.domain.vo;
 
 import org.junit.Test;
+import top.kuangcp.graduate.domain.vo.result.TableResultVO;
 
 /**
  * Created by https://github.com/kuangcp

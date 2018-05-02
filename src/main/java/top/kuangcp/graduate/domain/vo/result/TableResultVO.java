@@ -1,4 +1,4 @@
-package top.kuangcp.graduate.domain.vo;
+package top.kuangcp.graduate.domain.vo.result;
 
 /**
  * Created by https://github.com/kuangcp

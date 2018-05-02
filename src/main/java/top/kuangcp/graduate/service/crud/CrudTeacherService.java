@@ -1,4 +1,4 @@
-package top.kuangcp.graduate.service.curd;
+package top.kuangcp.graduate.service.crud;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,12 +16,12 @@ import java.util.Optional;
  * @date 18-5-1  下午11:46
  */
 @Service
-public class CurdTeacherService {
+public class CrudTeacherService {
 
     private final TeacherDao teacherDao;
 
     @Autowired
-    public CurdTeacherService(TeacherDao teacherDao) {
+    public CrudTeacherService(TeacherDao teacherDao) {
         this.teacherDao = teacherDao;
     }
 

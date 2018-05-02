@@ -1,4 +1,4 @@
-package top.kuangcp.graduate.domain.vo;
+package top.kuangcp.graduate.domain.vo.result;
 
 import lombok.AllArgsConstructor;
 

@@ -1,4 +1,4 @@
-package top.kuangcp.graduate.domain;
+package top.kuangcp.graduate.domain.doc;
 
 import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import com.kuangcp.mythpoi.utils.base.ExcelConfig;

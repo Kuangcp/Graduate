@@ -4,7 +4,7 @@ package top.kuangcp.graduate.domain.vo;
  * Created by https://github.com/kuangcp
  *
  * @author kuangcp
- * @date 18-4-30  下午8:57
+ * @date 18-5-2  上午10:05
  */
-public interface Result {
+public class MajorVO {
 }
