@@ -25,11 +25,15 @@ public class Topic implements Serializable {
     private Long topicId;
     private String name;
     private String attention;
-    private int publishYear;
-    private Long studentId;
+    private int publishYear; // 自动生成
+    private Long studentId; // 缺省为null
+    private Long teacherId;
+
     private double guideScore;
     private String guideAdvise;
     private double judgeScore;
     private String judgeAdvise;
-    private Long teacherId;
+
+    private Integer status; // 0 1 2 缺省 通过 已提交审核
+
 }

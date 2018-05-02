@@ -1,9 +1,8 @@
 package top.kuangcp.graduate.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import top.kuangcp.graduate.domain.Topic;
 import top.kuangcp.graduate.service.crud.CrudTopicService;
 
 /**
@@ -32,5 +31,10 @@ public class RestTopicController {
     @GetMapping(value = "/search", produces = "application/json;charset=UTF-8")
     public String findByName(String name) {
         return topicService.findByName(name);
+    }
+    // POST 一定采用JSON交互,
+    @PostMapping(value = "/save", produces = "application/json;charset=UTF-8")
+    public String save(@RequestBody Topic topic){
+        return topicService.save(topic);
     }
 }

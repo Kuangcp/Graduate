@@ -64,6 +64,11 @@ public class CrudStudentService implements BaseCrud {
         return CrudServiceCommon.uploadFile(uploadService, file, request, studentDao, Student.class);
     }
 
+    /**
+     * 更新指定对象，但是不更新教师
+     * @param target 目标对象
+     * @return JSON
+     */
     public String saveOne(Student target) {
         Optional<Student> origin = studentDao.findById(target.getStudentId());
         target.setTeacherId(origin.get().getTeacherId());

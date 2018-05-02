@@ -20,4 +20,5 @@ public class Feedback {
     private Long feedbackId;
     private Long studentId;
     private String content;
+    private String contact;// 联系方式
 }

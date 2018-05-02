@@ -28,4 +28,5 @@ public interface ResponseCode {
     int POJO_NOT_FOUND = 401; // 查询不到记录
     int ALREADY_SELECT = 402; // 已经选择
 
+    int SAVE_TOPIC_ERROR = 410; // 保存课题异常
 }

@@ -1,6 +1,5 @@
 spring:
   profiles:
-  # 配置文件切换
     active: dev
   servlet:
     multipart:

@@ -1,5 +1,6 @@
 package top.kuangcp.graduate.service.crud;
 
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.ResponseCode;
@@ -7,6 +8,7 @@ import top.kuangcp.graduate.dao.TopicDao;
 import top.kuangcp.graduate.domain.Topic;
 import top.kuangcp.graduate.util.JsonBuilder;
 
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -15,6 +17,7 @@ import java.util.List;
  * @author kuangcp
  * @date 18-5-1  下午8:36
  */
+@Log4j2
 @Service
 public class CrudTopicService {
     @Autowired
@@ -32,4 +35,18 @@ public class CrudTopicService {
         }
         return JsonBuilder.buildSuccessResult(" ", list);
     }
+
+    public String save(Topic topic){
+        try {
+            topic.setPublishYear(Calendar.getInstance().get(Calendar.YEAR));
+            topic.setStatus(0);
+            log.info(topic.toString());
+            topicDao.save(topic);
+            return JsonBuilder.buildSuccessCodeResult();
+        }catch (Exception e){
+            log.error("保存课题失败", e);
+            return JsonBuilder.buildCodeResult(ResponseCode.SAVE_TOPIC_ERROR);
+        }
+    }
+
 }

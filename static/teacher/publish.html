@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8"/>
     <title>发布课题</title>
     <link rel="stylesheet" href="/layui/css/layui.css"/>
     <link rel="stylesheet" href="/css/teacher/publish.css"/>
@@ -9,43 +9,47 @@
 </head>
 <body>
 <main class="main">
-    <form id="contents" action="../teacher/topic/add" method="post">
+    <form id="contents">
         <input type="text" name="name" placeholder="课题名称" class="title" id="title"/>
-        <div id="content" class="box"><h1 align="center">
-            毕业设计课题内容和要求</h1><ol><li> </li><li> </li><li><br/></li></ol><p><br/></p>
+        <div id="content" class="box"><h1 align="center">毕业设计课题内容和要求</h1>
+            <ol>
+                <li></li>
+                <li></li>
+                <li></li>
+            </ol>
         </div>
         <button class="submit" type="button">保存</button>
     </form>
 </main>
-
 </body>
 <script src="/js/jquery.min.js"></script>
-<script src="/layui/layui.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
 
 <script>
-    var E = window.wangEditor;
-    var editor = new E('#content');
-    editor.create();
+  var E = window.wangEditor;
+  var editor = new E('#content');
+  editor.create();
 
-    $(".submit").on('click', function (){
-        var main = $("#contents");
-        var param = main.serialize();
-        console.log("56:"+param);
-        $.post(main.attr('action'),param, function (data) {
-            console.log("000"+data);
-            // TODO 弹出确认框 然后选择是否刷新页面 继续编辑
-            layui.use(['layer'], function(){
-                var layer = layui.layer;
-                // 拿到form将参数进行编码 然后异步发送请求
-                layer.confirm('是否保存', function(index){
-                    //点击确定才会执行
-                    layer.msg('保存成功');
-                    layer.close(index);
-                });
+  // TODO 教师id
+  $(".submit").on('click', function () {
+    var title = $("#title").val();
+    var attention = $(".w-e-text").html();
 
-            });
-        })
+    var data = {
+      name: title,
+      attention: attention,
+      teacherId: 112212
+    };
+    console.log(title + "  | " + attention);
+    console.log(JSON.stringify(data));
+    handlerPost('/rest/topic/save', 'teacher', JSON.stringify(data), function (data) {
+      layer.msg('保存成功,请继续编辑或准备提交审核')
+    }, function (data) {
+      layer.msg('请检查网络并重试')
     });
+  });
 
 </script>
 </html>
