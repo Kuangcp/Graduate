@@ -34,6 +34,12 @@ public class RestTeamController {
         return teamService.listAllWithRefer(page - 1, limit);
     }
 
+    @GetMapping(value = "/listOther/{id}", produces = "application/json;charset=UTF-8")
+    public String listOther(@PathVariable("id") Long teamId) {
+        return teamService.listOtherAll(teamId);
+    }
+
+
     @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
     public String getOne(@PathVariable("id") Long id) {
         return teamService.getOne(id);

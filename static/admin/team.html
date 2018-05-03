@@ -89,6 +89,15 @@
     var checkStatus = table.checkStatus('team');
     if(checkStatus.data.length !== 1){
       layer.msg('请选择一条记录')
+    }else {
+      sessionStorage.setItem('editTeamId', checkStatus.data[0].teamId);
+      add();
+    }
+  }
+  function editOld() {
+    var checkStatus = table.checkStatus('team');
+    if(checkStatus.data.length !== 1){
+      layer.msg('请选择一条记录')
     }else{
       var content = $('#editData').html();
       handlerGet('/rest/team/'+checkStatus.data[0].teamId, 'admin', function (data) {
@@ -113,11 +122,22 @@
   }
 
   function add() {
-
+    layer.open({
+      title: '添加团队'
+      , type: 2
+      , content: 'team/add.html'
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: ['270px', '300px']
+      ,cancel: function () {
+        sessionStorage.removeItem('editTeamId');
+      }
+    });
+  }
+  function addOld() {
     var content = $('#editData').html();
     content = updateValue(content, 'name', '');
-
-
     handlerGet('/rest/major/listTotal', 'admin', function (data) {
       var temp = '<select id="collegeId">';
       data.data.forEach(function (item) {
@@ -141,7 +161,6 @@
     },function (data) {
       layer.msg('加载专业失败，请检查网络'+data.responseText)
     });
-
   }
 
   function tips(content, title, confirm) {

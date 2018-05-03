@@ -4,6 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.MajorDao;
 import top.kuangcp.graduate.dao.TeamDao;
 import top.kuangcp.graduate.dao.role.TeacherDao;
@@ -119,5 +120,20 @@ public class CrudTeamService {
             result.add(teamVO);
         });
         return result;
+    }
+
+    public String listOtherAll(Long teamId) {
+        final List<Team> list = new ArrayList<>(teamDao.findAll());
+
+        if(list.size()==0){
+            return JsonBuilder.buildCodeResult(ResponseCode.NOT_FOUND);
+        }else{
+            for (int i = 0; i < list.size(); i++) {
+                if(teamId == list.get(i).getTeamId()){
+                    list.remove(i);
+                }
+            }
+            return JsonBuilder.buildSuccessResult(" ", list);
+        }
     }
 }

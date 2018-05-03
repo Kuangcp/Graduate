@@ -12,11 +12,22 @@
 <script src="/js/common/login.js"></script>
 <script src="/js/common/upload.js"></script>
 <script src="/layui/layui.all.js"></script>
+<style>
+    .main {
+        text-align: right;
+    }
+
+    label {
+        text-align: left;
+        float: left;
+    }
+</style>
 <body>
 
-<div id="Tips">
+<div id="Tips" class="main">
     <label for="name">团队名</label>
-    <input name="name" type="text" id="name" required/> <br/>
+    <input name="name" type="text" id="name" required/>
+    <br>
     <label for="year">毕业届数</label>
     <select name="year" id="year">
         <option selected>2018</option>
@@ -24,9 +35,98 @@
         <option>2016</option>
         <option>2015</option>
     </select>
-    <br/>
+    <br>
+    <label for="collegeId">学院</label>
+    <select id="collegeId" name="collegeId" onchange="showMajor()">
+        <option value="DEFAULT"></option>
+    </select>
+    <br>
     <label for="majorId">专业</label>
-    <select id="majorId" name="majorId"></select>
+    <select id="majorId" name="majorId">
+        <option value="DEFAULT"></option>
+    </select>
+    <br/>
+    <label for="judgeId">评审团队</label>
+    <select id="judgeId" name="judgeId">
+        <option value="DEFAULT"></option>
+    </select>
+    <br>
+    <br>
+    <br>
+
 </div>
+<button class="layui-btn layui-btn-normal" style="margin-left: 39%;">提交</button>
+
+<script>
+  var teamId = sessionStorage.getItem('editTeamId');
+  var targetUrl = '/rest/team/listOther';
+  var editCollege = null;
+  var editMajor = null;
+  var editJudge = null;
+
+  if (teamId == null) {
+    targetUrl += '/-1';
+  } else {
+    targetUrl += '/' + teamId;
+    handlerGetSync('/rest/team/' + teamId, 'admin', function (data) {
+      console.log('收到'+JSON.stringify(data));
+      editMajor = data.data.majorId;
+      editJudge = data.data.judgeTeamId;
+      sessionStorage.setItem('editMajor', editMajor);
+      handlerGetSync('/rest/major/' + editMajor, 'admin', function (data) {
+        sessionStorage.setItem('editCollege', data.data.collegeId);
+      });
+      sessionStorage.setItem('editJudge', editJudge);
+    })
+  }
+  handlerGet('/rest/team/listOther/'+teamId, 'admin', function (data) {
+    data.data.forEach(function (item) {
+      console.log(JSON.stringify(item));
+      if (sessionStorage.getItem('editJudge') === item.teamId) {
+        $("#judgeId").append('<option value="' + item.teamId + '"' + ' selected>' + item.name + '</option>');
+      } else {
+        $("#judgeId").append('<option value="' + item.teamId + '"' + '>' + item.name + '</option>');
+      }
+
+    });
+  }, function (data) {
+    layer.msg('加载失败，请检查网络' + data.responseText)
+  });
+
+  handlerGet('/rest/college/listTotal', 'admin', function (data) {
+    data.data.forEach(function (item) {
+      if (sessionStorage.getItem('editCollege') === item.collegeId) {
+        $("#collegeId").append('<option value="' + item.collegeId + '" selected>' + item.name + '</option>');
+        handlerGet('/rest/major/listTotalByCollege/' + item.collegeId, 'admin', function (data) {
+          $("#majorId").html('<option value="DEFAULT"></option>');
+          data.data.forEach(function (item) {
+            if(sessionStorage.getItem('editMajor') === item.majorId){
+              $("#majorId").append('<option value="' + item.majorId + '" selected>' + item.name + '</option>');
+            }else{
+              $("#majorId").append('<option value="' + item.majorId + '">' + item.name + '</option>');
+            }
+
+          });
+        });
+      }else{
+        $("#collegeId").append('<option value="' + item.collegeId + '">' + item.name + '</option>');
+      }
+    });
+  }, function (data) {
+    layer.msg('加载学院失败，请检查网络' + data.responseText)
+  });
+
+  // 根据学院加载专业
+  function showMajor() {
+    collegeId = $("#collegeId").val();
+    handlerGet('/rest/major/listTotalByCollege/' + collegeId, 'admin', function (data) {
+      $("#majorId").html('<option value="DEFAULT"></option>');
+      data.data.forEach(function (item) {
+        $("#majorId").append('<option value="' + item.majorId + '">' + item.name + '</option>');
+      });
+    });
+  }
+
+</script>
 </body>
 </html>

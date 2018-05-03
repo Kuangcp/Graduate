@@ -76,4 +76,25 @@ public class JsonBuilderTest {
             System.out.println("<<"+a);
         }
     }
+
+    @Test
+    public void testFor(){
+
+        // lambda 表达式不能修改list, foreach也不能?
+        List<String> list = new ArrayList<>();
+        list.add("sdfasdf");
+        list.add("gsgrbd");
+        list.add("oojookm");
+        list.add("1");
+//        for(String temp : list){
+//            if("1".equals(temp)){
+//                list.remove(temp);
+//            }
+//        }
+        for (int i = 0; i < list.size(); i++) {
+            if("1".equals(list.get(i))){
+                list.remove(i);
+            }
+        }
+    }
 }
