@@ -24,23 +24,27 @@
 <script src="/layui/layui.all.js"></script>
 <script>
   var table;
-  layui.use('table', function () {
-    table = layui.table;
-    table.render({
-      elem: '#college'
-      , height: 515
-      , url: host + '/rest/college/listAll' //数据接口
-      , page: true //开启分页
-      , limit: 15
-      , limits : [15, 30, 45]
-      , cols: [[ //表头
-        {checkbox: true}
-        , {field: 'collegeId', title: 'ID', width: 160, sort: true}
-        , {field: 'name', title: '学院名', width: 280}
-      ]]
-    });
-  });
 
+  handlerGet('/common/ping', 'admin', function () {
+    layui.use('table', function () {
+      table = layui.table;
+      table.render({
+        elem: '#college'
+        , height: 515
+        , url: host + '/rest/college/listAll' //数据接口
+        , page: true //开启分页
+        , limit: 15
+        , limits : [15, 30, 45]
+        , cols: [[ //表头
+          {checkbox: true}
+          , {field: 'collegeId', title: 'ID', width: 160, sort: true}
+          , {field: 'name', title: '学院名', width: 280}
+        ]]
+      });
+    });
+  }, function (data) {
+    layer.msg('请检查网络并重试'+data.responseText)
+  });
   function deleteRow() {
     var checkStatus = table.checkStatus('college');
     layer.confirm('确认删除这些数据', {icon: 3, title: '提示'}, function (index) {

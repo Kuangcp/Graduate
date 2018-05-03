@@ -54,7 +54,6 @@ public class RestMajorController {
         return majorService.listTotalByCollege(collegeId);
     }
 
-
     @DeleteMapping(produces = "application/json;charset=UTF-8")
     public String delete(@RequestBody String idList) {
         return majorService.delete(idList);

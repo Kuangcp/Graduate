@@ -3,8 +3,12 @@ package top.kuangcp.graduate.service.crud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.ResponseCode;
+import top.kuangcp.graduate.dao.MajorDao;
 import top.kuangcp.graduate.dao.role.TeacherDao;
+import top.kuangcp.graduate.domain.doc.Major;
 import top.kuangcp.graduate.domain.role.Teacher;
+import top.kuangcp.graduate.domain.vo.TeacherVO;
+import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
 import top.kuangcp.graduate.util.JsonBuilder;
 
 import java.util.Optional;
@@ -19,14 +23,28 @@ import java.util.Optional;
 public class CrudTeacherService {
 
     private final TeacherDao teacherDao;
+    private final MajorDao majorDao;
 
     @Autowired
-    public CrudTeacherService(TeacherDao teacherDao) {
+    public CrudTeacherService(TeacherDao teacherDao, MajorDao majorDao) {
         this.teacherDao = teacherDao;
+        this.majorDao = majorDao;
     }
 
     public String getOne(Long teacherId){
+        return CrudServiceCommon.getOne(teacherId, teacherDao);
+    }
+
+    public String getOneWithRefer(Long teacherId){
         Optional<Teacher> teacher = teacherDao.findById(teacherId);
-        return teacher.map(teacher1 -> JsonBuilder.buildSuccessResult("", teacher1)).orElseGet(() -> JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND));
+        if(teacher.isPresent()){
+            Optional<Major> major =  majorDao.findById(teacher.get().getMajorId());
+            if(major.isPresent()){
+                TeacherVO teacherVO = TeacherVO.of(teacher.get());
+                teacherVO.setMajor(major.get().getName());
+                return JsonBuilder.buildSuccessResult("", teacherVO);
+            }
+        }
+        return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
     }
 }

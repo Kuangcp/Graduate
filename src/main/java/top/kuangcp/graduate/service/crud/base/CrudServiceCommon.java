@@ -76,7 +76,6 @@ public class CrudServiceCommon {
         return JsonBuilder.buildSuccessCodeResult();
     }
 
-
     public static String uploadFile(FileUploadService uploadService, MultipartFile file, HttpServletRequest request, CrudRepository dao, Class target) {
         return uploadService.uploadFile(file, request, target, dao);
     }

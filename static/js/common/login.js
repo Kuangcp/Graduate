@@ -70,6 +70,24 @@ function logout() {
   layer.msg('注销成功');
   // window.location.reload()
 }
+
+/**
+ * 同步操作, 方便圈全局变量赋值
+ */
+function handlerGetSync(url, role, success, fail) {
+  checkRoleThen(role, function (random) {
+    var request = $.get({
+      url : host+''+url,
+      async : false,
+      contentType: "application/json",
+      headers:{
+        'Authorization' : 'Mythos '+random
+      }
+    });
+    request.done(success);
+    request.fail(fail);
+  });
+}
 /**
  * 处理Get请求
  * @param url /开头，自动填充域名
@@ -80,7 +98,7 @@ function logout() {
 function handlerGet(url, role, success, fail) {
   checkRoleThen(role, function (random) {
     var request = $.ajax({
-      // method: 'GET',
+      method: 'GET',
       url : host+''+url,
       contentType: "application/json",
       headers:{

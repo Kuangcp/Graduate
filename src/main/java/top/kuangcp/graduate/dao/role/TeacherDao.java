@@ -15,4 +15,5 @@ import top.kuangcp.graduate.domain.role.Teacher;
 public interface TeacherDao extends JpaRepository<Teacher, Long> {
     Teacher findByUsername(String username);
     Teacher findByTeacherNo(String teacherNo);
+
 }

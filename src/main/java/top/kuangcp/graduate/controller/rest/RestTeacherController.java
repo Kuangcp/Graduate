@@ -28,4 +28,8 @@ public class RestTeacherController {
     public String getOne(@PathVariable("teacherId") Long teacherId){
         return teacherService.getOne(teacherId);
     }
+    @GetMapping(value = "/refer/{teacherId}", produces = "application/json;charset=UTF-8")
+    public String getOneWithRefer(@PathVariable("teacherId") Long teacherId){
+        return teacherService.getOneWithRefer(teacherId);
+    }
 }
