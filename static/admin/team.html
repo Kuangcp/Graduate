@@ -11,6 +11,8 @@
 <nav style="margin-top: 10px;">
     <button class="layui-btn" onclick="add()">新增</button>
     <button class="layui-btn" onclick="edit()">编辑</button>
+    <!--<a href="team/add.html"><button class="layui-btn" onclick="add()">新增</button></a>-->
+    <!--<a href="team/add.html"><button class="layui-btn" onclick="edit()">编辑</button></a>-->
     <button class="layui-btn layui-btn-danger" onclick="deleteRow()">删除</button>
     <input class="layui-input-inline" id="searchValue"/>
     <button class="layui-btn layui-btn-normal" onclick="search()">搜索</button>
@@ -23,7 +25,7 @@
 <script src="/layui/layui.all.js"></script>
 <script>
   var table;
-  var index = layer.load(2, {time: 2*1000});
+  var loadIndex = layer.load(2);
   handlerGet('/common/ping', 'admin', function () {
     layui.use('table', function () {
       table = layui.table;
@@ -36,54 +38,17 @@
         , limits : [15, 30, 45]
         , cols: [[ //表头
           {checkbox: true}
-          , {field: 'teamId', title: 'ID', width: 160, sort: true}
-          , {field: 'name', title: '团队名', width: 120}
-          , {field: 'majorId', title: '所属专业', width: 120, templet : function (data) {
-              var result = '暂无';
-              if(data.majorId === 'null'){
-                return result;
-              }else{
-                handlerGetSync('/rest/major/'+data.majorId, 'admin', function (data) {
-                  result = data.data.name;
-                });
-                return result;
-              }
-            }}
-          , {field: 'judgeTeamId', title: '评委团队', width: 120, templet: function (data) {
-              var result = '暂无';
-              if(data.judgeTeamId === 'null'){
-                return result;
-              }else{
-                handlerGetSync('/rest/team/'+data.judgeTeamId, 'admin', function (data) {
-                  result = data.data.name;
-                });
-                return result;
-              }
-            }}
-          , {field: 'leaderId', title: '负责人', width: 120, templet: function (data) {
-              var result = '暂无';
-              if(data.leaderId === 'null'){
-                return result;
-              }else{
-                handlerGetSync('/rest/teacher/'+data.leaderId, 'admin', function (data) {
-                  result = data.data.username;
-                });
-                return result;
-              }
-            }}
-          , {field: 'assistantId', title: '答辩秘书', width: 120, templet: function (data) {
-              if(data.assistantId === 'null'){
-                return "暂无";
-              }else{
-                handlerGetSync('/rest/teacher/'+data.assistantId, 'admin', function (data) {
-                  result = data.data.username;
-                });
-                return result;
-              }
-            }}
-          , {field: 'year', title: '毕业届数', width: 120}
+          , {field: 'teamId', title: 'ID', width: 60, sort: true}
+          , {field: 'name', title: '团队名', width: 140}
+          , {field: 'major', title: '所属专业', width: 200}
+          , {field: 'teachers', title: '教师组成', width: 220}
+          , {field: 'judgeTeam', title: '评委团队', width: 120}
+          , {field: 'leader', title: '负责人', width: 100}
+          , {field: 'assistant', title: '答辩秘书', width: 100}
+          , {field: 'year', title: '届数', width: 100, sort: true}
         ]]
       });
+      layer.close(loadIndex);
     });
   }, function (data) {
     layer.msg('请检查网络并重试'+data.responseText)
@@ -148,28 +113,45 @@
   }
 
   function add() {
+
     var content = $('#editData').html();
     content = updateValue(content, 'name', '');
-    tips(content, '新增数据', function () {
-      var mainData = {
-        name: $("#name").val()
-      };
-      console.log(JSON.stringify(mainData));
-      handlerPost('/rest/team', 'admin', JSON.stringify(mainData), function (data) {
-        reloadAll();
-        layer.msg('配置保存成功')
-      }, function (data) {
-        layer.msg('保存失败')
+
+
+    handlerGet('/rest/major/listTotal', 'admin', function (data) {
+      var temp = '<select id="collegeId">';
+      data.data.forEach(function (item) {
+        temp += '<option value="' + item.collegeId + '">' + item.name + '</option>';
       });
+      temp+='</select>';
+      content = content.replace('<select id="majorId" name="majorId"></select>', temp);
+      tips(content, '新增数据', function () {
+        var mainData = {
+          name: $("#name").val()
+        };
+        console.log(JSON.stringify(mainData));
+        handlerPost('/rest/team', 'admin', JSON.stringify(mainData), function (data) {
+          reloadAll();
+          layer.msg('配置保存成功')
+        }, function (data) {
+          layer.msg('保存失败')
+        });
+      });
+
+    },function (data) {
+      layer.msg('加载专业失败，请检查网络'+data.responseText)
     });
+
   }
 
   function tips(content, title, confirm) {
-    layer.open({
+    return layer.open({
       title: title
+      , type: 1
       , content: content
       , btnAlign: 'c'
       , resize: true
+      , tipsMore: true
       , area: ['300px', '200px']
       , btn: ['确认', '取消']
       , yes: function (index, layero) {
@@ -193,14 +175,41 @@
       });
     })
   }
+
+  // function selectMajor() {
+  //   handlerGet('/rest/major/listTotal', 'admin', function (data) {
+  //     var content = '<select id="collegeId">' +
+  //       '    <option value="DEFAULT"></option>';
+  //
+  //     data.data.forEach(function (item) {
+  //       content += '<option value="' + item.collegeId + '">' + item.name + '</option>';
+  //     });
+  //     content+='</select>';
+  //     var index = tips(content, '选择专业', function () {
+  //       $("#majorId").html('12');
+  //       layer.close(index);
+  //     });
+  //   },function (data) {
+  //     layer.msg('加载学院失败，请检查网络'+data.responseText)
+  //   });
+  // }
 </script>
 <script id="editData" type="text/html">
     <div id="Tips">
-        <label for="name">学院名</label>
-        <input name="name" type="text" id="name" value="name##VA" required/>
+        <label for="name">团队名</label>
+        <input name="name" type="text" id="name" value="name##VA" required/> <br/>
+        <label for="year">毕业届数</label>
+        <select name="year" id="year">
+            <option selected>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+        </select>
+        <br/>
+        <label for="majorId">专业</label>
+        <select id="majorId" name="majorId"></select>
     </div>
 </script>
-
 <script id="loadFromExcel" type="text/html">
     <div>
         <input type="file" id="selectFile" />

@@ -9,7 +9,7 @@ import top.kuangcp.graduate.service.crud.CrudTeamService;
 
 /**
  * Created by https://github.com/kuangcp
- *
+ * TODO 删除
  * @author kuangcp
  * @date 18-5-3  上午10:12
  */
@@ -31,7 +31,7 @@ public class RestTeamController {
 
     @GetMapping(value = "/listAll", produces = "application/json;charset=UTF-8")
     public String listAll(int page, int limit) {
-        return teamService.listAll(page - 1, limit);
+        return teamService.listAllWithRefer(page - 1, limit);
     }
 
     @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")

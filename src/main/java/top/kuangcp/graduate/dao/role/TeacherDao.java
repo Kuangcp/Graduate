@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import top.kuangcp.graduate.domain.role.Teacher;
 
+import java.util.List;
+
 /**
  * Created by https://github.com/kuangcp
  *
@@ -15,5 +17,7 @@ import top.kuangcp.graduate.domain.role.Teacher;
 public interface TeacherDao extends JpaRepository<Teacher, Long> {
     Teacher findByUsername(String username);
     Teacher findByTeacherNo(String teacherNo);
+
+    List<Teacher> findAllByTeamId(Long teamId);
 
 }

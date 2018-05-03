@@ -21,6 +21,7 @@ public class TeamVO {
     private String year;
 
     // 外键
+    private String teachers;
     private String major;
     private String judgeTeam;// 评委团队
     private String leader;

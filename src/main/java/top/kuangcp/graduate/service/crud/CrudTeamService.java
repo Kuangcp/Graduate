@@ -50,32 +50,7 @@ public class CrudTeamService {
         }
         Pageable pages = PageRequest.of(page, limit);
         List<Team> list = teamDao.findAll(pages).getContent();
-        final List<TeamVO> result = new ArrayList<>();
-        list.forEach(item->{
-            TeamVO teamVO = TeamVO.of(item);
-            if(item.getAssistantId() != null) {
-                Optional<Teacher> assistant = teacherDao.findById(item.getAssistantId());
-                assistant.ifPresent(teacher -> teamVO.setAssistant(teacher.getUsername()));
-            }else{
-                teamVO.setAssistant("暂无");
-            }
-            if(item.getJudgeTeamId() != null){
-                Optional<Team> team = teamDao.findById(item.getJudgeTeamId());
-                team.ifPresent(team1 -> teamVO.setJudgeTeam(team1.getName()));
-            }else{
-                teamVO.setJudgeTeam("暂无");
-            }
-            if(item.getLeaderId() != null){
-                Optional<Teacher> teacher = teacherDao.findById(item.getLeaderId());
-                teacher.ifPresent(teacher1 -> teamVO.setLeader(teacher1.getUsername()));
-            }else{
-                teamVO.setLeader("暂无");
-            }
-            // 专业是一定要有的,否则是新建的时候出问题了
-            Optional<Major> major = majorDao.findById(item.getMajorId());
-            major.ifPresent(major1 -> teamVO.setMajor(major1.getName()));
-            result.add(teamVO);
-        });
+        List<TeamVO> result = teamToTeamVO(list);
         return JsonBuilder.buildTableResult(0, " ", (int) teamDao.count(), result);
     }
 
@@ -101,12 +76,48 @@ public class CrudTeamService {
             return checkPageNum;
         }
         Page<Team> list = teamDao.findByNameContaining(name, PageRequest.of(page, limit));
-//        final List<Team> result = new ArrayList<>();
-        // 过滤出相等的并添加到集合
-//        list.filter(item -> item.getMajorId().equals(majorId)).iterator().forEachRemaining(result::add);
+        final List<TeamVO> result = teamToTeamVO(list.getContent());
         if (list.getTotalElements() == 0) {
             return JsonBuilder.buildSuccessTableResult("", 0, "");
         }
-        return JsonBuilder.buildSuccessTableResult(" ", (int) list.getTotalElements(), list.getContent());
+        return JsonBuilder.buildSuccessTableResult(" ", (int) list.getTotalElements(), result);
+    }
+
+    private List<TeamVO> teamToTeamVO(List<Team> list){
+        final List<TeamVO> result = new ArrayList<>();
+        list.forEach(item->{
+            TeamVO teamVO = TeamVO.of(item);
+            if(item.getAssistantId() != null) {
+                Optional<Teacher> assistant = teacherDao.findById(item.getAssistantId());
+                assistant.ifPresent(teacher -> teamVO.setAssistant(teacher.getUsername()));
+            }else{
+                teamVO.setAssistant("暂无");
+            }
+            if(item.getJudgeTeamId() != null){
+                Optional<Team> team = teamDao.findById(item.getJudgeTeamId());
+                team.ifPresent(team1 -> teamVO.setJudgeTeam(team1.getName()));
+            }else{
+                teamVO.setJudgeTeam("暂无");
+            }
+            if(item.getLeaderId() != null){
+                Optional<Teacher> teacher = teacherDao.findById(item.getLeaderId());
+                teacher.ifPresent(teacher1 -> teamVO.setLeader(teacher1.getUsername()));
+            }else{
+                teamVO.setLeader("暂无");
+            }
+            List<Teacher> teachers =teacherDao.findAllByTeamId(item.getTeamId());
+            if(teachers== null || teachers.size()==0){
+                teamVO.setTeachers("暂无");
+            }else{
+                final StringBuilder temp = new StringBuilder();
+                teachers.forEach(teacher -> temp.append(teacher.getUsername()).append(","));
+                teamVO.setTeachers(temp.toString().substring(0, temp.length()-1));
+            }
+            // 专业是一定要有的,否则是新建的时候出问题了
+            Optional<Major> major = majorDao.findById(item.getMajorId());
+            major.ifPresent(major1 -> teamVO.setMajor(major1.getName()));
+            result.add(teamVO);
+        });
+        return result;
     }
 }
