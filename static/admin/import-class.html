@@ -32,7 +32,7 @@
   var table;
   var majorId;
   var collegeId;
-  
+  checkRole('admin');
   // 加载学院
   handlerGet('/rest/college/listTotal', 'admin', function (data) {
     data.data.forEach(function (item) {

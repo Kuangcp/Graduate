@@ -17,6 +17,7 @@ import java.util.List;
 public interface TopicDao extends JpaRepository<Topic, Long> {
 
     List<Topic> findAllByStudentId(Long studentId);
+    List<Topic> findAllByTeacherId(Long teacherId);
 
     List<Topic> findAllByNameContaining(String name);
 }

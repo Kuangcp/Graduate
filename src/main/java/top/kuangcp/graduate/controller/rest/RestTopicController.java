@@ -23,6 +23,15 @@ public class RestTopicController {
         this.topicService = topicService;
     }
 
+    @GetMapping(value = "/get/{id}", produces = "application/json;charset=UTF-8")
+    public String getOne(@PathVariable("id") Long topicId){
+        return topicService.getOne(topicId);
+    }
+    @GetMapping(value = "/list/{id}", produces = "application/json;charset=UTF-8")
+    public String listByTeacher(@PathVariable("id") Long teacherId){
+        return topicService.listByTeacher(teacherId);
+
+    }
     @GetMapping(value = "/listAll", produces = "application/json;charset=UTF-8")
     public String listAll() {
         return topicService.listAll();

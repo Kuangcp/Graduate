@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.TopicDao;
 import top.kuangcp.graduate.domain.Topic;
+import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
 import top.kuangcp.graduate.util.JsonBuilder;
 
 import java.util.Calendar;
@@ -20,8 +21,12 @@ import java.util.List;
 @Log4j2
 @Service
 public class CrudTopicService {
+    private final TopicDao topicDao;
+
     @Autowired
-    TopicDao topicDao;
+    public CrudTopicService(TopicDao topicDao) {
+        this.topicDao = topicDao;
+    }
 
     // TODO 分页
     public String listAll(){
@@ -49,4 +54,15 @@ public class CrudTopicService {
         }
     }
 
+    public String listByTeacher(Long teacherId) {
+        List<Topic> list = topicDao.findAllByTeacherId(teacherId);
+        if(list == null || list.size()==0){
+            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+        }else{
+            return JsonBuilder.buildSuccessResult(" ", list);
+        }
+    }
+    public String getOne(Long topicId){
+        return CrudServiceCommon.getOne(topicId, topicDao);
+    }
 }

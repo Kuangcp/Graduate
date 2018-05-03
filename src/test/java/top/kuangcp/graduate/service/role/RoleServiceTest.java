@@ -21,7 +21,7 @@ public class RoleServiceTest {
 
     @Test
     public void testLoginByStudent() throws Exception {
-        boolean result = roleService.loginWithStudent("2", "2");
+        Long result = roleService.loginWithStudent("2", "2");
         System.out.println(result);
     }
 }

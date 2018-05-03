@@ -1,10 +1,13 @@
 function checkRole(role) {
   var random = sessionStorage.getItem(mythos);
-  if (random == null || random === '') {
+  var id = sessionStorage.getItem(role+'Id');
+  if(random !== null && random !== '' && id!== null && id!== ''){
+    return random;
+  }else{
+    removeCache();
     login(role);
     return null;
   }
-  return random;
 }
 function checkRoleThen(role, handle) {
   var random = sessionStorage.getItem(mythos);
@@ -47,6 +50,7 @@ function login(role) {
         console.log(data);
         if (data.code === '0' ) {
           sessionStorage.setItem(mythos, data.data);
+          sessionStorage.setItem(role+'Id', data.msg);
           layer.msg('登录成功 ');
           layer.close(loadIndex);
         }else{
@@ -139,4 +143,11 @@ function getStudent(url, success, fail) {
  */
 function getTeacher(url, success, fail) {
   restGet('/teacher'+url, 'teacher', success,fail)
+}
+
+function removeCache() {
+  sessionStorage.removeItem(mythos);
+  sessionStorage.removeItem('teacherId');
+  sessionStorage.removeItem('studentId');
+  sessionStorage.removeItem('adminId');
 }

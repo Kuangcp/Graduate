@@ -31,24 +31,24 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String username = name.split(CoreConfig.DELIMITER)[0];
         String role = name.split(CoreConfig.DELIMITER)[1];
         String password = authentication.getCredentials().toString();
-        boolean result = false;
-        log.info("roleService "+roleService);
+        Long resultId = null;
+//        log.info("roleService "+roleService);
         // 查询登录
         switch (role){
             case "student" :
-                result = roleService.loginWithStudent(username, password);
+                resultId = roleService.loginWithStudent(username, password);
                 break;
             case "teacher" :
-                result = roleService.loginWithTeacher(username, password);
+                resultId = roleService.loginWithTeacher(username, password);
                 break;
             case "admin":
-                result = roleService.loginWithAdmin(username, password);
+                resultId = roleService.loginWithAdmin(username, password);
                 break;
             default:
                 break;
         }
         // TODO 授权， 权限需要 ROLE_ 开头
-        if(result){
+        if(resultId != null){
             ArrayList<GrantedAuthority> authorities = new ArrayList<>();
             switch (role){
                 case "student" :
@@ -66,8 +66,8 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                 default:
                     break;
             }
-            log.info("用户登录成功 "+username+" | "+password+" | "+role);
-            return new UsernamePasswordAuthenticationToken(username, password, authorities);
+            log.info("用户登录成功 name="+username+" | pa="+password+" | role="+role+" | id="+resultId);
+            return new UsernamePasswordAuthenticationToken(resultId, password, authorities);
         }else{
             log.info("用户登录失败 "+username+" | "+password+" | "+role);
             throw new BadCredentialsException("用户名或密码错误！");

@@ -15,7 +15,6 @@
             <ol>
                 <li></li>
                 <li></li>
-                <li></li>
             </ol>
         </div>
         <button class="submit" type="button">保存</button>
@@ -31,25 +30,30 @@
   var E = window.wangEditor;
   var editor = new E('#content');
   editor.create();
-
-  // TODO 教师id
+  var topicId = sessionStorage.getItem('editId');
+  if(topicId !== null){
+    handlerGet('/rest/topic/get/'+topicId, 'teacher', function (data) {
+      $("#title").val(data.data.name);
+      $(".w-e-text").html(data.data.attention);
+    })
+  }
   $(".submit").on('click', function () {
     var title = $("#title").val();
     var attention = $(".w-e-text").html();
 
     var data = {
+      topicId: topicId,
       name: title,
       attention: attention,
-      teacherId: 112212
+      teacherId: sessionStorage.getItem('teacherId')
     };
     console.log(title + "  | " + attention);
     console.log(JSON.stringify(data));
     handlerPost('/rest/topic/save', 'teacher', JSON.stringify(data), function (data) {
       layer.msg('保存成功,请继续编辑或准备提交审核')
-    }, function (data) {
+    }, function () {
       layer.msg('请检查网络并重试')
     });
   });
-
 </script>
 </html>

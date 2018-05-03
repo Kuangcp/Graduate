@@ -12,6 +12,7 @@ import top.kuangcp.graduate.domain.role.Teacher;
 /**
  * Created by https://github.com/kuangcp
  * 处理角色的登录服务，
+ *
  * @author kuangcp
  * @date 18-4-22  下午9:44
  */
@@ -25,19 +26,33 @@ public class RoleService {
     @Autowired
     AdminDao adminDao;
 
-    public boolean loginWithStudent(String username, String password) {
+    public Long loginWithStudent(String username, String password) {
         Student student = studentDao.findByStudentNo(username);
-        if(student == null) return false;
-        return password.equals(student.getPassword());
+        if (student == null) return null;
+        if (password.equals(student.getPassword())) {
+            return student.getStudentId();
+        } else {
+            return null;
+        }
     }
-    public boolean loginWithTeacher(String username, String password){
+
+    public Long loginWithTeacher(String username, String password) {
         Teacher teacher = teacherDao.findByTeacherNo(username);
-        if(teacher == null) return false;
-        return password.equals(teacher.getPassword());
+        if (teacher == null) return null;
+        if (password.equals(teacher.getPassword())) {
+            return teacher.getTeacherId();
+        } else {
+            return null;
+        }
     }
-    public boolean loginWithAdmin(String username, String password){
+
+    public Long loginWithAdmin(String username, String password) {
         Admin admin = adminDao.findByUsername(username);
-        if(admin == null) return false;
-        return password.equals(admin.getPassword());
+        if (admin == null) return null;
+        if (password.equals(admin.getPassword())) {
+            return admin.getAdminId();
+        } else {
+            return null;
+        }
     }
 }

@@ -18,9 +18,9 @@
             <li class="layui-nav-item">
                 <a href="javascript:;">课题管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-url="publish">编辑课题</a></dd>
-                    <dd><a href="javascript:;">提交审核</a></dd>
-                    <dd><a href="javascript:;">查看状态</a></dd>
+                    <dd><a href="javascript:;" data-url="publish" onclick="clearTopicId()">新建课题</a></dd>
+                    <dd><a href="javascript:;" data-url="manager">查看课题</a></dd>
+                    <dd><a href="javascript:;" data-url="manager">提交审核</a></dd>
                     <dd><a href="javascript:;">授权管理</a></dd>
                 </dl>
             </li>
@@ -102,6 +102,10 @@
     getTeacher('/', function (data) {
       console.log(JSON.stringify(data))
     })
+  }
+  
+  function clearTopicId() {
+    sessionStorage.removeItem('editId');
   }
 
 
