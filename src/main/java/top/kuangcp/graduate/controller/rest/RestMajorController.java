@@ -63,6 +63,11 @@ public class RestMajorController {
         return majorService.delete(idList);
     }
 
+    @PostMapping(value = "/leader", produces = "application/json;charset=UTF-8")
+    public String setLeader(@RequestBody Major major) {
+        return majorService.setLeader(major);
+    }
+
     @PostMapping(produces = "application/json;charset=UTF-8")
     public String save(@RequestBody Major major) {
         return majorService.saveOne(major);

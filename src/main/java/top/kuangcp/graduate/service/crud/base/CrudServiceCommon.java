@@ -19,7 +19,7 @@ import java.util.Optional;
 
 /**
  * Created by https://github.com/kuangcp
- * 公共方法
+ * 公共方法 TODO 如何让Service不用声明方法，然后直接就具有，抽象类？
  * @author kuangcp
  * @date 18-5-2  上午8:34
  */

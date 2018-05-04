@@ -11,10 +11,13 @@ function checkRole(role) {
 }
 function checkRoleThen(role, handle) {
   var random = sessionStorage.getItem(mythos);
-  if (random == null || random === '') {
-    login(role);
-  }else{
+  var id = sessionStorage.getItem(role+'Id');
+  if (random != null && random !== '' && id!== null && id!== '') {
     handle(random);
+  }else{
+    removeCache();
+    login(role);
+    return null;
   }
 }
 

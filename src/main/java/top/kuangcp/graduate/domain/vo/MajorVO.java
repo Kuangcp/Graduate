@@ -18,6 +18,7 @@ public class MajorVO {
 
     public static MajorVO of(Major major) {
         MajorVO majorVO = new MajorVO();
+        majorVO.setMajorId(major.getMajorId());
         majorVO.setCollegeId(major.getCollegeId());
         majorVO.setName(major.getName());
         return majorVO;

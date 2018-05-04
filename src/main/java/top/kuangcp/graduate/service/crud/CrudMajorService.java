@@ -9,10 +9,13 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.ResponseCode;
+import top.kuangcp.graduate.dao.LeaderDao;
 import top.kuangcp.graduate.dao.MajorDao;
 import top.kuangcp.graduate.dao.role.TeacherDao;
+import top.kuangcp.graduate.domain.Leader;
 import top.kuangcp.graduate.domain.doc.Major;
 import top.kuangcp.graduate.domain.role.Teacher;
+import top.kuangcp.graduate.domain.vo.MajorVO;
 import top.kuangcp.graduate.service.FileUploadService;
 import top.kuangcp.graduate.service.crud.base.BaseCrud;
 import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
@@ -21,6 +24,7 @@ import top.kuangcp.graduate.util.JsonBuilder;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,12 +39,14 @@ import java.util.Optional;
 public class CrudMajorService implements BaseCrud {
     private final MajorDao majorDao;
     private final TeacherDao teacherDao;
+    private final LeaderDao leaderDao;
     private final FileUploadService uploadService;
 
     @Autowired
-    public CrudMajorService(MajorDao majorDao, TeacherDao teacherDao, FileUploadService uploadService) {
+    public CrudMajorService(MajorDao majorDao, TeacherDao teacherDao, LeaderDao leaderDao, FileUploadService uploadService) {
         this.majorDao = majorDao;
         this.teacherDao = teacherDao;
+        this.leaderDao = leaderDao;
         this.uploadService = uploadService;
     }
 
@@ -75,7 +81,7 @@ public class CrudMajorService implements BaseCrud {
     }
 
     /**
-     * 填充外键
+     * 填充外键 转为 VO
      */
     public String listByCollegeWithRefer(int page, int limit, Long collegeId) {
         String checkPageNum = CheckPage.checkPageNum(page, limit);
@@ -84,15 +90,18 @@ public class CrudMajorService implements BaseCrud {
         }
         Pageable pages = PageRequest.of(page, limit);
         List<Major> list = majorDao.findAllByCollegeId(collegeId, pages).getContent();
+        final List<MajorVO> result = new ArrayList<>();
         list.forEach(item->{
+            MajorVO temp = MajorVO.of(item);
             if(item.getLeaderId() != null){
                 Optional<Teacher> teacher = teacherDao.findById(item.getLeaderId());
-                if(teacher.isPresent()){
-                    
-                }
+                teacher.ifPresent(teacher1 -> temp.setLeader(teacher1.getUsername()));
+            }else{
+                temp.setLeader("暂无");
             }
+            result.add(temp);
         });
-        return JsonBuilder.buildTableResult(0, " ", majorDao.findAllByCollegeId(collegeId).size(), list);
+        return JsonBuilder.buildTableResult(0, " ", majorDao.findAllByCollegeId(collegeId).size(), result);
     }
 
     @Override
@@ -120,6 +129,22 @@ public class CrudMajorService implements BaseCrud {
         return CrudServiceCommon.saveOne(target, majorDao);
     }
 
+    // 更新负责人
+    public String setLeader(Major major){
+        Optional<Major> target = majorDao.findById(major.getMajorId());
+        if(target.isPresent()){
+            target.get().setLeaderId(major.getLeaderId());
+            Leader leader = new Leader();
+            leader.setMajorId(major.getMajorId());
+            leader.setTeacherId(major.getLeaderId());
+            leader.setYear(Calendar.getInstance().get(Calendar.YEAR));
+            leaderDao.save(leader);
+            return saveOne(target.get());
+        }else{
+            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+        }
+
+    }
     public String listTotal(){
         return CrudServiceCommon.listTotal(majorDao);
     }

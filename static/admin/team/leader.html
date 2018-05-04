@@ -36,7 +36,7 @@
     </select>
     <br/>
     <label for="leaderId">负责人</label>
-    <select id="leaderId" name="leaderId" >
+    <select id="leaderId" name="leaderId">
         <option value="DEFAULT"></option>
     </select>
     <br>
@@ -46,40 +46,52 @@
 <button class="layui-btn layui-btn-normal" style="margin-left: 39%;" onclick="submit()">提交</button>
 
 <script>
-  var teamId = sessionStorage.getItem('editTeamId');
+  // 逻辑是拿到教师id， 加载一系列数据
+  var majorId = sessionStorage.getItem('leaderEditMajorId');
   var editCollege = null;
   var editMajor = null;
-  var editLeader = null;
 
-  handlerGetSync('/rest/team/' + teamId, 'admin', function (data) {
-    console.log('收到'+JSON.stringify(data));
-    editMajor = data.data.majorId;
-    editLeader = data.data.leaderId;
-
-    sessionStorage.setItem('editMajor', editMajor);
-    $("#name").val(data.data.name);
-    handlerGetSync('/rest/major/' + editMajor, 'admin', function (data) {
-      sessionStorage.setItem('editCollege', data.data.collegeId);
+  handlerGetSync('/rest/major/' + majorId, 'admin', function (data) {
+    sessionStorage.setItem("LeaderId", data.data.leaderId);
+    handlerGetSync('/rest/teacher/' + data.data.leaderId, 'admin', function (data) {
+      console.log('收到' + JSON.stringify(data));
+      editMajor = data.data.majorId;
+      sessionStorage.setItem('editMajor', editMajor);
+      handlerGetSync('/rest/major/' + data.data.majorId, 'admin', function (data) {
+        sessionStorage.setItem('editCollege', data.data.collegeId);
+      });
     });
-    sessionStorage.setItem('editLeader', editLeader);
   });
 
+
+  // 装载已有数据， 学院
   handlerGet('/rest/college/listTotal', 'admin', function (data) {
     data.data.forEach(function (item) {
       if (sessionStorage.getItem('editCollege') === item.collegeId) {
         $("#collegeId").append('<option value="' + item.collegeId + '" selected>' + item.name + '</option>');
+        // 专业
         handlerGet('/rest/major/listTotalByCollege/' + item.collegeId, 'admin', function (data) {
           $("#majorId").html('<option value="DEFAULT"></option>');
           data.data.forEach(function (item) {
-            if(sessionStorage.getItem('editMajor') === item.majorId){
+            if (sessionStorage.getItem('editMajor') === item.majorId) {
               $("#majorId").append('<option value="' + item.majorId + '" selected>' + item.name + '</option>');
-            }else{
+              // 负责人
+              handlerGet('/rest/teacher/listTotalByMajor/' + item.majorId, 'admin', function (data) {
+                $("#leaderId").html('<option value="DEFAULT"></option>');
+                data.data.forEach(function (item) {
+                  if(sessionStorage.getItem("LeaderId") === item.teacherId ){
+                    $("#leaderId").append('<option value="' + item.teacherId + '" selected>' + item.username + '</option>');
+                  }else{
+                    $("#leaderId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
+                  }
+                });
+              });
+            } else {
               $("#majorId").append('<option value="' + item.majorId + '">' + item.name + '</option>');
             }
-
           });
         });
-      }else{
+      } else {
         $("#collegeId").append('<option value="' + item.collegeId + '">' + item.name + '</option>');
       }
     });
@@ -97,9 +109,13 @@
       });
     });
   }
+
   function showTeacher() {
     majorId = $("#majorId").val();
-    handlerGet('/rest/teacher/listTotalByMajor/'+majorId, 'admin', function (data) {
+    if(majorId === 'DEFAULT'){
+      return;
+    }
+    handlerGet('/rest/teacher/listTotalByMajor/' + majorId, 'admin', function (data) {
       $("#leaderId").html('<option value="DEFAULT"></option>');
       data.data.forEach(function (item) {
         $("#leaderId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
@@ -108,20 +124,16 @@
 
     })
   }
-  function submit() {
-    var editId = sessionStorage.getItem("editTeamId");
-    var collegeId = $("#collegeId").val();
-    var majorId = $("#majorId").val();
-    var leaderId = $("#leaderId").val();
 
-    // console.log(name , year, collegeId, majorId, judgeId);
+  function submit() {
+    var editId = sessionStorage.getItem("leaderEditMajorId");
+    var leaderId = $("#leaderId").val();
     var send = {
-      teamId: editId,
-      majorId:majorId,
+      majorId: editId,
       leaderId: leaderId
     };
-    handlerPost('/rest/team/leader', 'admin', JSON.stringify(send), function (data) {
-      layer.msg('委派成功');
+    handlerPost('/rest/major/leader', 'admin', JSON.stringify(send), function (data) {
+      layer.msg('委任成功');
       sessionStorage.removeItem('editJudge');
       sessionStorage.removeItem('editMajor');
       sessionStorage.removeItem('editCollege');
