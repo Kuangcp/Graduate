@@ -1,10 +1,7 @@
 package top.kuangcp.graduate.controller.business.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import top.kuangcp.graduate.domain.Feedback;
 import top.kuangcp.graduate.service.business.student.WxStudentService;
 import top.kuangcp.graduate.service.crud.CrudFeedbackService;
@@ -34,17 +31,17 @@ public class StudentBusinessController {
         return wxStudentService.selectTopic(topicId, studentId);
     }
 
-    @GetMapping(value = "/query/score", produces = "application/json;charset=UTF-8")
-    public String queryScore(Long studentId){
+    @GetMapping(value = "/query/score/{id}", produces = "application/json;charset=UTF-8")
+    public String queryScore(@PathVariable("id") Long studentId){
         return wxStudentService.queryScore(studentId);
     }
 
-    @GetMapping(value = "/query/place", produces = "application/json;charset=UTF-8")
-    public String queryPlace(Long studentId){
-        return wxStudentService.QueryPlace(studentId);
+    @GetMapping(value = "/query/place/{id}", produces = "application/json;charset=UTF-8")
+    public String queryPlace(@PathVariable("id") Long studentId){
+        return wxStudentService.queryPlace(studentId);
     }
 
-    @PostMapping(value = "", produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/feedback", produces = "application/json;charset=UTF-8")
     public String save(Feedback feedback){
         return feedbackService.save(feedback);
     }

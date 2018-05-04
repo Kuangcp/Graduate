@@ -10,9 +10,14 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.CoreConfig;
+import top.kuangcp.graduate.dao.LeaderDao;
+import top.kuangcp.graduate.dao.SecretaryDao;
+import top.kuangcp.graduate.domain.Leader;
+import top.kuangcp.graduate.domain.Secretary;
 import top.kuangcp.graduate.service.role.RoleService;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * @author kcp
@@ -22,8 +27,17 @@ import java.util.ArrayList;
 @Service
 public class CustomAuthenticationProvider implements AuthenticationProvider {
 
+    private final RoleService roleService;
+    private final LeaderDao leaderDao;
+    private final SecretaryDao secretaryDao;
+
     @Autowired
-    private RoleService roleService;
+    public CustomAuthenticationProvider(RoleService roleService, LeaderDao leaderDao, SecretaryDao secretaryDao) {
+        this.roleService = roleService;
+        this.leaderDao = leaderDao;
+        this.secretaryDao = secretaryDao;
+    }
+
     @Override
     public Authentication authenticate(Authentication authentication) throws AuthenticationException {
         // 获取认证的用户名 & 密码
@@ -33,7 +47,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String password = authentication.getCredentials().toString();
         Long resultId = null;
 //        log.info("roleService "+roleService);
-        // 查询登录
+        // 查询登录 TODO 设计对应的权限
         switch (role){
             case "student" :
                 resultId = roleService.loginWithStudent(username, password);
@@ -56,6 +70,10 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
                     authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
                     break;
                 case "teacher" :
+                    Optional<Leader> leader = leaderDao.findById(resultId);
+                    Optional<Secretary> secretary = secretaryDao.findById(resultId);
+                    leader.ifPresent(item-> authorities.add(new GrantedAuthorityImpl("ROLE_LEADER")));
+                    secretary.ifPresent(item-> authorities.add(new GrantedAuthorityImpl("ROLE_SECRETARY")));
                     authorities.add( new GrantedAuthorityImpl("ROLE_TEACHER") );
 //                    authorities.add( new GrantedAuthorityImpl("AUTH_WRITE") );
                     break;

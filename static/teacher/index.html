@@ -33,28 +33,29 @@
                     <dd><a href="/admin">管理员</a></dd>
                 </dl>
             </li>
-            <li class="layui-nav-item">
-                <!--<span class="layui-badge-dot"></span>-->
-                <span class="layui-badge">9</span>
-                <!--若点击进入所有信息的面板，悬浮则是阅读消息-->
-                <a href="">&nbsp;&nbsp;消息
-                    <dl class="layui-nav-child">
-                        <dd><a href="">你提交的开题报告文档已经被导师审阅并回复了快去查看吧 &nbsp;&nbsp;2017-09-19 19:12:06</a></dd>
-                        <dd><a href="">提示1</a></dd>
-                        <dd><a href="">提示2</a></dd>
-                    </dl>
-                    <!--<span class="layui-badge">9</span>-->
-                </a>
-                <!--消息只是提示，最多负责跳转，编辑就是在单个页面上-->
-            </li>
+            <!--<li class="layui-nav-item">-->
+                <!--&lt;!&ndash;<span class="layui-badge-dot"></span>&ndash;&gt;-->
+                <!--<span class="layui-badge">9</span>-->
+                <!--&lt;!&ndash;若点击进入所有信息的面板，悬浮则是阅读消息&ndash;&gt;-->
+                <!--<a href="">&nbsp;&nbsp;消息-->
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="">你提交的开题报告文档已经被导师审阅并回复了快去查看吧 &nbsp;&nbsp;2017-09-19 19:12:06</a></dd>-->
+                        <!--<dd><a href="">提示1</a></dd>-->
+                        <!--<dd><a href="">提示2</a></dd>-->
+                    <!--</dl>-->
+                    <!--&lt;!&ndash;<span class="layui-badge">9</span>&ndash;&gt;-->
+                <!--</a>-->
+                <!--&lt;!&ndash;消息只是提示，最多负责跳转，编辑就是在单个页面上&ndash;&gt;-->
+            <!--</li>-->
         </ul>
         <ul class="layui-nav layui-layout-right">
             <li class="layui-nav-item">
                 <a href="javascript:;">
-                    <img src="/image/inspectocat.jpg" class="layui-nav-img"/>贤心
+                    <img src="/image/avatar/inspectocat.jpg" class="layui-nav-img"/>
+                    <span id="nameT"></span>
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;" data-url="publish">基本资料</a></dd>
+                    <dd><a href="javascript:;" onclick="base()">基本资料</a></dd>
                     <!--<dd><a href="">安全设置</a></dd>-->
                     <dd><a href="javascript:;" onclick="logout()">注销登录</a></dd>
                 </dl>
@@ -65,7 +66,7 @@
         <!-- 内容主体区域 -->
         <iframe src="/teacher/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
     </div>
-    <div class="layui-footer footer-teacher" onclick="getall()">
+    <div class="layui-footer footer-teacher">
         © kuangcp.mythos
     </div>
 </div>
@@ -77,11 +78,21 @@
 <script src="/js/common/login.js"></script>
 <script src="/layui/layui.all.js"></script>
 <script>
-  // if(location.href.split(".htm").length>1){
-  //   window.location.href='/teacher'
-  // }
   checkRole('teacher');
   home('teacher');
+  getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
+    $("#nameT").html(data.data.username);
+  });
+  if (sessionStorage.getItem('teacherId') !== null && sessionStorage.getItem('TeacherRole') === null) {
+    getTeacher('/roles/' + sessionStorage.getItem('teacherId'), function (data) {
+      console.log(JSON.stringify(data));
+      if (data.code === '0') {
+        sessionStorage.setItem('WHO', data.data);
+      }
+    }, function (data) {
+
+    })
+  }
   $(function () {
     $("[data-url]").on('click', function () {
       turn('teacher', $(this).data('url'))
@@ -91,23 +102,50 @@
   layui.use('element', function () {
     var element = layui.element;
   });
-  function getall() {
-    // handlerGet('/rest/teacher/', 'teacher', function (data) {
-    //   console.log(JSON.stringify(data))
-    //
-    // }, function (data) {
-    //   // console.log(data)
-    //   console.log(data.statusText)
-    // })
-    getTeacher('/', function (data) {
-      console.log(JSON.stringify(data))
-    })
-  }
-  
+
   function clearTopicId() {
     sessionStorage.removeItem('editId');
   }
 
+  function base() {
+    getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
+      var content = $("#profile").html();
+      content = content.replace('username##VA', data.data.username);
+      content = content.replace('teacherNo##VA', data.data.teacherNo);
+      content = content.replace('email##VA', data.data.email);
+      tip('个人资料', content);
+    });
+  }
 
+  function tip(title, content) {
+    return layer.open({
+      title: title
+      , type: 1
+      , content: content
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: ['200px', '200px']
+      // , btn: ['确认', '取消']
+      , yes: function (index, layero) {
+      },
+      cancel: function () {
+      }
+    });
+  }
+
+</script>
+<script type="text/html" id="profile">
+    <i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe612;</i>
+    <label>姓名：</label>
+    <label>username##VA</label>
+    <hr>
+    <i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe60b;</i>
+    <label>工号：</label>
+    <label>teacherNo##VA</label>
+    <hr>
+    <i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe609;</i>
+    <label>邮箱：</label>
+    <label>email##VA</label>
 </script>
 </html>

@@ -3,8 +3,12 @@ package top.kuangcp.graduate.service.crud;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.ResponseCode;
+import top.kuangcp.graduate.dao.LeaderDao;
 import top.kuangcp.graduate.dao.MajorDao;
+import top.kuangcp.graduate.dao.SecretaryDao;
 import top.kuangcp.graduate.dao.role.TeacherDao;
+import top.kuangcp.graduate.domain.Leader;
+import top.kuangcp.graduate.domain.Secretary;
 import top.kuangcp.graduate.domain.doc.Major;
 import top.kuangcp.graduate.domain.role.Teacher;
 import top.kuangcp.graduate.domain.vo.TeacherVO;
@@ -24,12 +28,17 @@ import java.util.Optional;
 public class CrudTeacherService {
 
     private final TeacherDao teacherDao;
+    private final LeaderDao leaderDao;
     private final MajorDao majorDao;
+    private final SecretaryDao secretaryDao;
+
 
     @Autowired
-    public CrudTeacherService(TeacherDao teacherDao, MajorDao majorDao) {
+    public CrudTeacherService(TeacherDao teacherDao, LeaderDao leaderDao, MajorDao majorDao, SecretaryDao secretaryDao) {
         this.teacherDao = teacherDao;
+        this.leaderDao = leaderDao;
         this.majorDao = majorDao;
+        this.secretaryDao = secretaryDao;
     }
 
     public String getOne(Long teacherId){
@@ -56,5 +65,25 @@ public class CrudTeacherService {
         }else{
             return JsonBuilder.buildSuccessResult(" ", list);
         }
+    }
+
+    /**
+     * 找出所有角色
+     * @return JSON
+     */
+    public String listRoles(Long teacherId){
+        final StringBuilder builder = new StringBuilder();
+        Optional<Teacher> teacher = teacherDao.findById(teacherId);
+
+        if(teacher.isPresent()){
+            builder.append("TEACHER#");
+        }else{
+            return JsonBuilder.buildCodeResult(ResponseCode.NOT_FOUND);
+        }
+        Optional<Leader> leader = leaderDao.findById(teacherId);
+        Optional<Secretary> secretary = secretaryDao.findById(teacherId);
+        leader.ifPresent(item-> builder.append("LEADER#"));
+        secretary.ifPresent(item-> builder.append("SECRETARY#"));
+        return JsonBuilder.buildSuccessResult("", builder.toString());
     }
 }

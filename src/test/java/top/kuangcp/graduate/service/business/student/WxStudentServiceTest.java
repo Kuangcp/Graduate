@@ -21,7 +21,7 @@ public class WxStudentServiceTest {
 
     @Test
     public void testQueryPlace() throws Exception {
-        String result = wxStudentService.QueryPlace(1001L);
+        String result = wxStudentService.queryPlace(1L);
         System.out.println(result);
     }
 }

@@ -36,4 +36,8 @@ public class RestTeacherController {
     public String listTotalByCollege(@PathVariable("major") Long majorId) {
         return teacherService.listTotalByMajor(majorId);
     }
+    @GetMapping(value = "/roles/{teacherId}", produces = "application/json;charset=UTF-8")
+    public String getRoles(@PathVariable("teacherId") Long teacherId){
+        return teacherService.listRoles(teacherId);
+    }
 }

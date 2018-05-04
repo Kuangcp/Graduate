@@ -69,7 +69,7 @@ function login(role) {
   });
 }
 function logout() {
-  sessionStorage.removeItem(mythos);
+  removeCache();
   layer.msg('注销成功');
   // window.location.reload()
 }
@@ -165,10 +165,14 @@ function getStudent(url, success, fail) {
 function getTeacher(url, success, fail) {
   restGet('/teacher'+url, 'teacher', success,fail)
 }
+function getAdmin(url, success, fail) {
+  restGet('/admin'+url, 'admin', success,fail)
+}
 
 function removeCache() {
   sessionStorage.removeItem(mythos);
   sessionStorage.removeItem('teacherId');
   sessionStorage.removeItem('studentId');
   sessionStorage.removeItem('adminId');
+  sessionStorage.removeItem('WHO');
 }
