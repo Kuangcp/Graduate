@@ -25,74 +25,43 @@
 <body>
 
 <div id="Tips" class="main">
-    <label for="name">团队名</label>
-    <input name="name" type="text" id="name" required/>
-    <br>
-    <label for="year">毕业届数</label>
-    <select name="year" id="year">
-        <option selected>2018</option>
-        <option>2017</option>
-        <option>2016</option>
-        <option>2015</option>
-    </select>
-    <br>
     <label for="collegeId">学院</label>
     <select id="collegeId" name="collegeId" onchange="showMajor()">
         <option value="DEFAULT"></option>
     </select>
     <br>
     <label for="majorId">专业</label>
-    <select id="majorId" name="majorId">
+    <select id="majorId" name="majorId" onchange="showTeacher()">
         <option value="DEFAULT"></option>
     </select>
     <br/>
-    <label for="judgeId">评审团队</label>
-    <select id="judgeId" name="judgeId">
+    <label for="leaderId">负责人</label>
+    <select id="leaderId" name="leaderId" >
         <option value="DEFAULT"></option>
     </select>
     <br>
     <br>
     <br>
-
 </div>
 <button class="layui-btn layui-btn-normal" style="margin-left: 39%;" onclick="submit()">提交</button>
 
 <script>
   var teamId = sessionStorage.getItem('editTeamId');
-  var targetUrl = '/rest/team/listOther';
   var editCollege = null;
   var editMajor = null;
-  var editJudge = null;
+  var editLeader = null;
 
-  if (teamId == null) {
-    targetUrl += '/-1';
-  } else {
-    targetUrl += '/' + teamId;
-    handlerGetSync('/rest/team/' + teamId, 'admin', function (data) {
-      console.log('收到'+JSON.stringify(data));
-      editMajor = data.data.majorId;
-      editJudge = data.data.judgeTeamId;
+  handlerGetSync('/rest/team/' + teamId, 'admin', function (data) {
+    console.log('收到'+JSON.stringify(data));
+    editMajor = data.data.majorId;
+    editLeader = data.data.leaderId;
 
-      sessionStorage.setItem('editMajor', editMajor);
-      $("#name").val(data.data.name);
-      handlerGetSync('/rest/major/' + editMajor, 'admin', function (data) {
-        sessionStorage.setItem('editCollege', data.data.collegeId);
-      });
-      sessionStorage.setItem('editJudge', editJudge);
-    })
-  }
-  handlerGet(targetUrl, 'admin', function (data) {
-    data.data.forEach(function (item) {
-      console.log(JSON.stringify(item));
-      if (sessionStorage.getItem('editJudge') === item.teamId) {
-        $("#judgeId").append('<option value="' + item.teamId + '"' + ' selected>' + item.name + '</option>');
-      } else {
-        $("#judgeId").append('<option value="' + item.teamId + '"' + '>' + item.name + '</option>');
-      }
-
+    sessionStorage.setItem('editMajor', editMajor);
+    $("#name").val(data.data.name);
+    handlerGetSync('/rest/major/' + editMajor, 'admin', function (data) {
+      sessionStorage.setItem('editCollege', data.data.collegeId);
     });
-  }, function (data) {
-    layer.msg('加载失败，请检查网络' + data.responseText)
+    sessionStorage.setItem('editLeader', editLeader);
   });
 
   handlerGet('/rest/college/listTotal', 'admin', function (data) {
@@ -128,24 +97,31 @@
       });
     });
   }
+  function showTeacher() {
+    majorId = $("#majorId").val();
+    handlerGet('/rest/teacher/listTotalByMajor/'+majorId, 'admin', function (data) {
+      $("#leaderId").html('<option value="DEFAULT"></option>');
+      data.data.forEach(function (item) {
+        $("#leaderId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
+      });
+    }, function (data) {
+
+    })
+  }
   function submit() {
     var editId = sessionStorage.getItem("editTeamId");
-    var name = $("#name").val();
-    var year = $("#year").val();
     var collegeId = $("#collegeId").val();
     var majorId = $("#majorId").val();
-    var judgeId = $("#judgeId").val();
+    var leaderId = $("#leaderId").val();
 
-    console.log(name , year, collegeId, majorId, judgeId);
+    // console.log(name , year, collegeId, majorId, judgeId);
     var send = {
       teamId: editId,
-      name : name,
-      year : year,
       majorId:majorId,
-      judgeTeamId: judgeId
+      leaderId: leaderId
     };
-    handlerPost('/rest/team', 'admin', JSON.stringify(send), function (data) {
-      layer.msg('保存成功');
+    handlerPost('/rest/team/leader', 'admin', JSON.stringify(send), function (data) {
+      layer.msg('委派成功');
       sessionStorage.removeItem('editJudge');
       sessionStorage.removeItem('editMajor');
       sessionStorage.removeItem('editCollege');

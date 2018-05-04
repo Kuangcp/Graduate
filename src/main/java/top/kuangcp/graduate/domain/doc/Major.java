@@ -29,4 +29,5 @@ public class Major implements Serializable, ExcelTransform{
     @ExcelConfig("专业名")
     private String name;
     private Long collegeId;
+    private Long leaderId;
 }

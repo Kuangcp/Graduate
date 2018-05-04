@@ -10,7 +10,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.MajorDao;
+import top.kuangcp.graduate.dao.role.TeacherDao;
 import top.kuangcp.graduate.domain.doc.Major;
+import top.kuangcp.graduate.domain.role.Teacher;
 import top.kuangcp.graduate.service.FileUploadService;
 import top.kuangcp.graduate.service.crud.base.BaseCrud;
 import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
@@ -20,6 +22,7 @@ import top.kuangcp.graduate.util.JsonBuilder;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by https://github.com/kuangcp
@@ -31,11 +34,13 @@ import java.util.List;
 @Service
 public class CrudMajorService implements BaseCrud {
     private final MajorDao majorDao;
+    private final TeacherDao teacherDao;
     private final FileUploadService uploadService;
 
     @Autowired
-    public CrudMajorService(MajorDao majorDao, FileUploadService uploadService) {
+    public CrudMajorService(MajorDao majorDao, TeacherDao teacherDao, FileUploadService uploadService) {
         this.majorDao = majorDao;
+        this.teacherDao = teacherDao;
         this.uploadService = uploadService;
     }
 
@@ -66,6 +71,27 @@ public class CrudMajorService implements BaseCrud {
         }
         Pageable pages = PageRequest.of(page, limit);
         List list = majorDao.findAllByCollegeId(collegeId, pages).getContent();
+        return JsonBuilder.buildTableResult(0, " ", majorDao.findAllByCollegeId(collegeId).size(), list);
+    }
+
+    /**
+     * 填充外键
+     */
+    public String listByCollegeWithRefer(int page, int limit, Long collegeId) {
+        String checkPageNum = CheckPage.checkPageNum(page, limit);
+        if (checkPageNum != null) {
+            return checkPageNum;
+        }
+        Pageable pages = PageRequest.of(page, limit);
+        List<Major> list = majorDao.findAllByCollegeId(collegeId, pages).getContent();
+        list.forEach(item->{
+            if(item.getLeaderId() != null){
+                Optional<Teacher> teacher = teacherDao.findById(item.getLeaderId());
+                if(teacher.isPresent()){
+                    
+                }
+            }
+        });
         return JsonBuilder.buildTableResult(0, " ", majorDao.findAllByCollegeId(collegeId).size(), list);
     }
 

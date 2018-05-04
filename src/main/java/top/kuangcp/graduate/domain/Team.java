@@ -24,8 +24,6 @@ public class Team implements Serializable {
     private String year;
     private Long  majorId;
     private Long judgeTeamId;// 评委团队
-    //负责人  负责审题
-    private Long leaderId;
     // 秘书
     private Long assistantId;
 }

@@ -1,10 +1,8 @@
 package top.kuangcp.graduate.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import top.kuangcp.graduate.domain.Team;
 import top.kuangcp.graduate.service.crud.CrudTeamService;
 
 /**
@@ -39,6 +37,20 @@ public class RestTeamController {
         return teamService.listOtherAll(teamId);
     }
 
+    @PostMapping(produces = "application/json;charset=UTF-8")
+    public String save(@RequestBody Team team) {
+        return teamService.saveOne(team);
+    }
+
+//    @PostMapping(value = "/leader", produces = "application/json;charset=UTF-8")
+//    public String updateLeader(@RequestBody Team team) {
+//        return teamService.updateLeader(team);
+//    }
+
+    @DeleteMapping(produces = "application/json;charset=UTF-8")
+    public String delete(@RequestBody String idList) {
+        return teamService.delete(idList);
+    }
 
     @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
     public String getOne(@PathVariable("id") Long id) {

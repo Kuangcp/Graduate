@@ -20,4 +20,6 @@ public interface TeacherDao extends JpaRepository<Teacher, Long> {
 
     List<Teacher> findAllByTeamId(Long teamId);
 
+    List<Teacher> findAllByMajorId(Long majorId);
+
 }

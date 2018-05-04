@@ -44,6 +44,10 @@ public class RestMajorController {
         return majorService.listAll(page - 1, limit);
     }
 
+    @GetMapping(value = "/listByCollegeWithRefer/{college}", produces = "application/json;charset=UTF-8")
+    public String listAllByCollegeWithRefer(int page, int limit, @PathVariable("college") Long collegeId) {
+        return majorService.listByCollegeWithRefer(page - 1, limit, collegeId);
+    }
 
     @GetMapping(value = "/listByCollege/{college}", produces = "application/json;charset=UTF-8")
     public String listAllByCollege(int page, int limit, @PathVariable("college") Long collegeId) {

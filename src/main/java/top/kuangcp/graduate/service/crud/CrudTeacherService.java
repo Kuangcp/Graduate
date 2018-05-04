@@ -11,6 +11,7 @@ import top.kuangcp.graduate.domain.vo.TeacherVO;
 import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
 import top.kuangcp.graduate.util.JsonBuilder;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -46,5 +47,14 @@ public class CrudTeacherService {
             }
         }
         return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+    }
+
+    public String listTotalByMajor(Long majorId) {
+        List<Teacher> list = teacherDao.findAllByMajorId(majorId);
+        if(list == null){
+            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+        }else{
+            return JsonBuilder.buildSuccessResult(" ", list);
+        }
     }
 }

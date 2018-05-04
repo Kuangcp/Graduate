@@ -32,4 +32,8 @@ public class RestTeacherController {
     public String getOneWithRefer(@PathVariable("teacherId") Long teacherId){
         return teacherService.getOneWithRefer(teacherId);
     }
+    @GetMapping(value = "/listTotalByMajor/{major}", produces = "application/json;charset=UTF-8")
+    public String listTotalByCollege(@PathVariable("major") Long majorId) {
+        return teacherService.listTotalByMajor(majorId);
+    }
 }
