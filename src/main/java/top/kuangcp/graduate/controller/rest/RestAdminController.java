@@ -1,10 +1,8 @@
 package top.kuangcp.graduate.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import top.kuangcp.graduate.domain.bo.PasswordPairBO;
 import top.kuangcp.graduate.service.crud.CrudAdminService;
 
 /**
@@ -29,5 +27,10 @@ public class RestAdminController {
         return adminService.getOne(adminId);
     }
 
-
+    @PostMapping(value = "/password/{id}", produces = "application/json;charset=UTF-8")
+    public String updatePassword(@PathVariable("id") Long adminId, @RequestBody PasswordPairBO passPair){
+        String result = adminService.update(adminId, passPair);
+        System.out.println(result);
+        return result;
+    }
 }

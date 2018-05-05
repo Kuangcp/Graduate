@@ -29,4 +29,6 @@ public interface ResponseCode {
     int ALREADY_SELECT = 402; // 已经选择
 
     int SAVE_TOPIC_ERROR = 410; // 保存课题异常
+
+    int PASSWORD_VALID = 411; // 密码错误
 }
