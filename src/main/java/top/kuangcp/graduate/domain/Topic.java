@@ -34,6 +34,6 @@ public class Topic implements Serializable {
     private double judgeScore;
     private String judgeAdvise;
 
-    private Integer status; // 0 1 2 缺省 通过 已提交审核
+    private Integer status;
 
 }

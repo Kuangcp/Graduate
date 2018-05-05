@@ -19,7 +19,8 @@
                 <a href="javascript:;">课题管理</a>
                 <dl class="layui-nav-child">
                     <dd><a href="javascript:;" data-url="publish" onclick="clearTopicId()">新建课题</a></dd>
-                    <dd><a href="javascript:;" data-url="manager">查看课题</a></dd>
+                    <dd><a href="javascript:;" data-url="edit">编辑课题</a></dd>
+                    <dd><a href="javascript:;" data-url="check">监控课题流程</a></dd>
                     <dd><a href="javascript:;" data-url="manager">提交审核</a></dd>
                     <dd><a href="javascript:;">授权管理</a></dd>
                 </dl>
@@ -67,7 +68,7 @@
         <iframe src="/teacher/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
     </div>
     <div class="layui-footer footer-teacher">
-        © kuangcp.mythos
+        © kuangcp.top
     </div>
 </div>
 </body>
@@ -78,21 +79,19 @@
 <script src="/js/common/login.js"></script>
 <script src="/layui/layui.all.js"></script>
 <script>
-  checkRole('teacher');
   home('teacher');
   getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
     $("#nameT").html(data.data.username);
   });
   if (sessionStorage.getItem('teacherId') !== null && sessionStorage.getItem('TeacherRole') === null) {
     getTeacher('/roles/' + sessionStorage.getItem('teacherId'), function (data) {
-      console.log(JSON.stringify(data));
       if (data.code === '0') {
         sessionStorage.setItem('WHO', data.data);
       }
     }, function (data) {
-
     })
   }
+  // 绑定点击事件
   $(function () {
     $("[data-url]").on('click', function () {
       turn('teacher', $(this).data('url'))

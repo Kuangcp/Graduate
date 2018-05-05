@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/config/server.js"></script>
+    <script src="/js/common/login.js"></script>
+    <script src="/layui/layui.all.js"></script>
+    <style>
+        .mainBox {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<!--实现了通过session中的课题id, 即可渲染一个流程图出来, 这个页面全都适用-->
+<div id="mainFlow" class="mainBox">
+    <h1>自顶向下的流程</h1>
+
+</div>
+
+<script>
+  var topicId = sessionStorage.getItem('dataFlowTopicId');
+  var dataFlow = {
+    0: '起点',
+    1: '提交审核',
+    2: '审核通过',
+    3: '未过',
+    4: '课题已被选',
+    5: '暂无学生选题',
+    6: '一辩未过',
+    7: ' 一辩通过',
+    8: '二辩未过 ',
+    9: '二辩通过',
+    10: '三辩未过 ',
+    11: '三辩通过',
+    20: '答辩结束'
+  };
+  var struct = [1, 1, 2, 2, 2, 2, 2];
+
+  var index = 0;
+  struct.forEach(function (value) {
+    for (var i = 0; i < value; i++) {
+      $("#mainFlow").append('<button class="layui-btn layui-btn-primary" id="status' + index + '">' + dataFlow[index] + '</button>');
+      index++;
+    }
+    $("#mainFlow").append("<hr>");
+  });
+  selectSuccess('0');
+  handlerGet('/rest/topic/get/' + topicId, 'teacher', function (data) {
+    if (data.code === '0') {
+      console.log(data.data);
+      var status = parseInt(data.data.status);
+      if (status === 0) {
+        return 0;
+      }
+      if (status >= 1) {
+        selectSuccess('1');
+      }
+      if(status>2 && status%2===1){
+        if(status < 7){
+            selectFail(status);
+        }else{
+            selectPass(status);
+        }
+
+      }
+      if (status === 2 || status > 3) {
+        selectSuccess(2);
+      }
+      if (status === 4 || status > 5) {
+        selectSuccess(4);
+      }
+      if (status === 6 || status > 7) {
+        selectSuccess(6);
+      }
+      if (status === 8 || status > 9) {
+        selectSuccess( 8);
+      }
+      if (status === 10 || status > 11) {
+        selectSuccess(10);
+      }
+    }
+  });
+
+  function selectSuccess(name) {
+    $("#status" + name).attr('class', 'layui-btn layui-btn-normal');
+  }
+
+  function selectFail(name) {
+    $("#status" + name).attr('class', 'layui-btn layui-btn-danger');
+  }
+  function selectPass(name) {
+    $("#status" + name).attr('class', 'layui-btn');
+  }
+
+
+</script>
+</body>
+</html>

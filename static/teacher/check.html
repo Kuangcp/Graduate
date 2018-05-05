@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+</head>
+<body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+
+<main id="topicList">
+
+</main>
+
+
+<script>
+  handlerGet('/rest/topic/list/' + sessionStorage.getItem('teacherId'), 'teacher', function (data) {
+    if (data.code === '0') {
+      $("#topicList").html();
+      data.data.forEach(function (item) {
+        $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit('+item.topicId+')">' + item.name + '</blockquote>');
+      });
+      console.log()
+    }
+  });
+
+  function edit(id) {
+    sessionStorage.setItem('dataFlowTopicId', id);
+    frameTip('查看课题流程状态', 'module/topicFlow.html')
+  }
+
+  function frameTip(title, url) {
+    layer.open({
+      title: title
+      , type: 2
+      , content: url
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: ['270px', '500px']
+      ,cancel: function () {
+        sessionStorage.removeItem('dataFlowTopicId');
+      }
+    });
+  }
+</script>
+
+</body>
+</html>
