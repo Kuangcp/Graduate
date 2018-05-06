@@ -12,7 +12,7 @@
 <div class="layui-layout layui-layout-admin">
     <div class="layui-header layui-bg-cyan">
         <div class="layui-logo" style="color: #1E9FFF;font-size: 17px;">毕业设计管理系统-教师</div>
-        <ul class="layui-nav layui-layout-left">
+        <ul class="layui-nav layui-layout-left" id="nav-title">
             <!--<li class="layui-nav-item"><a href="">课题管理</a></li>-->
             <!--<li class="layui-nav-item"><a href="">用户</a></li>-->
             <li class="layui-nav-item">
@@ -82,15 +82,11 @@
   home('teacher');
   getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
     $("#nameT").html(data.data.username);
+  }, function (data) {
+    getRole();
   });
-  if (sessionStorage.getItem('teacherId') !== null && sessionStorage.getItem('TeacherRole') === null) {
-    getTeacher('/roles/' + sessionStorage.getItem('teacherId'), function (data) {
-      if (data.code === '0') {
-        sessionStorage.setItem('WHO', data.data);
-      }
-    }, function (data) {
-    })
-  }
+  getRole();
+
   // 绑定点击事件
   $(function () {
     $("[data-url]").on('click', function () {
@@ -132,6 +128,21 @@
       }
     });
   }
+  function getRole() {
+    if (sessionStorage.getItem('teacherId') !== null && sessionStorage.getItem('WHO') === null) {
+      getTeacher('/roles/' + sessionStorage.getItem('teacherId'), function (data) {
+        if (data.code === '0') {
+          sessionStorage.setItem('WHO', data.data);
+          var roles = data.data.split("#");
+          roles.forEach(function (value) {
+            if(value === 'LEADER'){
+
+            }
+          })
+        }
+      });
+    }
+  }
 
 </script>
 <script type="text/html" id="profile">
@@ -146,5 +157,27 @@
     <i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe609;</i>
     <label>邮箱：</label>
     <label>email##VA</label>
+</script>
+<script type="text/html" id="leader-nav">
+    <li class="layui-nav-item">
+        <a href="javascript:;">答辩秘书</a>
+        <dl class="layui-nav-child">
+            <dd><a href="">邮件管理</a></dd>
+            <dd><a href="">消息管理</a></dd>
+            <dd><a href="">授权管理</a></dd>
+            <dd><a href="/admin">管理员</a></dd>
+        </dl>
+    </li>
+</script>
+<script type="text/html" id="secretary-nav">
+    <li class="layui-nav-item">
+        <a href="javascript:;">负责人</a>
+        <dl class="layui-nav-child">
+            <dd><a href="">邮件管理</a></dd>
+            <dd><a href="">消息管理</a></dd>
+            <dd><a href="">授权管理</a></dd>
+            <dd><a href="/admin">管理员</a></dd>
+        </dl>
+    </li>
 </script>
 </html>
