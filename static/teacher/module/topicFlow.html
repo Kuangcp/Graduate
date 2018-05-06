@@ -17,8 +17,6 @@
 <body>
 <!--实现了通过session中的课题id, 即可渲染一个流程图出来, 这个页面全都适用-->
 <div id="mainFlow" class="mainBox">
-    <h1>自顶向下的流程</h1>
-
 </div>
 
 <script>
@@ -83,6 +81,8 @@
         selectSuccess(10);
       }
     }
+  },function (data) {
+    layer.msg('请检查网络连接'+data.responseText);
   });
 
   function selectSuccess(name) {

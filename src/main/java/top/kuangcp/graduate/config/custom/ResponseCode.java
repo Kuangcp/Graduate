@@ -31,4 +31,6 @@ public interface ResponseCode {
     int SAVE_TOPIC_ERROR = 410; // 保存课题异常
 
     int PASSWORD_VALID = 411; // 密码错误
+
+    int SUBMIT_ERROR = 415; // 提交审核失败
 }

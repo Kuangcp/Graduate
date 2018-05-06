@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
 </head>
 <body>
 <script src="/js/jquery.min.js"></script>
@@ -30,10 +31,17 @@
   });
 
   function edit(id) {
-    layer.msg('ii');
-    sessionStorage.setItem('editId', id);
-    window.location.href='publish.html'
+    layer.prompt({
+      formType: 2,
+      value: '输入备注',
+      title: '提交审核',
+      area: ['400px', '150px'] //自定义文本域宽高
+    }, function(value, index, elem){
+      getTeacher()
+      layer.close(index);
+    });
   }
+
 </script>
 
 </body>
