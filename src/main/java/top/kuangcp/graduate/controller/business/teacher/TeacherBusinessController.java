@@ -23,7 +23,7 @@ public class TeacherBusinessController {
     }
 
     @PutMapping("/submitCheck/{id}/{who}")
-    public String submitCheck(@PathVariable("id") Long topicId, @PathVariable("who") Long teacherId){
-        return teacherService.submitCheck(topicId, teacherId);
+    public String submitCheck(@PathVariable("id") Long topicId, @PathVariable("who") Long teacherId, String comment){
+        return teacherService.submitCheck(topicId, teacherId, comment);
     }
 }

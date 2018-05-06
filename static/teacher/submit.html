@@ -18,16 +18,17 @@
 
 
 <script>
+  var teacherId = sessionStorage.getItem('teacherId');
   handlerGet('/rest/topic/list/' + sessionStorage.getItem('teacherId'), 'teacher', function (data) {
     if (data.code === '0') {
       $("#topicList").html();
       data.data.forEach(function (item) {
-        $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit('+item.topicId+')">' + item.name + '</blockquote>');
+        $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit(' + item.topicId + ')">' + item.name + '</blockquote>');
       });
       console.log()
     }
-  },function (data) {
-    layer.msg('请检查网络连接'+data.responseText);
+  }, function (data) {
+    layer.msg('请检查网络连接' + data.responseText);
   });
 
   function edit(id) {
@@ -36,8 +37,16 @@
       value: '输入备注',
       title: '提交审核',
       area: ['400px', '150px'] //自定义文本域宽高
-    }, function(value, index, elem){
-      getTeacher()
+    }, function (value, index, elem) {
+      handlerPut('/bus/teacher/submitCheck/' + id + '/' + teacherId, 'teacher', {
+          comment: value
+        }, function (data) {
+          console.log(JSON.stringify(data))
+        }, function (data) {
+
+        }
+      )
+      ;
       layer.close(index);
     });
   }

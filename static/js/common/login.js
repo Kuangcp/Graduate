@@ -126,6 +126,21 @@ function handlerPost(url, role, sendData, success, fail) {
     request.fail(fail);
   });
 }
+function handlerPut(url, role, sendData, success, fail) {
+  checkRoleThen(role, function (random) {
+    var request = $.ajax({
+      type: 'PUT',
+      url : host+''+url,
+      contentType: "application/json",
+      headers:{
+        'Authorization' : 'Mythos '+random
+      },
+      data: sendData
+    });
+    request.done(success);
+    request.fail(fail);
+  });
+}
 function handlerDelete(url, role, sendData, success, fail) {
   checkRoleThen(role, function (random) {
     var request = $.ajax({

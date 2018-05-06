@@ -28,10 +28,11 @@ public class BusTeacherService {
     }
 
     /**
+     * TODO 添加注释, 方便负责人能够查看到
      * 提交课题
      * @return JSON
      */
-    public String submitCheck(Long topicId, Long teacherId) {
+    public String submitCheck(Long topicId, Long teacherId, String comment) {
         try {
             Optional<Topic> result = topicDao.findById(topicId);
             if (result.isPresent()) {
