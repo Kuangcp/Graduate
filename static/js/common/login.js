@@ -1,3 +1,4 @@
+// TODO 抽离出公共方法, 分文件引用
 function checkRole(role) {
   var random = sessionStorage.getItem(mythos);
   var id = sessionStorage.getItem(role+'Id');
@@ -55,6 +56,7 @@ function login(role) {
           sessionStorage.setItem(mythos, data.data);
           sessionStorage.setItem(role+'Id', data.msg);
           layer.msg('登录成功 ');
+          window.location.reload();
           layer.close(loadIndex);
         }else{
           login(role);

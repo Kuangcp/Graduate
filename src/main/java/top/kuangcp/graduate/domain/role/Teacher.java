@@ -32,6 +32,7 @@ public class Teacher implements Serializable, ExcelTransform {
     private String email;
     private Long teamId;
     private Long majorId;
+    private String phone;
 
     public Teacher(){}
     public Teacher(long teacherId){

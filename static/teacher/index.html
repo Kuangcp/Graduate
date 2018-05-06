@@ -27,26 +27,23 @@
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:;">其它系统</a>
-                <dl class="layui-nav-child">
-                    <dd><a href="">邮件管理</a></dd>
-                    <dd><a href="">消息管理</a></dd>
-                    <dd><a href="">授权管理</a></dd>
+                <dl class="layui-nav-child" id="otherRole">
                     <dd><a href="/admin">管理员</a></dd>
                 </dl>
             </li>
             <!--<li class="layui-nav-item">-->
-                <!--&lt;!&ndash;<span class="layui-badge-dot"></span>&ndash;&gt;-->
-                <!--<span class="layui-badge">9</span>-->
-                <!--&lt;!&ndash;若点击进入所有信息的面板，悬浮则是阅读消息&ndash;&gt;-->
-                <!--<a href="">&nbsp;&nbsp;消息-->
-                    <!--<dl class="layui-nav-child">-->
-                        <!--<dd><a href="">你提交的开题报告文档已经被导师审阅并回复了快去查看吧 &nbsp;&nbsp;2017-09-19 19:12:06</a></dd>-->
-                        <!--<dd><a href="">提示1</a></dd>-->
-                        <!--<dd><a href="">提示2</a></dd>-->
-                    <!--</dl>-->
-                    <!--&lt;!&ndash;<span class="layui-badge">9</span>&ndash;&gt;-->
-                <!--</a>-->
-                <!--&lt;!&ndash;消息只是提示，最多负责跳转，编辑就是在单个页面上&ndash;&gt;-->
+            <!--&lt;!&ndash;<span class="layui-badge-dot"></span>&ndash;&gt;-->
+            <!--<span class="layui-badge">9</span>-->
+            <!--&lt;!&ndash;若点击进入所有信息的面板，悬浮则是阅读消息&ndash;&gt;-->
+            <!--<a href="">&nbsp;&nbsp;消息-->
+            <!--<dl class="layui-nav-child">-->
+            <!--<dd><a href="">你提交的开题报告文档已经被导师审阅并回复了快去查看吧 &nbsp;&nbsp;2017-09-19 19:12:06</a></dd>-->
+            <!--<dd><a href="">提示1</a></dd>-->
+            <!--<dd><a href="">提示2</a></dd>-->
+            <!--</dl>-->
+            <!--&lt;!&ndash;<span class="layui-badge">9</span>&ndash;&gt;-->
+            <!--</a>-->
+            <!--&lt;!&ndash;消息只是提示，最多负责跳转，编辑就是在单个页面上&ndash;&gt;-->
             <!--</li>-->
         </ul>
         <ul class="layui-nav layui-layout-right">
@@ -80,10 +77,9 @@
 <script src="/layui/layui.all.js"></script>
 <script>
   home('teacher');
-  getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
+  getTeacher('/' + sessionStorage.getItem('teacherId'), function (data) {
     $("#nameT").html(data.data.username);
   }, function (data) {
-    getRole();
   });
   getRole();
 
@@ -103,7 +99,7 @@
   }
 
   function base() {
-    getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
+    getTeacher('/' + sessionStorage.getItem('teacherId'), function (data) {
       var content = $("#profile").html();
       content = content.replace('username##VA', data.data.username);
       content = content.replace('teacherNo##VA', data.data.teacherNo);
@@ -128,22 +124,34 @@
       }
     });
   }
+
   function getRole() {
     if (sessionStorage.getItem('teacherId') !== null && sessionStorage.getItem('WHO') === null) {
       getTeacher('/roles/' + sessionStorage.getItem('teacherId'), function (data) {
         if (data.code === '0') {
           sessionStorage.setItem('WHO', data.data);
-          var roles = data.data.split("#");
-          roles.forEach(function (value) {
-            if(value === 'LEADER'){
-
-            }
-          })
+          showRole();
         }
       });
     }
+    if (sessionStorage.getItem('WHO') !== null) {
+      showRole()
+    }
   }
 
+  function showRole() {
+    var temp = sessionStorage.getItem('WHO');
+    var roles = temp.split("#");
+    // TODO 设置一个新页面算了
+    roles.forEach(function (value) {
+      if (value === 'LEADER') {
+        $("#otherRole").append('<dd><a href="leader">负责人</a></dd>')
+      }
+      if (value === 'SECRETARY') {
+        $("#otherRole").append('<dd><a href="">答辩秘书</a></dd>')
+      }
+    })
+  }
 </script>
 <script type="text/html" id="profile">
     <i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe612;</i>
@@ -158,26 +166,5 @@
     <label>邮箱：</label>
     <label>email##VA</label>
 </script>
-<script type="text/html" id="leader-nav">
-    <li class="layui-nav-item">
-        <a href="javascript:;">答辩秘书</a>
-        <dl class="layui-nav-child">
-            <dd><a href="">邮件管理</a></dd>
-            <dd><a href="">消息管理</a></dd>
-            <dd><a href="">授权管理</a></dd>
-            <dd><a href="/admin">管理员</a></dd>
-        </dl>
-    </li>
-</script>
-<script type="text/html" id="secretary-nav">
-    <li class="layui-nav-item">
-        <a href="javascript:;">负责人</a>
-        <dl class="layui-nav-child">
-            <dd><a href="">邮件管理</a></dd>
-            <dd><a href="">消息管理</a></dd>
-            <dd><a href="">授权管理</a></dd>
-            <dd><a href="/admin">管理员</a></dd>
-        </dl>
-    </li>
-</script>
+
 </html>

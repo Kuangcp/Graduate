@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import top.kuangcp.graduate.domain.Secretary;
 
+import java.util.Optional;
+
 /**
  * Created by https://github.com/kuangcp
  *
@@ -12,4 +14,6 @@ import top.kuangcp.graduate.domain.Secretary;
  */
 @Repository
 public interface SecretaryDao extends JpaRepository<Secretary, Long> {
+
+    Optional<Secretary> findByTeacherId(Long teacherId);
 }

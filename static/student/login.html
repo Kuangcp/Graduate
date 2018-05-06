@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>管理员子系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+<body>
+<script src="/js/jquery.min.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  var host = 'http://192.168.43.40:8889/api';
+  var mythos = 'randomValue';
+
+  checkRole('student');
+
+  function checkRole(role) {
+    var random = sessionStorage.getItem(mythos);
+    var id = sessionStorage.getItem(role+'Id');
+    if(random !== null && random !== '' && id!== null && id!== ''){
+      return random;
+    }else{
+      removeCache();
+      login(role);
+      return null;
+    }
+  }
+  function login(role) {
+    var loadIndex = layer.load(1);
+    layer.prompt({
+      formType: 0,
+      value: '2',
+      closeBtn: 0,
+      title: '请输入用户名'
+    }, function (value1, index1, elem) {
+      layer.close(index1);
+      layer.prompt({
+        formType: 1,
+        value: '2',
+        closeBtn: 0,
+        title: '请输入密码'
+      }, function (value2, index2, elem) {
+        layer.close(index2);
+        var data = {
+          username : value1,
+          password : value2,
+          role : role
+        };
+        data = JSON.stringify(data);
+        // console.log('发送消息：  '+data)
+        var request = $.post(host + '/login', data,  "json");
+        request.done(function (data) {
+          console.log(data);
+          if (data.code === '0' ) {
+            sessionStorage.setItem(mythos, data.data);
+            sessionStorage.setItem(role+'Id', data.msg);
+            layer.msg('登录成功 ');
+            window.location.href = 'index.html';
+            layer.close(loadIndex);
+          }else{
+            login(role);
+            layer.msg('用户名或密码错误')
+          }
+        });
+        request.fail(function (data) {
+          login(role);
+          layer.msg('请求异常请重试')
+        });
+      });
+    });
+  }
+  function removeCache() {
+    sessionStorage.removeItem(mythos);
+    sessionStorage.removeItem('studentId');
+  }
+</script>
+</body>
+</html>

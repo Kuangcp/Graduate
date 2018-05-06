@@ -1,8 +1,7 @@
 <!doctype html>
 
 <meta charset="utf-8">
-<title>Dagre D3 Demo: Sentence Tokenization</title>
-
+<title>Process</title>
 <script src="/js/d3.v4.min.js" charset="utf-8"></script>
 <script src="/js/dagre-d3.min.js"></script>
 <script src="/js/jquery.min.js"></script>
@@ -39,7 +38,7 @@
     }
 </style>
 
-<svg id="svg-canvas" width=600 height=600></svg>
+<svg id="svg-canvas" width=500 height=500></svg>
 
 <script >
   var topicId = sessionStorage.getItem('dataFlowTopicId');
@@ -122,7 +121,6 @@
     if (data.code === '0') {
       console.log(data.data);
       var status = parseInt(data.data.status);
-      status = 6;
       if (status === 0) {
         return 0;
       }
@@ -158,13 +156,10 @@
   function selectSuccess(name) {
     document.getElementById("status" + name).setAttribute('class', 'type-current');
   }
-
   function selectFail(name) {
     document.getElementById("status" + name).setAttribute('class', 'type-fail');
-    // $("#status" + name).attr('class', 'layui-btn layui-btn-danger');
   }
   function selectPass(name) {
     document.getElementById("status" + name).setAttribute('class', 'type-success');
-    // $("#status" + name).attr('class', 'layui-btn');
   }
 </script>

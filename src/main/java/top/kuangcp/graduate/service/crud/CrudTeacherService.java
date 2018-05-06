@@ -80,8 +80,8 @@ public class CrudTeacherService {
         }else{
             return JsonBuilder.buildCodeResult(ResponseCode.NOT_FOUND);
         }
-        Optional<Leader> leader = leaderDao.findById(teacherId);
-        Optional<Secretary> secretary = secretaryDao.findById(teacherId);
+        Optional<Leader> leader = leaderDao.findByTeacherId(teacherId);
+        Optional<Secretary> secretary = secretaryDao.findByTeacherId(teacherId);
         leader.ifPresent(item-> builder.append("LEADER#"));
         secretary.ifPresent(item-> builder.append("SECRETARY#"));
         return JsonBuilder.buildSuccessResult("", builder.toString());
