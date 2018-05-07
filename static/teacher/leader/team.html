@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+<body class="main-body-admin">
+<nav style="margin-top: 10px;">
+    <button class="layui-btn" onclick="add()">新增</button>
+    <button class="layui-btn" onclick="edit()">编辑</button>
+    <button class="layui-btn layui-btn-warm" onclick="leader()">委派答辩秘书</button>
+    <button class="layui-btn layui-btn-danger" onclick="deleteRow()">删除</button>
+    <input class="layui-input-inline" id="searchValue"/>
+    <button class="layui-btn layui-btn-normal" onclick="search()">搜索</button>
+</nav>
+<table id="team" lay-filter="test"></table>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/js/common/upload.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  var table;
+  var loadIndex = layer.load(2);
+  handlerGet('/common/ping', 'teacher', function () {
+    layui.use('table', function () {
+      table = layui.table;
+      table.render({
+        elem: '#team'
+        , height: 515
+        , url: host + '/rest/team/listAll' //数据接口
+        , page: true //开启分页
+        , limit: 15
+        , limits : [15, 30, 45]
+        , cols: [[ //表头
+          {checkbox: true}
+          , {field: 'teamId', title: 'ID', width: 60, sort: true}
+          , {field: 'name', title: '团队名', width: 140}
+          , {field: 'major', title: '所属专业', width: 200}
+          , {field: 'teachers', title: '教师组成', width: 220}
+          , {field: 'judgeTeam', title: '评委团队', width: 120}
+          , {field: 'leader', title: '负责人', width: 100}
+          , {field: 'assistant', title: '答辩秘书', width: 100}
+          , {field: 'year', title: '届数', width: 100, sort: true}
+        ]]
+      });
+      layer.close(loadIndex);
+    });
+  }, function (data) {
+    layer.msg('请检查网络并重试'+data.responseText)
+  });
+  function deleteRow() {
+    var checkStatus = table.checkStatus('team');
+    layer.confirm('确认删除这些数据', {icon: 3, title: '提示'}, function (index) {
+      var idList = '';
+      checkStatus.data.forEach(function (item) {
+        idList += item.teamId + delimiter_num;
+      });
+      handlerDelete('/rest/team', 'teacher', idList, function (data) {
+        if (data.code === "0") {
+          layer.msg("删除成功");
+          reloadAll()
+        }
+      }, function (data) {
+        console.log(data)
+      });
+      layer.close(index);
+    });
+  }
+
+  function reloadAll() {
+    layui.use('table', function () {
+      var table = layui.table;
+      table.reload('team', {
+        url: host + '/rest/team/listAll'
+      });
+    })
+  }
+
+  function updateValue(content, name, value) {
+    return content.replace(name + '##VA', value)
+  }
+
+  function edit() {
+    var checkStatus = table.checkStatus('team');
+    if(checkStatus.data.length !== 1){
+      layer.msg('请选择一条记录')
+    }else {
+      sessionStorage.setItem('editTeamId', checkStatus.data[0].teamId);
+      add();
+    }
+  }
+
+  function leader() {
+    var checkStatus = table.checkStatus('team');
+    if(checkStatus.data.length !== 1){
+      layer.msg('请选择一条记录')
+    }else {
+      sessionStorage.setItem('editTeamId', checkStatus.data[0].teamId);
+      frameTip('委派答辩秘书', 'team/leader.html')
+    }
+  }
+  function add() {
+    frameTip('添加团队', 'team/add.html')
+  }
+  function frameTip(title, url) {
+    layer.open({
+      title: title
+      , type: 2
+      , content: url
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: ['270px', '300px']
+      ,cancel: function () {
+        sessionStorage.removeItem('editTeamId');
+        sessionStorage.removeItem('editCollege');
+        sessionStorage.removeItem('editMajor');
+        sessionStorage.removeItem('editJudge');
+        reloadAll();
+      }
+    });
+  }
+  function tips(content, title, confirm) {
+    return layer.open({
+      title: title
+      , type: 1
+      , content: content
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: ['300px', '200px']
+      , btn: ['确认', '取消']
+      , yes: function (index, layero) {
+        confirm();
+      },
+      cancel: function () {
+      }
+    });
+  }
+  function search() {
+    var value = $("#searchValue").val();
+    if (value === '' || value === ' ') {
+      layer.msg('请输入查询参数');
+      return;
+    }
+    layui.use('table', function () {
+      var table = layui.table;
+      table.reload('team', {
+        url: host+'/rest/team/search?name=' + value+''
+        , where: {}
+      });
+    })
+  }
+
+  // function selectMajor() {
+  //   handlerGet('/rest/major/listTotal', 'admin', function (data) {
+  //     var content = '<select id="collegeId">' +
+  //       '    <option value="DEFAULT"></option>';
+  //
+  //     data.data.forEach(function (item) {
+  //       content += '<option value="' + item.collegeId + '">' + item.name + '</option>';
+  //     });
+  //     content+='</select>';
+  //     var index = tips(content, '选择专业', function () {
+  //       $("#majorId").html('12');
+  //       layer.close(index);
+  //     });
+  //   },function (data) {
+  //     layer.msg('加载学院失败，请检查网络'+data.responseText)
+  //   });
+  // }
+</script>
+<script id="editData" type="text/html">
+    <div id="Tips">
+        <label for="name">团队名</label>
+        <input name="name" type="text" id="name" value="name##VA" required/> <br/>
+        <label for="year">毕业届数</label>
+        <select name="year" id="year">
+            <option selected>2018</option>
+            <option>2017</option>
+            <option>2016</option>
+            <option>2015</option>
+        </select>
+        <br/>
+        <label for="majorId">专业</label>
+        <select id="majorId" name="majorId"></select>
+    </div>
+</script>
+<script id="loadFromExcel" type="text/html">
+    <div>
+        <input type="file" id="selectFile" />
+        <progress id="progressBar" value="0" max="100"></progress>
+        <span id="percentage"></span>
+    </div>
+</script>
+</body>
+</html>

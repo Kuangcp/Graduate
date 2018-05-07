@@ -57,28 +57,27 @@
                 <li class="layui-nav-item ">
                     <a href="javascript:;">团队管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="import-student">导入学生数据</a></dd>
-                        <dd><a href="javascript:;" data-url="import-teacher">导入教师数据</a></dd>
+                        <dd><a href="javascript:;" data-url="team">团队管理</a></dd>
+                        <!--<dd><a href="javascript:;" data-url="secretary">委派答辩秘书</a></dd>-->
                     </dl>
                 </li>
                 <li class="layui-nav-item layui-nav-itemed">
                     <a class="" href="javascript:;">课题管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="team">团队管理</a></dd>
-                        <dd><a href="javascript:;" data-url="leader">委派负责人</a></dd>
+                        <dd><a href="javascript:;" data-url="topic">课题任务</a></dd>
                     </dl>
                 </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">报表统计</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">答辩情况</a></dd>
-                    </dl>
-                </li>
+                <!--<li class="layui-nav-item">-->
+                    <!--<a href="javascript:;">报表统计</a>-->
+                    <!--<dl class="layui-nav-child">-->
+                        <!--<dd><a href="javascript:;">答辩情况</a></dd>-->
+                    <!--</dl>-->
+                <!--</li>-->
             </ul>
         </div>
     </div>
 
-    <div class="layui-body main-body main-body-teacher">
+    <div class="layui-body main-body main-body-leader">
         <!-- 内容主体区域 -->
         <iframe src="/teacher/leader/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
     </div>
@@ -103,7 +102,8 @@
 
   $(function () {
     $("[data-url]").on('click', function () {
-      turn('teacher/leader', $(this).data('url'))
+      // turn('teacher', $(this).data('url'))
+      $("#main_page").attr('src', location.href + $(this).data('url') + '.html')
     });
   });
   //JavaScript代码区域

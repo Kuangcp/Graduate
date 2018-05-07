@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/js/common/upload.js"></script>
+<script src="/layui/layui.all.js"></script>
+<style>
+    .main {
+        text-align: right;
+    }
+
+    label {
+        text-align: left;
+        float: left;
+    }
+</style>
+<body>
+
+<div id="Tips" class="main">
+    <label for="collegeId">学院</label>
+    <select id="collegeId" name="collegeId" onchange="showMajor()">
+        <option value="DEFAULT"></option>
+    </select>
+    <br>
+    <label for="majorId">专业</label>
+    <select id="majorId" name="majorId" onchange="showTeacher()">
+        <option value="DEFAULT"></option>
+    </select>
+    <br/>
+    <label for="leaderId">答辩秘书</label>
+    <select id="leaderId" name="leaderId">
+        <option value="DEFAULT"></option>
+    </select>
+    <br>
+    <br>
+    <br>
+</div>
+<button class="layui-btn layui-btn-normal" style="margin-left: 39%;" onclick="submit()">提交</button>
+
+<script>
+  // 逻辑是拿到教师id， 加载一系列数据
+  var majorId = sessionStorage.getItem('leaderEditMajorId');
+  var editCollege = null;
+  var editMajor = null;
+
+  handlerGetSync('/rest/major/' + majorId, 'teacher', function (data) {
+    sessionStorage.setItem("LeaderId", data.data.leaderId);
+    handlerGetSync('/rest/teacher/' + data.data.leaderId, 'teacher', function (data) {
+      console.log('收到' + JSON.stringify(data));
+      editMajor = data.data.majorId;
+      sessionStorage.setItem('editMajor', editMajor);
+      handlerGetSync('/rest/major/' + data.data.majorId, 'teacher', function (data) {
+        sessionStorage.setItem('editCollege', data.data.collegeId);
+      });
+    });
+  });
+
+
+  // 装载已有数据， 学院
+  handlerGet('/rest/college/listTotal', 'teacher', function (data) {
+    data.data.forEach(function (item) {
+      if (sessionStorage.getItem('editCollege') === item.collegeId) {
+        $("#collegeId").append('<option value="' + item.collegeId + '" selected>' + item.name + '</option>');
+        // 专业
+        handlerGet('/rest/major/listTotalByCollege/' + item.collegeId, 'teacher', function (data) {
+          $("#majorId").html('<option value="DEFAULT"></option>');
+          data.data.forEach(function (item) {
+            if (sessionStorage.getItem('editMajor') === item.majorId) {
+              $("#majorId").append('<option value="' + item.majorId + '" selected>' + item.name + '</option>');
+              // 负责人
+              handlerGet('/rest/teacher/listTotalByMajor/' + item.majorId, 'teacher', function (data) {
+                $("#leaderId").html('<option value="DEFAULT"></option>');
+                data.data.forEach(function (item) {
+                  if(sessionStorage.getItem("LeaderId") === item.teacherId ){
+                    $("#leaderId").append('<option value="' + item.teacherId + '" selected>' + item.username + '</option>');
+                  }else{
+                    $("#leaderId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
+                  }
+                });
+              });
+            } else {
+              $("#majorId").append('<option value="' + item.majorId + '">' + item.name + '</option>');
+            }
+          });
+        });
+      } else {
+        $("#collegeId").append('<option value="' + item.collegeId + '">' + item.name + '</option>');
+      }
+    });
+  }, function (data) {
+    layer.msg('加载学院失败，请检查网络' + data.responseText)
+  });
+
+  // 根据学院加载专业
+  function showMajor() {
+    collegeId = $("#collegeId").val();
+    handlerGet('/rest/major/listTotalByCollege/' + collegeId, 'teacher', function (data) {
+      $("#majorId").html('<option value="DEFAULT"></option>');
+      data.data.forEach(function (item) {
+        $("#majorId").append('<option value="' + item.majorId + '">' + item.name + '</option>');
+      });
+    });
+  }
+
+  function showTeacher() {
+    majorId = $("#majorId").val();
+    if(majorId === 'DEFAULT'){
+      return;
+    }
+    handlerGet('/rest/teacher/listTotalByMajor/' + majorId, 'teacher', function (data) {
+      $("#leaderId").html('<option value="DEFAULT"></option>');
+      data.data.forEach(function (item) {
+        $("#leaderId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
+      });
+    })
+  }
+
+  function submit() {
+    var editId = sessionStorage.getItem("leaderEditMajorId");
+    var leaderId = $("#leaderId").val();
+    var send = {
+      majorId: editId,
+      leaderId: leaderId
+    };
+    handlerPost('/rest/major/leader', 'teacher', JSON.stringify(send), function (data) {
+      layer.msg('委任成功');
+      sessionStorage.removeItem('editJudge');
+      sessionStorage.removeItem('editMajor');
+      sessionStorage.removeItem('editCollege');
+    }, function (data) {
+      console.log('保存失败')
+    })
+  }
+</script>
+</body>
+</html>
