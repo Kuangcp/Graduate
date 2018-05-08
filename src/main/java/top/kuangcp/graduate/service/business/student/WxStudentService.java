@@ -13,6 +13,7 @@ import top.kuangcp.graduate.domain.DefenseSchedule;
 import top.kuangcp.graduate.domain.Team;
 import top.kuangcp.graduate.domain.Topic;
 import top.kuangcp.graduate.domain.role.Student;
+import top.kuangcp.graduate.service.crud.CrudTeacherService;
 import top.kuangcp.graduate.util.JsonBuilder;
 
 import java.util.List;
@@ -32,14 +33,16 @@ public class WxStudentService {
     private final TopicDao topicDao;
     private final StudentDao studentDao;
     private final TeacherDao teacherDao;
+    private final CrudTeacherService teacherService;
     private final TeamDao teamDao;
     private final DefenseScheduleDao defenseScheduleDao;
 
     @Autowired
-    public WxStudentService(TopicDao topicDao, StudentDao studentDao, TeacherDao teacherDao, TeamDao teamDao, DefenseScheduleDao defenseScheduleDao) {
+    public WxStudentService(TopicDao topicDao, StudentDao studentDao, TeacherDao teacherDao, CrudTeacherService teacherService, TeamDao teamDao, DefenseScheduleDao defenseScheduleDao) {
         this.topicDao = topicDao;
         this.studentDao = studentDao;
         this.teacherDao = teacherDao;
+        this.teacherService = teacherService;
         this.teamDao = teamDao;
         this.defenseScheduleDao = defenseScheduleDao;
     }
@@ -52,11 +55,12 @@ public class WxStudentService {
      * @return JSON
      */
     public String selectTopic(Long topicId, Long studentId) {
+        log.info("topicid = "+topicId+" studnetid = "+studentId);
         Optional<Topic> topic = topicDao.findById(topicId);
         Optional<Student> student = studentDao.findById(studentId);
         if (topic.isPresent() && student.isPresent()) {
             topic.get().setStudentId(studentId);
-            if (topicDao.findAllByStudentId(studentId).size() > 1) {
+            if (topicDao.findAllByStudentId(studentId).size() > 0) {
                 return JsonBuilder.buildCodeResult(ResponseCode.ALREADY_SELECT);
             }
             topicDao.save(topic.get());
@@ -80,6 +84,20 @@ public class WxStudentService {
             return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
         }
     }
+    public String queryScoreByWechat(String openId){
+        List<Student> studentList = studentDao.findAllByOpenId(openId);
+        if(studentList.size()==0){
+            return "清先绑定账号";
+        }
+        List<Topic> list = topicDao.findAllByStudentId(studentList.get(0).getStudentId());
+        if (list.size() > 0) {
+            Topic topic = list.get(0);
+            return "教师评分 "+topic.getGuideScore()+" 评委评分"+topic.getJudgeScore();
+
+        } else {
+            return "暂无成绩";
+        }
+    }
 
     /**
      * 查询答辩场地, 从学生id找到教师id， 找到团队id再找到安排表，对应年份，得到场地
@@ -93,13 +111,32 @@ public class WxStudentService {
             result.setAttention("");
             String json = JsonBuilder.buildSuccessResult("", result);
             Optional<Team> team = teamDao.findById(result.getTeamId());
-            log.info(json);
             if(team.isPresent()){
                 json = json.replace("\"teamId\":\""+result.getTeamId()+"\"", "\"team\":\""+team.get().getName()+"\"");
             }
-            log.info(json);
             return json;
         }
         return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+    }
+    public String queryPlaceByWechat(String openId){
+        List<Student> studentList = studentDao.findAllByOpenId(openId);
+        if(studentList.size()==0){
+            return "清先绑定账号";
+        }
+        DefenseSchedule result = defenseScheduleDao.selectByStudentId(studentList.get(0).getStudentId());
+        if(result!=null && result.getPlace()!=null ){
+            Optional<Team> team = teamDao.findById(result.getTeamId());
+            return team.map(team1 -> "场地 " + result.getPlace() + "\n日期 " + result.getDate() + "\n时间 " + result.getTime() + "\n团队 " + team1.getName()).orElseGet(() -> "场地 " + result.getPlace() + "\n日期 " + result.getDate() + "\n时间 " + result.getTime());
+
+        }
+        return "暂无安排";
+    }
+
+    public String queryTeacher(Long studentId){
+        List<Topic> list = topicDao.findAllByStudentId(studentId);
+        if(list.size() == 0){
+            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+        }
+        return teacherService.getOneWithRefer(list.get(0).getTeacherId());
     }
 }

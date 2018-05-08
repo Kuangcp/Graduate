@@ -25,4 +25,6 @@ public interface StudentDao extends JpaRepository<Student, Long> {
     Page<Student> findAllByClassGroupId(Long classGroupId, Pageable pageable);
     List<Student> findAllByClassGroupId(Long classGroupId);
 
+    List<Student> findAllByOpenId(String openId);
+
 }

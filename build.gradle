@@ -46,6 +46,15 @@ dependencies {
 	runtime('org.springframework.boot:spring-boot-devtools')
     testCompile('org.springframework.boot:spring-boot-starter-test')
 
+
+//    compile 'com.squareup.okhttp3:okhttp:3.9.0'
+//    // 微信公众号的依赖
+//    compile group: 'dom4j', name: 'dom4j', version: '1.6.1'
+//    compile group: 'com.thoughtworks.xstream', name: 'xstream', version: '1.4.9'
+
+
+    compile 'com.github.binarywang:weixin-java-mp:3.0.0'
+
 // Mine
     compile('com.github.kuangcp:myth-poi:0.2.3-SNAPSHOT')
 

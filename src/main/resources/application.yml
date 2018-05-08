@@ -10,5 +10,16 @@ server:
     context-path: /api
   port: 8889
 
+#
+#
+#logging:
+#  level:
+#    org.springframework.web: DEBUG
+#    com.github.binarywang.demo.wechat: DEBUG
 
-
+wechat:
+  mp:
+    appId: wx41d598b7a75e457b
+    secret: a4774b5b3072fb8a0b6d95e8d5d494d2
+    token: kuangcp
+    aesKey: 1

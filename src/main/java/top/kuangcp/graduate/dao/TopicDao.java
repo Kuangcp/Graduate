@@ -20,4 +20,6 @@ public interface TopicDao extends JpaRepository<Topic, Long> {
     List<Topic> findAllByTeacherId(Long teacherId);
 
     List<Topic> findAllByNameContaining(String name);
+
+    List<Topic> findAllByStudentIdIsNull();
 }

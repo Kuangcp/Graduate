@@ -21,6 +21,7 @@ public class TeacherVO {
     private String password;
     private String email;
     private String team;
+    private String phone;
     private String major;
 
     public static TeacherVO of(Teacher teacher){
@@ -30,6 +31,7 @@ public class TeacherVO {
         teacherVO.setUsername(teacher.getUsername());
         teacherVO.setTeacherNo(teacher.getTeacherNo());
         teacherVO.setEmail(teacher.getEmail());
+        teacherVO.setPhone(teacher.getPhone());
         return teacherVO;
     }
 

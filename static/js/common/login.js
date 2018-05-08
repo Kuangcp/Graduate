@@ -1,4 +1,5 @@
 // TODO 抽离出公共方法, 分文件引用
+// TODO Token中存放了id，可以试着解析
 function checkRole(role) {
   var random = sessionStorage.getItem(mythos);
   var id = sessionStorage.getItem(role+'Id');

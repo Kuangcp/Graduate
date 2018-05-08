@@ -23,7 +23,11 @@ public class CrudFeedbackService {
         this.feedbackDao = feedbackDao;
     }
 
-    public String save(Feedback feedback){
+    public String save(String content, Long studentId, String contact){
+        Feedback feedback = new Feedback();
+        feedback.setContact(contact);
+        feedback.setContent(content);
+        feedback.setStudentId(studentId);
         try {
             feedbackDao.save(feedback);
         }catch (Exception e){

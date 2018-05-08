@@ -28,9 +28,20 @@ public class CrudTopicService {
         this.topicDao = topicDao;
     }
 
-    // TODO 分页
     public String listAll(){
         return JsonBuilder.buildSuccessResult("", topicDao.findAll());
+    }
+    public String listNoSelected(){
+//        List<Topic> list = topicDao.findAll();
+//        if(list.size() == 0){
+//            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+//        }
+//        for (int i = 0; i < list.size(); i++) {
+//            if(list.get(i).getStudentId() != null){
+//                list.remove()
+//            }
+//        }
+        return JsonBuilder.buildSuccessResult("", topicDao.findAllByStudentIdIsNull());
     }
 
     public String findByName(String name) {

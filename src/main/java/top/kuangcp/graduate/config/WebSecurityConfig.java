@@ -41,6 +41,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             // 所有OPTIONS请求全部放行
             .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+            .antMatchers("/wechat/**").permitAll()
+
             // 所有 / 的所有请求 都放行
             .antMatchers("/").permitAll()
             // /login 的POST请求 放行

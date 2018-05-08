@@ -3,20 +3,19 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <title>管理员子系统</title>
+    <title>学生子系统</title>
     <link rel="stylesheet" href="/layui/css/layui.css"/>
     <link rel="stylesheet" href="/css/index.css"/>
 </head>
 <body>
+<button onclick="removeCache()">Logout</button>
 <script src="/js/jquery.min.js"></script>
 <script src="/layui/lay/modules/layer.js"></script>
-<script src="/layui/layui.all.js"></script>
+<!--<script src="/layui/layui.all.js"></script>-->
 <script>
   var host = 'http://192.168.43.40:8889/api';
   var mythos = 'randomValue';
-
   checkRole('student');
-
   function checkRole(role) {
     var random = sessionStorage.getItem(mythos);
     var id = sessionStorage.getItem(role+'Id');
@@ -57,6 +56,8 @@
           if (data.code === '0' ) {
             sessionStorage.setItem(mythos, data.data);
             sessionStorage.setItem(role+'Id', data.msg);
+            localStorage.setItem(mythos, data.data);
+            localStorage.setItem(role+'Id', data.msg);
             layer.msg('登录成功 ');
             window.location.href = 'index.html';
             layer.close(loadIndex);
@@ -74,7 +75,9 @@
   }
   function removeCache() {
     sessionStorage.removeItem(mythos);
+    localStorage.removeItem(mythos);
     sessionStorage.removeItem('studentId');
+    localStorage.removeItem('studentId');
   }
 </script>
 </body>

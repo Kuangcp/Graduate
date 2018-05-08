@@ -97,4 +97,9 @@ public class JsonBuilderTest {
             }
         }
     }
+
+    public void testString(){
+        String message = "20140202606#$#3#$#";
+        System.out.println(message.split("#$#"));
+    }
 }
