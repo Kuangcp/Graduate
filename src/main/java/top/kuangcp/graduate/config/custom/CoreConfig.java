@@ -15,4 +15,6 @@ public interface CoreConfig {
      * 分隔数字 #
      */
     String DELIMITER_NUM="N";
+
+    String UPLOAD_PATH = "/home/kcp/test/upload";
 }

@@ -3,6 +3,7 @@ package top.kuangcp.graduate.service.business.student;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.DefenseScheduleDao;
 import top.kuangcp.graduate.dao.TeamDao;
@@ -13,6 +14,7 @@ import top.kuangcp.graduate.domain.DefenseSchedule;
 import top.kuangcp.graduate.domain.Team;
 import top.kuangcp.graduate.domain.Topic;
 import top.kuangcp.graduate.domain.role.Student;
+import top.kuangcp.graduate.service.FileUploadService;
 import top.kuangcp.graduate.service.crud.CrudTeacherService;
 import top.kuangcp.graduate.util.JsonBuilder;
 
@@ -36,15 +38,17 @@ public class WxStudentService {
     private final CrudTeacherService teacherService;
     private final TeamDao teamDao;
     private final DefenseScheduleDao defenseScheduleDao;
+    private final FileUploadService uploadService;
 
     @Autowired
-    public WxStudentService(TopicDao topicDao, StudentDao studentDao, TeacherDao teacherDao, CrudTeacherService teacherService, TeamDao teamDao, DefenseScheduleDao defenseScheduleDao) {
+    public WxStudentService(TopicDao topicDao, StudentDao studentDao, TeacherDao teacherDao, CrudTeacherService teacherService, TeamDao teamDao, DefenseScheduleDao defenseScheduleDao, FileUploadService uploadService) {
         this.topicDao = topicDao;
         this.studentDao = studentDao;
         this.teacherDao = teacherDao;
         this.teacherService = teacherService;
         this.teamDao = teamDao;
         this.defenseScheduleDao = defenseScheduleDao;
+        this.uploadService = uploadService;
     }
 
     /**
@@ -138,5 +142,9 @@ public class WxStudentService {
             return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
         }
         return teacherService.getOneWithRefer(list.get(0).getTeacherId());
+    }
+
+    public String uploadFile(MultipartFile file, Long studentId, Integer batch) {
+        return uploadService.uploadDoc(file, studentId, batch);
     }
 }

@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 /**
  * Created by https://github.com/kuangcp
- *
+ * 最初的模板类
  * @author kuangcp
  * @date 18-4-30  上午9:10
  */

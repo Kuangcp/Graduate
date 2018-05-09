@@ -27,4 +27,12 @@ public class TeacherBusinessController {
     public String submitCheck(@PathVariable("id") Long topicId, @PathVariable("who") Long teacherId, @RequestBody String comment){
         return teacherService.submitCheck(topicId, teacherId, comment);
     }
+
+    @GetMapping(value = "/query/place/{id}", produces = "application/json;charset=UTF-8")
+    public String queryPlace(@PathVariable("id") Long teacherId){
+        return teacherService.queryPlace(teacherId);
+    }
+
+
+
 }

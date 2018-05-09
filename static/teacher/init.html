@@ -1,50 +1,138 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8"/>
-    <title>初始界面</title>
-    <!--<script src="../js/jquery.min.js"></script>-->
-
-    <!--<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>-->
-    <script src="../wangeditor/wangEditor.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Default</title>
+    <script src="/js/jquery.min.js"></script>
+    <!--<script src="/js/config/server.js"></script>-->
+    <!--<script src="/js/common/login.js"></script>-->
+    <script src="/js/echarts.v4.0.4.min.js"></script>
 </head>
 <body>
-<!--<img src="/myth/images/flow.png"/>-->
-初始化页面,用来做表盘
-
-<div id="editor">
-    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
-</div>
-<script >
-    var E = window.wangEditor;
-    var editor = new E('#editor');
-    editor.create();
-
-    // editor.txt.html('<p>用 JS 设置的内容</p>')
-    // editor.txt.append('<p>追加的内容</p>')
-    // editor.txt.clear()
-</script>
-
-<div id="div1">
-    <p>欢迎使用 wangEditor 编辑器</p>
-</div>
-<button id="btn1">获取html</button>
-<button id="btn2">获取text</button>
-
+<div id="main" style="width: 1000px;height:600px;"></div>
 <script type="text/javascript">
-    var E = window.wangEditor
-    var editor = new E('#div1')
-    editor.create()
 
-    document.getElementById('btn1').addEventListener('click', function () {
-        // 读取 html
-        alert(editor.txt.html())
-    }, false)
+    if(sessionStorage.getItem('teacherId')!==null){
+      // 基于准备好的dom，初始化echarts实例
+      var app = echarts.init(document.getElementById('main'));
 
-    document.getElementById('btn2').addEventListener('click', function () {
-        // 读取 text
-        alert(editor.txt.text())
-    }, false)
+      app.title = '嵌套环形图';
+
+      option = {
+        tooltip: {
+          trigger: 'item',
+          formatter: "{a} <br/>{b}: {c} ({d}%)"
+        },
+        legend: {
+          orient: 'vertical',
+          x: 'left',
+          data:['起点','提交审核','审核通过','审核未过','课题已被选','暂无学生选题',
+            '提交开题报告材料','开题审核通过','开题审核未过','提交一稿材料','一稿审核通过','一稿审核未过',
+            '提交二稿材料','二稿审核通过','二稿审核未过','提交三稿材料','三稿审核通过','三稿审核未过',
+            '一辩未过','一辩通过','二辩未过','二辩通过', '三辩未过', '三辩通过']
+        },
+        series: [
+          {
+            name:'访问来源',
+            type:'pie',
+            selectedMode: 'single',
+            radius: [0, '30%'],
+
+            label: {
+              normal: {
+                position: 'inner'
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            }
+          },
+          {
+            name:'答辩流程进度',
+            type:'pie',
+            radius: ['40%', '55%'],
+            label: {
+              normal: {
+                formatter: '{a|{a}}{abg|}\n{hr|}\n  {b|{b}：}{c}  {per|{d}%}  ',
+                backgroundColor: '#eee',
+                borderColor: '#aaa',
+                borderWidth: 1,
+                borderRadius: 4,
+                // shadowBlur:3,
+                // shadowOffsetX: 2,
+                // shadowOffsetY: 2,
+                // shadowColor: '#999',
+                // padding: [0, 7],
+                rich: {
+                  a: {
+                    color: '#999',
+                    lineHeight: 22,
+                    align: 'center'
+                  },
+                  // abg: {
+                  //     backgroundColor: '#333',
+                  //     width: '100%',
+                  //     align: 'right',
+                  //     height: 22,
+                  //     borderRadius: [4, 4, 0, 0]
+                  // },
+                  hr: {
+                    borderColor: '#aaa',
+                    width: '100%',
+                    borderWidth: 0.5,
+                    height: 0
+                  },
+                  b: {
+                    fontSize: 16,
+                    lineHeight: 33
+                  },
+                  per: {
+                    color: '#eee',
+                    backgroundColor: '#334455',
+                    padding: [2, 4],
+                    borderRadius: 2
+                  }
+                }
+              }
+            },
+            data:[
+              {value:1, name:'起点'},
+              {value:1, name:'提交审核'},
+              {value:2, name:'审核通过'}
+              // {value:135, name:'审核未过'},
+              // {value:33, name:'课题已被选'},
+              // {value:111, name:'暂无学生选题'},
+              //
+              // {value:111, name:'提交开题报告材料'},
+              // {value:111, name:'开题审核通过'},
+              // {value:111, name:'开题审核未过'},
+              // {value:111, name:'提交一稿材料'},
+              // {value:111, name:'一稿审核通过'},
+              // {value:111, name:'一稿审核未过'},
+              // {value:111, name:'提交二稿材料'},
+              // {value:111, name:'二稿审核通过'},
+              // {value:111, name:'二稿审核未过'},
+              // {value:111, name:'提交三稿材料'},
+              // {value:111, name:'三稿审核通过'},
+              // {value:111, name:'三稿审核未过'},
+              //
+              //
+              // {value:147, name:'一辩未过'},
+              // {value:102, name:'一辩通过'},
+              // {value:102, name:'二辩未过'},
+              // {value:102, name:'二辩通过'},
+              // {value:102, name:'三辩未过'},
+              // {value:102, name:'三辩通过'}
+            ]
+          }
+        ]
+      };
+      // 使用刚指定的配置项和数据显示图表。
+      app.setOption(option);
+    }
+
 
 </script>
 

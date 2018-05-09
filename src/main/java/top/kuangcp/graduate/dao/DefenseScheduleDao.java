@@ -22,4 +22,7 @@ public interface DefenseScheduleDao extends JpaRepository<DefenseSchedule, Long>
     @Query("from DefenseSchedule as ds, Teacher as t, Student as s where ds.teamId = t.teamId and s.year = ds.year  and s.teacherId = t.teacherId and s.studentId = ?1")
     DefenseSchedule selectByStudentId(Long studentId);
 
+    @Query("from DefenseSchedule as ds, Teacher as t where ds.teamId = t.teamId  and t.teacherId= ?1")
+    DefenseSchedule selectByTeacherId(Long teacherId);
+
 }

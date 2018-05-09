@@ -9,8 +9,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.ResponseCode;
+import top.kuangcp.graduate.dao.TeamDao;
 import top.kuangcp.graduate.dao.role.StudentDao;
+import top.kuangcp.graduate.dao.role.TeacherDao;
 import top.kuangcp.graduate.domain.role.Student;
+import top.kuangcp.graduate.domain.role.Teacher;
 import top.kuangcp.graduate.service.FileUploadService;
 import top.kuangcp.graduate.service.crud.base.BaseCrud;
 import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
@@ -33,12 +36,16 @@ import java.util.Optional;
 public class CrudStudentService implements BaseCrud {
 
     private final StudentDao studentDao;
+    private final TeacherDao teacherDao;
     private final FileUploadService uploadService;
+    private final TeamDao teamDao;
 
     @Autowired
-    public CrudStudentService(StudentDao studentDao, FileUploadService uploadService) {
+    public CrudStudentService(StudentDao studentDao, TeacherDao teacherDao, FileUploadService uploadService, TeamDao teamDao) {
         this.studentDao = studentDao;
+        this.teacherDao = teacherDao;
         this.uploadService = uploadService;
+        this.teamDao = teamDao;
     }
 
     public String listTotal(){
@@ -108,5 +115,16 @@ public class CrudStudentService implements BaseCrud {
             return JsonBuilder.buildSuccessTableResult("", 0, "");
         }
         return JsonBuilder.buildSuccessTableResult(" ", (int) list.getTotalElements(), result);
+    }
+
+    // TODO 查询所有学生
+    public String listByTeamId(Long teamId) {
+        List<Teacher> teacherList = teacherDao.findAllByTeamId(teamId);
+        List result = new ArrayList();
+        for(Teacher teacher: teacherList){
+            List list = studentDao.findAllByTeacherId(teacher.getTeacherId());
+            result.addAll(list);
+        }
+        return JsonBuilder.buildSuccessResult(" ", result);
     }
 }

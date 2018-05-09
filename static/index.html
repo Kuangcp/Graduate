@@ -6,11 +6,11 @@
     <link rel="stylesheet" href="/layui/css/layui.css"/>
     <link rel="stylesheet" href="/css/index.css"/>
     <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
-<!--<style>-->
+    <!--<style>-->
     <!--body{-->
-        <!--background-image: url("/image/5710000199.jpg");;-->
+    <!--background-image: url("/image/5710000199.jpg");;-->
     <!--}-->
-<!--</style>-->
+    <!--</style>-->
     <script src="/js/jquery.min.js"></script>
     <script src="/layui/layui.js"></script>
     <script src="/js/common/main-page.js"></script>
@@ -52,7 +52,34 @@
     </script>
 </head>
 <body>
-<button onclick="testUse()">测试</button>
-<button onclick="testRole()">测试333</button>
+<style>
+    .bubble {
+        margin-left: 25%;
+        margin-top: 10%;
+    }
+
+    .bubble button {
+        margin-left: 50px;
+        width: 200px;
+        height: 200px;
+        border-radius: 100px;
+        font-size: 30px;
+    }
+</style>
+<!--<button onclick="testUse()">测试</button>-->
+<!--<button onclick="testRole()">测试333</button>-->
+<div class="bubble">
+    <a href="graduate">
+        <button class="layui-btn layui-btn-normal">学生子系统</button>
+    </a>
+    <a href="teacher">
+        <button class="layui-btn layui-btn-normal">教师子系统</button>
+    </a>
+    <a href="admin">
+        <button class="layui-btn layui-btn-normal">管理员子系统</button>
+    </a>
+
+</div>
+
 </body>
 </html>

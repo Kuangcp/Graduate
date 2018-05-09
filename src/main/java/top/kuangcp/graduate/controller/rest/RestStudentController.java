@@ -45,6 +45,12 @@ public class RestStudentController {
         return studentService.listAll(page - 1, limit);
     }
 
+
+    @GetMapping(value = "/listByTeamId/{teamId}", produces = "application/json;charset=UTF-8")
+    public String listAllByCollege(@PathVariable("teamId") Long teamId) {
+        return studentService.listByTeamId(teamId);
+    }
+
     @GetMapping(value = "/listByClassGroup/{classGroup}", produces = "application/json;charset=UTF-8")
     public String listAllByCollege(int page, int limit, @PathVariable("classGroup") Long classGroupId) {
         return studentService.listByClassGroup(page - 1, limit, classGroupId);

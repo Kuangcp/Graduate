@@ -31,14 +31,14 @@ function login(role) {
   var loadIndex = layer.load(1);
   layer.prompt({
     formType: 0,
-    value: '2',
+    value: '',
     closeBtn: 0,
     title: '请输入用户名'
   }, function (value1, index1, elem) {
     layer.close(index1);
     layer.prompt({
       formType: 1,
-      value: '2',
+      value: '',
       closeBtn: 0,
       title: '请输入密码'
     }, function (value2, index2, elem) {

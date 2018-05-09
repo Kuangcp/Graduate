@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>学生子系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/config/server.js"></script>
+    <script src="/js/common/login.js"></script>
+    <script src="/js/common/upload.js"></script>
+    <script src="/layui/layui.all.js"></script>
+</head>
+
+<body>
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-logo" style="color: #1E9FFF;font-size: 17px;">学生子系统</div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <!--<ul class="layui-nav layui-layout-left">-->
+        <!--<li class="layui-nav-item">-->
+        <!--<a href="javascript:;">其它系统</a>-->
+        <!--<dl class="layui-nav-child">-->
+        <!--<dd><a href="/teacher">教师</a></dd>-->
+        <!--</dl>-->
+        <!--</li>-->
+        <!--</ul>-->
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+                    <img src="/image/avatar/5710000144.jpg" class="layui-nav-img"/>
+                    <span id="nameT"></span>
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;" onclick="security()">安全设置</a></dd>
+                    <dd><a href="javascript:;" onclick="logout()">注销登录</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+                <li class="layui-nav-item layui-nav-itemed">
+                    <a href="javascript:;">文档资料的上传</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="javascript:;" onclick="start()">上传开题报告</a></dd>
+                        <dd><a href="javascript:;" onclick="first()">上传一稿</a></dd>
+                        <dd><a href="javascript:;" onclick="second()">上传二稿</a></dd>
+                        <dd><a href="javascript:;" onclick="third()">上传三稿</a></dd>
+                        <dd><a href="javascript:;" onclick="end()">上传最终材料</a></dd>
+                    </dl>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="layui-body main-body main-body-admin">
+        <!-- 内容主体区域 -->
+        <iframe src="/graduate/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
+    </div>
+
+    <div class="layui-footer">
+        © kuangcp.top
+    </div>
+</div>
+<script src="/js/jquery.min.js"></script>
+<!--<script src="/layui/layui.js"></script>-->
+<script src="/js/common/main-page.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  checkRole('student');
+  if (sessionStorage.getItem('studentId') != null) {
+    handlerGet('/rest/student/' + sessionStorage.getItem('studentId'), 'student', function (data) {
+      $("#nameT").html(data.data.username);
+    });
+  }
+
+  $(function () {
+    $("[data-url]").on('click', function () {
+      turn('student', $(this).data('url'))
+    });
+  });
+  //JavaScript代码区域
+  layui.use('element', function () {
+    var element = layui.element;
+
+  });
+
+  function security() {
+    handlerGet('/rest/student/' + sessionStorage.getItem('studentId'), 'student', function (data) {
+      frameTip('修改密码', 'profile/security.html');
+    });
+  }
+
+  function frameTip(title, url, width, height) {
+    layer.open({
+      title: title
+      , type: 2
+      , content: url
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: [width, height]
+      , cancel: function () {
+      }
+    });
+  }
+
+  function load(title, batch) {
+    // TODO 选题的校验
+    layer.open({
+      title: title
+      , content: $("#loadFromExcel").html()
+      , btnAlign: 'c'
+      , resize: true
+      , area: ['500px', '160px']
+      , btn: ['确认', '取消']
+      , yes: function (index, layero) {
+        uploadFile('student', host + '/bus/student/upload/' + sessionStorage.getItem('studentId') + '/' + batch, function (file) {
+          if (file.name.split(".doc").length > 1) {
+            return 0;
+          } else {
+            layer.msg("文件格式不正确, 请重新选择文件(应为doc docx后缀的文件)");
+            return 1;
+          }
+        });
+      }
+    });
+  }
+
+  function start() {
+    load('提交开题答辩材料', 0);
+    // frameTip('提交开题答辩材料', 'doc/start.html', '270px', '300px');
+  }
+
+  function first() {
+    load('提交一稿', 1);
+    // frameTip('提交一稿材料', 'defense/record.html', '600px', '500px')
+  }
+
+  function second() {
+    load('提交二稿', 2);
+    // frameTip('提交二稿材料', 'defense/record.html', '600px', '500px')
+  }
+
+  function third() {
+    load('提交三稿', 3);
+    // frameTip('提交三稿材料', 'defense/record.html', '600px', '500px')
+  }
+
+  function end() {
+    load('提交最终材料', 4);
+    // frameTip('提交三稿材料', 'defense/record.html', '600px', '500px')
+  }
+</script>
+<script id="loadFromExcel" type="text/html">
+    <div>
+        <input type="file" id="selectFile"/>
+        <progress id="progressBar" value="0" max="100"></progress>
+        <span id="percentage"></span>
+    </div>
+</script>
+</body>
+</html>

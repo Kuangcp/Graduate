@@ -27,4 +27,6 @@ public interface StudentDao extends JpaRepository<Student, Long> {
 
     List<Student> findAllByOpenId(String openId);
 
+    List<Student> findAllByTeacherId(Long teacherId);
+
 }

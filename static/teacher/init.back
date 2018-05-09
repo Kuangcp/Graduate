@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <title>初始界面</title>
+    <!--<script src="../js/jquery.min.js"></script>-->
+
+    <!--<script src="//unpkg.com/wangeditor/release/wangEditor.min.js"></script>-->
+    <script src="../wangeditor/wangEditor.min.js"></script>
+</head>
+<body>
+<!--<img src="/myth/images/flow.png"/>-->
+初始化页面,用来做表盘
+
+<div id="editor">
+    <p>欢迎使用 <b>wangEditor</b> 富文本编辑器</p>
+</div>
+<script >
+  var E = window.wangEditor;
+  var editor = new E('#editor');
+  editor.create();
+
+  // editor.txt.html('<p>用 JS 设置的内容</p>')
+  // editor.txt.append('<p>追加的内容</p>')
+  // editor.txt.clear()
+</script>
+
+<div id="div1">
+    <p>欢迎使用 wangEditor 编辑器</p>
+</div>
+<button id="btn1">获取html</button>
+<button id="btn2">获取text</button>
+
+<script type="text/javascript">
+  var E = window.wangEditor
+  var editor = new E('#div1')
+  editor.create()
+
+  document.getElementById('btn1').addEventListener('click', function () {
+    // 读取 html
+    alert(editor.txt.html())
+  }, false)
+
+  document.getElementById('btn2').addEventListener('click', function () {
+    // 读取 text
+    alert(editor.txt.text())
+  }, false)
+
+</script>
+
+</body>
+</html>

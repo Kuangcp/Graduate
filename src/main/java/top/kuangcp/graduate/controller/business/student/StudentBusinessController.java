@@ -1,10 +1,8 @@
 package top.kuangcp.graduate.controller.business.student;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.service.business.student.WxStudentService;
 import top.kuangcp.graduate.service.crud.CrudFeedbackService;
 import top.kuangcp.graduate.service.crud.CrudTopicService;
@@ -57,5 +55,10 @@ public class StudentBusinessController {
     @GetMapping(value = "/query/teacher/{studentId}", produces = "application/json;charset=UTF-8")
     public String queryTeacher(@PathVariable("studentId") Long studentId){
         return wxStudentService.queryTeacher(studentId);
+    }
+
+    @PostMapping("/upload/{id}/{batch}")
+    public String upload(@RequestParam("file") MultipartFile file, @PathVariable("id") Long studentId, @PathVariable("batch") Integer batch) {
+        return wxStudentService.uploadFile(file, studentId, batch);
     }
 }

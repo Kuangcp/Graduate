@@ -5,8 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.config.custom.TopicStatus;
+import top.kuangcp.graduate.dao.DefenseScheduleDao;
+import top.kuangcp.graduate.dao.TeamDao;
 import top.kuangcp.graduate.dao.TopicCommentDao;
 import top.kuangcp.graduate.dao.TopicDao;
+import top.kuangcp.graduate.domain.DefenseSchedule;
+import top.kuangcp.graduate.domain.Team;
 import top.kuangcp.graduate.domain.Topic;
 import top.kuangcp.graduate.domain.TopicComment;
 import top.kuangcp.graduate.util.JsonBuilder;
@@ -25,11 +29,15 @@ import java.util.Optional;
 public class BusTeacherService {
     private final TopicDao topicDao;
     private final TopicCommentDao commentDao;
+    private final DefenseScheduleDao defenseScheduleDao;
+    private final TeamDao teamDao;
 
     @Autowired
-    public BusTeacherService(TopicDao topicDao, TopicCommentDao commentDao) {
+    public BusTeacherService(TopicDao topicDao, TopicCommentDao commentDao, DefenseScheduleDao defenseScheduleDao, TeamDao teamDao) {
         this.topicDao = topicDao;
         this.commentDao = commentDao;
+        this.defenseScheduleDao = defenseScheduleDao;
+        this.teamDao = teamDao;
     }
 
     /**
@@ -64,5 +72,20 @@ public class BusTeacherService {
             log.error("课题提交审核失败", e);
             return JsonBuilder.buildCodeResult(ResponseCode.SUBMIT_ERROR);
         }
+    }
+
+    public String queryPlace(Long teacherId) {
+        // 根据学生找到课题找到教师，找到团队找到场地
+        DefenseSchedule result = defenseScheduleDao.selectByTeacherId(teacherId);
+        if(result!=null && result.getPlace()!=null ){
+            result.setAttention("");
+            String json = JsonBuilder.buildSuccessResult("", result);
+            Optional<Team> team = teamDao.findById(result.getTeamId());
+            if(team.isPresent()){
+                json = json.replace("\"teamId\":\""+result.getTeamId()+"\"", "\"team\":\""+team.get().getName()+"\"");
+            }
+            return json;
+        }
+        return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
     }
 }

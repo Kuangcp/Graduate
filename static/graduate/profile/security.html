@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+</head>
+<body>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe612;</i>
+<label for="oldPass">原密码</label>
+<input type="text" id="oldPass" name="oldPassword" value="3" required/>
+<hr>
+<i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe642;</i>
+<label for="newPass">新密码</label>
+<input type="password" name="newPassword" id="newPass" value="3" required/>
+<hr>
+<i class="layui-icon" style="font-size: 25px; color: #1E9FFF;">&#xe6b2;</i>
+<label for="newPass2">重输：</label>
+<input type="password" id="newPass2" value="3" required/>
+<button class="layui-btn layui-btn-normal" onclick="submit()" style="margin: 20px 0 0 36%">更新</button>
+
+<script>
+  function submit() {
+    var old = $("#oldPass").val();
+    var new1 = $("#newPass").val();
+    var new2 = $("#newPass2").val();
+    var data = {
+      oldPass: old,
+      newPass: new1
+    };
+    console.log(JSON.stringify(data));
+    if (new1 == new2) {
+      handlerPost('/rest/admin/password/' + sessionStorage.getItem('adminId'), 'admin', JSON.stringify(data), function (data) {
+        if (data.code === '0') {
+          // console.log('更新成功')
+          layer.msg('更新成功')
+        } else {
+          // console.log('原密码错误')
+          layer.msg('原密码错误')
+        }
+      }, function (data) {
+        layer.msg('请检查网络并重试 '+data.responseText);
+        // console.log('请检查网络并重试 ' + data.responseText);
+      })
+    } else {
+      // alert('两次输入密码不一致，请重试')
+      layer.msg('两次输入密码不一致，请重试')
+    }
+  }
+</script>
+</body>
+</html>

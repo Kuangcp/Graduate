@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>学生子系统</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <script src="/js/jquery.min.js"></script>
+    <script src="/js/config/server.js"></script>
+    <script src="/js/common/login.js"></script>
+    <script src="/js/common/upload.js"></script>
+    <script src="/layui/layui.all.js"></script>
+</head>
+
+<body>
+<label for="student">学生：</label>
+<select name="student" id="student">
+    <option value="DEFAULT">刘欣</option>
+    <option value="DEFAULT"></option>
+    <option value="DEFAULT"></option>
+</select>
+<label for="batch">批次：</label>
+<select name="batch" id="batch">
+    <option value="DEFAULT"></option>
+    <option value="DEFAULT">开题报告</option>
+    <option value="DEFAULT">一稿</option>
+    <option value="DEFAULT">二稿</option>
+    <option value="DEFAULT">三稿</option>
+</select>
+<button class="layui-btn layui-btn-normal" style="margin-left: 39%;" onclick="first()" >批复文档</button>
+<script src="/js/jquery.min.js"></script>
+<!--<script src="/layui/layui.js"></script>-->
+<script src="/js/common/main-page.js"></script>
+<script src="/layui/lay/modules/layer.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  // checkRole('teacher');
+  // if (sessionStorage.getItem('teacherId') != null) {
+  //   handlerGet('/rest/student/' + sessionStorage.getItem('teacherId'), 'teacher', function (data) {
+  //     $("#nameT").html(data.data.username);
+  //   });
+  // }
+
+  $(function () {
+    $("[data-url]").on('click', function () {
+      turn('student', $(this).data('url'))
+    });
+  });
+  //JavaScript代码区域
+  layui.use('element', function () {
+    var element = layui.element;
+
+  });
+
+  function security() {
+    handlerGet('/rest/student/' + sessionStorage.getItem('studentId'), 'student', function (data) {
+      frameTip('修改密码', 'profile/security.html');
+    });
+  }
+
+  function frameTip(title, url, width, height) {
+    layer.open({
+      title: title
+      , type: 2
+      , content: url
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: [width, height]
+      , cancel: function () {
+      }
+    });
+  }
+
+  function load(title, batch) {
+    // TODO 选题的校验
+    layer.open({
+      title: title
+      , content: $("#loadFromExcel").html()
+      , btnAlign: 'c'
+      , resize: true
+      , area: ['400px', '160px']
+      , btn: ['确认', '取消']
+      , yes: function (index, layero) {
+        layer.msg('上传成功')
+        // uploadFile('student', host + '/bus/student/upload/' + sessionStorage.getItem('teacherId') + '/' + batch, function (file) {
+        //   if (file.name.split(".doc").length > 1) {
+        //     return 0;
+        //   } else {
+        //     layer.msg("文件格式不正确, 请重新选择文件(应为doc docx后缀的文件)");
+        //     return 1;
+        //   }
+        // });
+      }
+    });
+  }
+
+  function start() {
+    load('提交开题答辩材料', 0);
+    // frameTip('提交开题答辩材料', 'doc/start.html', '270px', '300px');
+  }
+
+  function first() {
+    load('提交一稿', 1);
+    // frameTip('提交一稿材料', 'defense/record.html', '600px', '500px')
+  }
+
+  function second() {
+    load('提交二稿', 2);
+    // frameTip('提交二稿材料', 'defense/record.html', '600px', '500px')
+  }
+
+  function third() {
+    load('提交三稿', 3);
+    // frameTip('提交三稿材料', 'defense/record.html', '600px', '500px')
+  }
+
+  function end() {
+    load('提交最终材料', 4);
+    // frameTip('提交三稿材料', 'defense/record.html', '600px', '500px')
+  }
+</script>
+<script id="loadFromExcel" type="text/html">
+    <div>
+        <input type="file" id="selectFile"/>
+        <progress id="progressBar" value="0" max="100"></progress>
+        <span id="percentage"></span>
+    </div>
+</script>
+</body>
+</html>

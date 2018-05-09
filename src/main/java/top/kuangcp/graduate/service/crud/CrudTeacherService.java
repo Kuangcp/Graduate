@@ -1,7 +1,9 @@
 package top.kuangcp.graduate.service.crud;
 
+import com.kuangcp.mythpoi.excel.base.ExcelTransform;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import top.kuangcp.graduate.config.custom.ResponseCode;
 import top.kuangcp.graduate.dao.LeaderDao;
 import top.kuangcp.graduate.dao.MajorDao;
@@ -15,6 +17,7 @@ import top.kuangcp.graduate.domain.vo.TeacherVO;
 import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
 import top.kuangcp.graduate.util.JsonBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,7 +28,7 @@ import java.util.Optional;
  * @date 18-5-1  下午11:46
  */
 @Service
-public class CrudTeacherService {
+public class CrudTeacherService{
 
     private final TeacherDao teacherDao;
     private final LeaderDao leaderDao;
@@ -41,8 +44,24 @@ public class CrudTeacherService {
         this.secretaryDao = secretaryDao;
     }
 
+    public String listAll(int page, int limit) {
+        return null;
+    }
+
+    public String delete(String idList) {
+        return null;
+    }
+
     public String getOne(Long teacherId){
         return CrudServiceCommon.getOne(teacherId, teacherDao);
+    }
+
+    public String uploadFile(MultipartFile file, HttpServletRequest request) {
+        return null;
+    }
+
+    public String saveOne(ExcelTransform target) {
+        return null;
     }
 
     public String getOneWithRefer(Long teacherId){
@@ -85,5 +104,9 @@ public class CrudTeacherService {
         leader.ifPresent(item-> builder.append("LEADER#"));
         secretary.ifPresent(item-> builder.append("SECRETARY#"));
         return JsonBuilder.buildSuccessResult("", builder.toString());
+    }
+
+    public String listTotal() {
+        return CrudServiceCommon.listTotal(teacherDao);
     }
 }

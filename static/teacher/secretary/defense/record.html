@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+    <style>
+        main input{
+            margin-bottom: 10px;
+        }
+        main select{
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+<main>
+    <label for="studentId">答辩学生：</label>
+    <select name="studentId" id="studentId">
+        <option selected value="DEFAULT"></option>
+        <option value="DEFAULT">罗辑</option>
+        <option value="DEFAULT">刘欣</option>
+    </select>
+    <br>
+    <label for="date">答辩分数：</label>
+    <input type="number" id="date"/>
+    <br>
+    <label for="date">答辩评语：</label>
+    <input type="text" id="time"/>
+    <br>
+    <button onclick="submit()" class="layui-btn layui-btn-normal" style="margin-left: 30%;">提交</button>
+</main>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<script>
+  if(sessionStorage.getItem('showTip')!== null){
+    layer.msg('答辩安排成功');
+    sessionStorage.removeItem('showTip');
+  }
+  handlerGet('/', 'teacher', function (data) {
+    
+  },function (data) {
+    
+  });
+
+
+  function tips(content, title, confirm) {
+    return layer.open({
+      title: title
+      , type: 1
+      , content: content
+      , btnAlign: 'c'
+      , resize: true
+      , tipsMore: true
+      , area: ['300px', '200px']
+      , btn: ['确认', '取消']
+      , yes: function (index, layero) {
+        confirm();
+      },
+      cancel: function () {
+      }
+    });
+  }
+  function submit() {
+    // TODO
+    sessionStorage.setItem('showTip', 1);
+    window.location.reload()
+  }
+</script>
+</body>
+</html>

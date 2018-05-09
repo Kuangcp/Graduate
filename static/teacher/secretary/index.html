@@ -54,27 +54,11 @@
         <div class="layui-side-scroll">
             <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
             <ul class="layui-nav layui-nav-tree"  lay-filter="test">
-                <li class="layui-nav-item ">
-                    <a href="javascript:;">系统数据导入</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="import-college">导入学院数据</a></dd>
-                        <dd><a href="javascript:;" data-url="import-major">导入专业数据</a></dd>
-                        <dd><a href="javascript:;" data-url="import-class">导入班级数据</a></dd>
-                        <dd><a href="javascript:;" data-url="import-student">导入学生数据</a></dd>
-                        <dd><a href="javascript:;" data-url="import-teacher">导入教师数据</a></dd>
-                    </dl>
-                </li>
                 <li class="layui-nav-item layui-nav-itemed">
-                    <a class="" href="javascript:;">系统初始化</a>
+                    <a class="" href="javascript:;">答辩管理</a>
                     <dl class="layui-nav-child">
-                        <dd><a href="javascript:;" data-url="team">团队管理</a></dd>
-                        <dd><a href="javascript:;" data-url="leader">委派负责人</a></dd>
-                    </dl>
-                </li>
-                <li class="layui-nav-item">
-                    <a href="javascript:;">报表统计</a>
-                    <dl class="layui-nav-child">
-                        <dd><a href="javascript:;">答辩情况</a></dd>
+                        <dd><a href="javascript:;" onclick="editPlace()">安排答辩场地</a></dd>
+                        <dd><a href="javascript:;" onclick="editDefense()">记录答辩过程</a></dd>
                     </dl>
                 </li>
             </ul>
@@ -83,7 +67,7 @@
 
     <div class="layui-body main-body main-body-teacher">
         <!-- 内容主体区域 -->
-        <iframe src="/teacher/leader/init.html" style="width:100%;height:100%;" id="main_page"></iframe>
+        <iframe src="init.html" style="width:100%;height:100%;" id="main_page"></iframe>
     </div>
 
     <div class="layui-footer">
@@ -106,7 +90,8 @@
 
   $(function () {
     $("[data-url]").on('click', function () {
-      turn('teacher/leader', $(this).data('url'))
+      // turn('teacher', $(this).data('url'))
+      $("#main_page").attr('src', location.href + $(this).data('url') + '.html')
     });
   });
   //JavaScript代码区域
@@ -114,12 +99,8 @@
     var element = layui.element;
 
   });
-  function security() {
-    getTeacher('/'+sessionStorage.getItem('teacherId'), function (data) {
-      frameTip('修改密码', 'profile/security.html');
-    });
-  }
-  function frameTip(title, url) {
+
+  function frameTip(title, url, width, height) {
     layer.open({
       title: title
       , type: 2
@@ -127,10 +108,16 @@
       , btnAlign: 'c'
       , resize: true
       , tipsMore: true
-      , area: ['270px', '300px']
+      , area: [width, height]
       ,cancel: function () {
       }
     });
+  }
+  function editPlace() {
+    frameTip('安排答辩场地', 'place.html', '270px', '300px');
+  }
+  function editDefense() {
+    frameTip('记录答辩过程', 'defense/record.html', '600px', '500px')
   }
 </script>
 </body>
