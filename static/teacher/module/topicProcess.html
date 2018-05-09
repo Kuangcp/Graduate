@@ -9,7 +9,6 @@
 <script src="/js/common/login.js"></script>
 
 <style id="css">
-    /* This sets the color for "TK" nodes to a light blue green. */
     g.type-current > rect {
         fill: #1E9FFF;
     }
@@ -50,19 +49,19 @@
     4: '课题已被选',
     5: '暂无学生选题',
     6: '提交开题报告材料',
-    7: '审核通过',
-    8: '审核未过',
+    7: '开题审核通过',
+    8: '开题审核未过',
     9: '提交一稿材料',
-    10: '审核通过',
-    11: '审核未过',
+    10: '一稿审核通过',
+    11: '一稿审核未过',
     12: '提交二稿材料',
-    13: '审核通过',
-    14: '审核未过',
+    13: '二稿审核通过',
+    14: '二稿审核未过',
     15: '提交三稿材料',
-    16: '审核通过',
-    17: '审核未过',
+    16: '三稿审核通过',
+    17: '三稿审核未过',
     18: '一辩未过',
-    19: ' 一辩通过',
+    19: '一辩通过',
     20: '二辩未过 ',
     21: '二辩通过',
     22: '三辩未过 ',
@@ -76,7 +75,7 @@
 
     for (var i = 0; i < 24; i++) {
       g.setNode(i, {
-        label:dataFlow[i],
+        label:i+dataFlow[i],
         class: "type-no",
         id: "status"+i
       });
@@ -127,9 +126,6 @@
   g.setEdge(20, 22);
   g.setEdge(20, 23);
 
-
-
-
   // g.setEdge(8, 10);
   // g.setEdge(8, 11);
 
@@ -147,7 +143,6 @@
   // Run the renderer. This is what draws the final graph.
   render(d3.select("svg g"), g);
 
-  // Center the graph
   var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
   svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
   svg.attr("height", g.graph().height + 40);
@@ -157,7 +152,7 @@
   selectSuccess('0');
   handlerGet('/rest/topic/get/' + topicId, 'teacher', function (data) {
     if (data.code === '0') {
-      console.log(data.data);
+      // console.log(data.data);
       var status = parseInt(data.data.status);
       if (status === 0) {
         return 0;
@@ -169,9 +164,8 @@
         if(status < 7){
           selectFail(status);
         }else{
-          selectPass(status);
+          selectSuccess(status)
         }
-
       }
       if (status === 2 || status > 3) {
         selectSuccess(2);
@@ -179,14 +173,44 @@
       if (status === 4 || status > 5) {
         selectSuccess(4);
       }
-      if (status === 6 || status > 7) {
+      if (status >= 6) {
         selectSuccess(6);
       }
-      if (status === 8 || status > 9) {
-        selectSuccess( 8);
+      if (status >= 9) {
+        selectSuccess(9);
       }
-      if (status === 10) {
-        selectFail(10);
+      if (status >= 12) {
+        selectSuccess(12);
+      }
+      if (status >17) {
+        selectSuccess(16);
+      }
+      if (status >= 15) {
+        selectSuccess(15);
+      }
+      if (status>19) {
+        selectSuccess(18);
+      }
+      if (status > 21) {
+        selectSuccess(20);
+      }
+      if (status > 8) {
+        selectSuccess(7);
+      }
+      if (status > 11) {
+        selectSuccess(10);
+      }
+      if (status > 14) {
+        selectSuccess(13);
+      }
+      if (status === 8 || status === 11|| status === 14|| status === 17|| status === 22) {
+        selectFail( status);
+      }
+      if (status === 10 || status===18 || status===20) {
+        selectSuccess(status);
+      }
+      if(status===19  || status===21 || status===23){
+        selectPass(status);
       }
     }
   });

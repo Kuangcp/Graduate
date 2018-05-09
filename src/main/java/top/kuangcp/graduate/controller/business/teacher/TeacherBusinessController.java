@@ -22,8 +22,9 @@ public class TeacherBusinessController {
         this.teacherService = teacherService;
     }
 
-    @PutMapping("/submitCheck/{id}/{who}")
-    public String submitCheck(@PathVariable("id") Long topicId, @PathVariable("who") Long teacherId, String comment){
+    // TODO 为什么用PUT收不到数据
+    @PostMapping(value = "/submitCheck/{id}/{who}", produces = "application/json;charset=UTF-8")
+    public String submitCheck(@PathVariable("id") Long topicId, @PathVariable("who") Long teacherId, @RequestBody String comment){
         return teacherService.submitCheck(topicId, teacherId, comment);
     }
 }

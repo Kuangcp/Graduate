@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/js/common/upload.js"></script>
+<script src="/layui/layui.all.js"></script>
+<style>
+    .main {
+        text-align: right;
+    }
+
+    label {
+        text-align: left;
+        float: left;
+    }
+</style>
+<body>
+
+<div id="Tips" class="main">
+    <label for="year">毕业届数</label>
+    <select name="year" id="year">
+        <option selected>2018</option>
+        <option>2017</option>
+        <option>2016</option>
+        <option>2015</option>
+    </select>
+    <br>
+    <label for="collegeId">学院</label>
+    <select id="collegeId" name="collegeId" onchange="showMajor()">
+        <option value="DEFAULT"></option>
+    </select>
+    <br>
+    <label for="taskId">专业</label>
+    <select id="taskId" name="taskId" onchange="showTeacher()">
+        <option value="DEFAULT"></option>
+    </select>
+    <br/>
+    <label for="teacherId">指导教师</label>
+    <select id="teacherId" name="teacherId">
+        <option value="DEFAULT"></option>
+    </select>
+    <br>
+    <label for="num">课题数量</label>
+    <select name="num" id="num">
+        <option selected>1</option>
+        <option>2</option>
+        <option>3</option>
+        <option>4</option>
+        <option>5</option>
+        <option>6</option>
+        <option>7</option>
+        <option>8</option>
+        <option>9</option>
+        <option>10</option>
+        <option>11</option>
+    </select>
+    <br>
+    <br>
+    <br>
+</div>
+<button class="layui-btn layui-btn-normal" style="margin-left: 39%;" onclick="submit()">提交</button>
+
+<script>
+  // 逻辑是拿到教师id， 加载一系列数据
+  var taskId = sessionStorage.getItem('editTaskId');
+  var editCollege = null;
+  var editMajor = null;
+  if (taskId !== null) {
+    handlerGetSync('/rest/topicTask/' + taskId, 'teacher', function (data) {
+      sessionStorage.setItem("teacherId", data.data.teacherId);
+      sessionStorage.setItem("taskNum", data.data.num);
+      handlerGetSync('/rest/teacher/' + data.data.teacherId, 'teacher', function (data) {
+        // console.log('收到' + JSON.stringify(data));
+        editMajor = data.data.majorId;
+        sessionStorage.setItem('editMajor', editMajor);
+        handlerGetSync('/rest/major/' + data.data.majorId, 'teacher', function (data) {
+          sessionStorage.setItem('editCollege', data.data.collegeId);
+        });
+      });
+    });
+  }
+
+
+  // 装载已有数据， 学院
+  handlerGet('/rest/college/listTotal', 'teacher', function (data) {
+    data.data.forEach(function (item) {
+      if (sessionStorage.getItem('editCollege') === item.collegeId) {
+        $("#collegeId").append('<option value="' + item.collegeId + '" selected>' + item.name + '</option>');
+        // 专业
+        handlerGet('/rest/major/listTotalByCollege/' + item.collegeId, 'teacher', function (data) {
+          $("#taskId").html('<option value="DEFAULT"></option>');
+          data.data.forEach(function (item) {
+            if (sessionStorage.getItem('editMajor') === item.majorId) {
+              $("#taskId").append('<option value="' + item.majorId + '" selected>' + item.name + '</option>');
+              // 负责人
+              handlerGet('/rest/teacher/listTotalByMajor/' + item.majorId, 'teacher', function (data) {
+                $("#teacherId").html('<option value="DEFAULT"></option>');
+                data.data.forEach(function (item) {
+                  if (sessionStorage.getItem("teacherId") === item.teacherId) {
+                    $("#teacherId").append('<option value="' + item.teacherId + '" selected>' + item.username + '</option>');
+                  } else {
+                    $("#teacherId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
+                  }
+                });
+                $("#num").val(sessionStorage.getItem("taskNum"))
+              });
+            } else {
+              $("#taskId").append('<option value="' + item.majorId + '">' + item.name + '</option>');
+            }
+          });
+        });
+      } else {
+        $("#collegeId").append('<option value="' + item.collegeId + '">' + item.name + '</option>');
+      }
+    });
+  }, function (data) {
+    layer.msg('加载学院失败，请检查网络' + data.responseText)
+  });
+
+  // 根据学院加载专业
+  function showMajor() {
+    collegeId = $("#collegeId").val();
+    handlerGet('/rest/major/listTotalByCollege/' + collegeId, 'teacher', function (data) {
+      $("#taskId").html('<option value="DEFAULT"></option>');
+      data.data.forEach(function (item) {
+        $("#taskId").append('<option value="' + item.taskId + '">' + item.name + '</option>');
+      });
+    });
+  }
+
+  function showTeacher() {
+    taskId = $("#taskId").val();
+    if (taskId === 'DEFAULT') {
+      return;
+    }
+    handlerGet('/rest/teacher/listTotalByMajor/' + taskId, 'teacher', function (data) {
+      $("#teacherId").html('<option value="DEFAULT"></option>');
+      data.data.forEach(function (item) {
+        $("#teacherId").append('<option value="' + item.teacherId + '">' + item.username + '</option>');
+      });
+    })
+  }
+
+  function submit() {
+    var editId = sessionStorage.getItem("editTaskId");
+    var teacherId = $("#teacherId").val();
+    var send = {
+      taskId: editId,
+      leaderId: sessionStorage.getItem('teacherId'),
+      teacherId: teacherId,
+      num: $("#num").val(),
+      year: $("#year").val()
+    };
+    handlerPost('/rest/topicTask', 'teacher', JSON.stringify(send), function (data) {
+      layer.msg('安排课题任务成功');
+      sessionStorage.removeItem('editJudge');
+      sessionStorage.removeItem('editMajor');
+      sessionStorage.removeItem('editCollege');
+    }, function (data) {
+      console.log('保存失败')
+    })
+  }
+</script>
+</body>
+</html>

@@ -37,6 +37,13 @@ public class RestTopicController {
         return topicService.listAll();
     }
 
+    // 所有未经审核
+    @GetMapping(value = "/listValidate", produces = "application/json;charset=UTF-8")
+    public String listAllNoValidate() {
+        return topicService.listAllNoValidate();
+    }
+
+
     @GetMapping(value = "/search", produces = "application/json;charset=UTF-8")
     public String findByName(String name) {
         return topicService.findByName(name);

@@ -47,21 +47,27 @@
 
 <script>
   // 逻辑是拿到教师id， 加载一系列数据
-  var majorId = sessionStorage.getItem('leaderEditMajorId');
+  var teamId = sessionStorage.getItem('editTeamId');
   var editCollege = null;
   var editMajor = null;
 
-  handlerGetSync('/rest/major/' + majorId, 'teacher', function (data) {
-    sessionStorage.setItem("LeaderId", data.data.leaderId);
-    handlerGetSync('/rest/teacher/' + data.data.leaderId, 'teacher', function (data) {
-      console.log('收到' + JSON.stringify(data));
-      editMajor = data.data.majorId;
-      sessionStorage.setItem('editMajor', editMajor);
-      handlerGetSync('/rest/major/' + data.data.majorId, 'teacher', function (data) {
-        sessionStorage.setItem('editCollege', data.data.collegeId);
-      });
+  if(teamId !== null){
+    handlerGetSync('/rest/team/' + teamId, 'teacher', function (data) {
+      if(data.data.assistantId !== null){
+        sessionStorage.setItem("LeaderId", data.data.assistantId);
+        handlerGetSync('/rest/teacher/' + data.data.assistantId, 'teacher', function (data) {
+          // console.log('收到' + JSON.stringify(data));
+          editMajor = data.data.majorId;
+          sessionStorage.setItem('editMajor', editMajor);
+          handlerGetSync('/rest/major/' + data.data.majorId, 'teacher', function (data) {
+            sessionStorage.setItem('editCollege', data.data.collegeId);
+          });
+        });
+      }
+
     });
-  });
+  }
+
 
 
   // 装载已有数据， 学院
@@ -124,14 +130,14 @@
   }
 
   function submit() {
-    var editId = sessionStorage.getItem("leaderEditMajorId");
+    var editId = sessionStorage.getItem("editTeamId");
     var leaderId = $("#leaderId").val();
     var send = {
-      majorId: editId,
-      leaderId: leaderId
+      teamId: editId,
+      assistantId: leaderId
     };
-    handlerPost('/rest/major/leader', 'teacher', JSON.stringify(send), function (data) {
-      layer.msg('委任成功');
+    handlerPost('/rest/team/assistant', 'teacher', JSON.stringify(send), function (data) {
+      layer.msg('委任秘书成功');
       sessionStorage.removeItem('editJudge');
       sessionStorage.removeItem('editMajor');
       sessionStorage.removeItem('editCollege');

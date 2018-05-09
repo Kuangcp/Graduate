@@ -23,9 +23,14 @@
     if (data.code === '0') {
       $("#topicList").html();
       data.data.forEach(function (item) {
-        $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit(' + item.topicId + ')">' + item.name + '</blockquote>');
+        var status = '';
+        if(item.status==='2'){
+          status = '审核通过';
+          $("#topicList").append('<blockquote class="layui-elem-quote">' + item.name + '  <span style="color: red">'+status+'</span></blockquote>');
+        }else{
+          $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit(' + item.topicId + ')">' + item.name + '</blockquote>');
+        }
       });
-      console.log()
     }
   }, function (data) {
     layer.msg('请检查网络连接' + data.responseText);
@@ -38,12 +43,19 @@
       title: '提交审核',
       area: ['400px', '150px'] //自定义文本域宽高
     }, function (value, index, elem) {
-      handlerPut('/bus/teacher/submitCheck/' + id + '/' + teacherId, 'teacher', {
-          comment: value
-        }, function (data) {
-          console.log(JSON.stringify(data))
-        }, function (data) {
+      var data = {
+        comment: value
+      };
 
+      handlerPost('/bus/teacher/submitCheck/' + id + '/' + teacherId, 'teacher',JSON.stringify(data), function (data) {
+          if (data.code === '0') {
+            layer.msg('提交审核成功，等待负责人回复')
+          }
+          if (data.code === '416') {
+            layer.msg('请勿重复提交审核')
+          }
+        }, function (data) {
+          layer.msg('提交失败，请检查网络并重试')
         }
       )
       ;

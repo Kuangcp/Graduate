@@ -27,8 +27,8 @@
     if (data.code === '0') {
       $("#topicList").html();
       data.data.forEach(function (item) {
-        $("#topicList").append('<button class="layui-btn layui-btn-fluid" onclick="edit('+item.topicId+')">'+item.name+'</button>');
-        // $("#topicList").append('<blockquote class="layui-elem-quote layui-quote-nm" onclick="edit('+item.topicId+')">' + item.name + '</blockquote>');
+        // $("#topicList").append('<button class="layui-btn layui-btn-fluid" onclick="edit('+item.topicId+')">'+item.name+'</button>');
+        $("#topicList").append('<blockquote class="layui-elem-quote layui-quote-nm" onclick="edit('+item.topicId+')">' + item.name + '</blockquote>');
       });
       console.log()
     }

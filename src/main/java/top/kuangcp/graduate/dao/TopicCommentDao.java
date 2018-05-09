@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import top.kuangcp.graduate.domain.TopicComment;
 
+import java.util.List;
+
 /**
  * Created by https://github.com/kuangcp
  *
@@ -12,4 +14,6 @@ import top.kuangcp.graduate.domain.TopicComment;
  */
 @Repository
 public interface TopicCommentDao extends JpaRepository<TopicComment, Long> {
+
+    List<TopicComment> findAllByTopicId(Long topicId);
 }

@@ -11,26 +11,21 @@
 <script src="/js/common/login.js"></script>
 <script src="/layui/layui.all.js"></script>
 
-<main id="topicList">
-
-</main>
-
+<main id="topicList"></main>
 
 <script>
   handlerGet('/rest/topic/list/' + sessionStorage.getItem('teacherId'), 'teacher', function (data) {
     if (data.code === '0') {
       $("#topicList").html();
       data.data.forEach(function (item) {
-        $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit('+item.topicId+')">' + item.name + '</blockquote>');
+        $("#topicList").append('<blockquote class="layui-elem-quote" onclick="edit('+item.topicId+')">'
+          + item.name + ' &nbsp;&nbsp;&nbsp;<span style="color: green;font-size: 11px;">点击进行编辑</span></blockquote>');
       });
-      console.log()
     }
   },function (data) {
     layer.msg('请检查网络连接'+data.responseText);
   });
-
   function edit(id) {
-    layer.msg('ii');
     sessionStorage.setItem('editId', id);
     window.location.href='publish.html'
   }

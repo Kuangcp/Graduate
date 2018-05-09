@@ -33,4 +33,5 @@ public interface ResponseCode {
     int PASSWORD_VALID = 411; // 密码错误
 
     int SUBMIT_ERROR = 415; // 提交审核失败
+    int SUBMIT_REPEAT = 416; //重复提交审核
 }

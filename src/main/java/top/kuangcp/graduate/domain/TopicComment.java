@@ -20,5 +20,6 @@ public class TopicComment {
     private Long topicCommentId;
     private Long topicId;
     private String comment;
-    private Long index;
+    private Integer index;
+    private Integer type; // 0 提交，1回复
 }

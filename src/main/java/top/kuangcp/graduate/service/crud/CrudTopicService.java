@@ -9,6 +9,7 @@ import top.kuangcp.graduate.domain.Topic;
 import top.kuangcp.graduate.service.crud.base.CrudServiceCommon;
 import top.kuangcp.graduate.util.JsonBuilder;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -31,17 +32,16 @@ public class CrudTopicService {
     public String listAll(){
         return JsonBuilder.buildSuccessResult("", topicDao.findAll());
     }
+
+    // 未选择， 审核通过
     public String listNoSelected(){
-//        List<Topic> list = topicDao.findAll();
-//        if(list.size() == 0){
-//            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
-//        }
-//        for (int i = 0; i < list.size(); i++) {
-//            if(list.get(i).getStudentId() != null){
-//                list.remove()
-//            }
-//        }
-        return JsonBuilder.buildSuccessResult("", topicDao.findAllByStudentIdIsNull());
+        List<Topic> list = topicDao.findAllByStudentIdIsNull();
+        for (int i = 0; i < list.size(); i++) {
+            if(list.get(i).getStatus()!=2){
+                list.remove(i);
+            }
+        }
+        return JsonBuilder.buildSuccessResult("", list);
     }
 
     public String findByName(String name) {
@@ -75,5 +75,19 @@ public class CrudTopicService {
     }
     public String getOne(Long topicId){
         return CrudServiceCommon.getOne(topicId, topicDao);
+    }
+
+    public String listAllNoValidate() {
+        List<Topic> list = topicDao.findAll();
+        final List<Topic> result = new ArrayList<>();
+        if(list.size()>0){
+            for (Topic item : list) {
+                if (item != null && item.getStatus()!=null &&item.getStatus() == 1) {
+                    item.setAttention("");
+                    result.add(item);
+                }
+            }
+        }
+        return JsonBuilder.buildSuccessResult("", result);
     }
 }

@@ -147,4 +147,16 @@ public class CrudTeamService {
             return JsonBuilder.buildSuccessResult(" ", list);
         }
     }
+
+    public String setAssistant(final Team team) {
+        Optional<Team> temp = teamDao.findById(team.getTeamId());
+        if(temp.isPresent()){
+            temp.get().setAssistantId(team.getAssistantId());
+            teamDao.save(temp.get());
+            return JsonBuilder.buildSuccessCodeResult();
+        }else{
+            return JsonBuilder.buildCodeResult(ResponseCode.POJO_NOT_FOUND);
+        }
+
+    }
 }

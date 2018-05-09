@@ -22,4 +22,5 @@ public class TopicTask {
     private Long teacherId;
     private Long leaderId;
     private Integer num;
+    private Integer year;
 }

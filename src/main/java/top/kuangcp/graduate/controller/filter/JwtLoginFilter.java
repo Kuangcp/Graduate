@@ -20,7 +20,7 @@ import java.io.IOException;
 
 /**
  * Created by https://github.com/kuangcp
- *
+ * TODO 将token中携带的id解析出来， 然后放到request中， Controller就能拿到值了
  * @author kuangcp
  * @date 18-3-28  下午3:40
  */

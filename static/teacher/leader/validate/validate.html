@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="/layui/css/layui.css"/>
+    <link href="/layui/css/modules/layer/default/layer.css" rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/index.css"/>
+</head>
+<script src="/js/jquery.min.js"></script>
+<script src="/js/config/server.js"></script>
+<script src="/js/common/login.js"></script>
+<script src="/layui/layui.all.js"></script>
+<style>
+    .main {
+        text-align: right;
+    }
+
+    label {
+        text-align: left;
+        float: left;
+    }
+</style>
+<body>
+
+<div id="Tips" class="main">
+    <label for="status">是否同意</label>
+    <select name="status" id="status">
+        <option selected value="0">同意</option>
+        <option value="1">不同意</option>
+    </select>
+    <br>
+    <label for="name">备注</label>
+    <input name="name" type="text" id="name" required/>
+    <br>
+
+</div>
+<button class="layui-btn layui-btn-normal" style="margin-left: 39%;" onclick="submit()">提交</button>
+
+<script>
+  var id = sessionStorage.getItem('validateTopicId');
+  function submit() {
+    var send = {
+      comment: $("#name").val(),
+      status: $("#status").val()
+    };
+    handlerPost('/bus/leader/submitCheck/'+id+'/'+sessionStorage.getItem('teacherId'), 'teacher', JSON.stringify(send), function (data) {
+      layer.msg('审核成功');
+      sessionStorage.removeItem('editJudge');
+      sessionStorage.removeItem('editMajor');
+      sessionStorage.removeItem('editCollege');
+    }, function (data) {
+      console.log('提交审核失败，请检查网络连接 '+data.responseText)
+    })
+  }
+</script>
+</body>
+</html>

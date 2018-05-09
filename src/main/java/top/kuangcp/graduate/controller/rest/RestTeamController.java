@@ -42,10 +42,10 @@ public class RestTeamController {
         return teamService.saveOne(team);
     }
 
-//    @PostMapping(value = "/leader", produces = "application/json;charset=UTF-8")
-//    public String updateLeader(@RequestBody Team team) {
-//        return teamService.updateLeader(team);
-//    }
+    @PostMapping(value = "/assistant", produces = "application/json;charset=UTF-8")
+    public String updateLeader(@RequestBody Team team) {
+        return teamService.setAssistant(team);
+    }
 
     @DeleteMapping(produces = "application/json;charset=UTF-8")
     public String delete(@RequestBody String idList) {
