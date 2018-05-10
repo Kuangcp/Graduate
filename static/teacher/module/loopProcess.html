@@ -1,0 +1,119 @@
+<!doctype html>
+
+<meta charset="utf-8">
+<title>Process</title>
+<script src="/js/d3.v4.min.js" charset="utf-8"></script>
+<script src="/js/dagre-d3.min.js"></script>
+
+<style id="css">
+    g.type-current > rect {
+        fill: #1E9FFF;
+    }
+
+    g.type-success > rect {
+        fill: green;
+    }
+
+    g.type-fail > rect {
+        fill: red;
+    }
+
+    text {
+        font-weight: 300;
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serf;
+        font-size: 14px;
+    }
+
+    .node rect {
+        stroke: #999;
+        fill: #fff;
+        stroke-width: 1.5px;
+    }
+
+    .edgePath path {
+        stroke: #333;
+        stroke-width: 1.5px;
+    }
+</style>
+
+<svg id="svg-canvas" width=700 height=300></svg>
+
+<script>
+  // 仅仅展示流程图
+  var dataFlow = {
+    0: '起点',
+    1: '课题提交审核',
+    2: '课题审核通过',
+    3: '课题审核未过',
+    4: '课题已被选',
+    5: '暂无学生选题',
+    6: '提交开题报告材料',
+    7: '开题审核通过',
+    8: '开题审核未过',
+    9: '提交论文材料（共三次）当前第1次',
+    10: '论文审核通过',
+    11: '论文审核未过',
+    12: '开始答辩（最多三次）',
+    13: '答辩通过',
+    14: '答辩未过 ',
+    15: '答辩结束'
+  };
+  // Create the input graph
+  var g = new dagreD3.graphlib.Graph()
+    .setGraph({})
+    .setDefaultEdgeLabel(function () {
+      return {};
+    });
+
+  for (var i = 0; i < 15; i++) {
+    if(i<3){
+      g.setNode(i, {
+      label: dataFlow[i],
+      class: "type-current",
+      id: "status" + i
+    });
+    }else{
+      g.setNode(i, {
+      label: dataFlow[i],
+      class: "type-no",
+      id: "status" + i
+    });
+    }
+
+  }
+
+  g.nodes().forEach(function (v) {
+    var node = g.node(v);
+    node.rx = node.ry = 5;
+  });
+  g.setEdge(0, 1);
+  g.setEdge(1, 2);
+  g.setEdge(1, 3);
+  g.setEdge(2, 4);
+  g.setEdge(2, 5);
+  g.setEdge(3, 1);
+  g.setEdge(4, 6);
+  g.setEdge(6, 7);
+  g.setEdge(6, 8);
+  g.setEdge(8, 6);
+
+  g.setEdge(7, 9);
+  g.setEdge(9, 10);
+  g.setEdge(9, 11);
+  g.setEdge(10, 9);
+  g.setEdge(11, 9);
+
+  g.setEdge(10, 12);
+  g.setEdge(12, 13);
+  g.setEdge(12, 14);
+  g.setEdge(14, 12);
+
+  var render = new dagreD3.render();
+
+  var svg = d3.select("svg"),
+    svgGroup = svg.append("g");
+  render(d3.select("svg g"), g);
+  var xCenterOffset = (svg.attr("width") - g.graph().width) / 2;
+  svgGroup.attr("transform", "translate(" + xCenterOffset + ", 20)");
+  svg.attr("height", g.graph().height + 40);
+</script>
