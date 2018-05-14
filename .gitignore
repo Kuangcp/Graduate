@@ -28,3 +28,7 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+static-src/static/
+build/
+node_modules/
+
