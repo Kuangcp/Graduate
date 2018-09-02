@@ -18,5 +18,14 @@
 reconfig.sh  修改配置文件application.yml
 reboot.sh    更新镜像重启Docker容器
 
+### 截图
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/1.png)
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/2.png)
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/3.png)
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/4.png)
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/5.png)
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/6.png)
 
+压测情况:
+![](https://raw.githubusercontent.com/Kuangcp/ImageRepos/master/Image/Graduate/springboot2-java8-docker.png)
 
